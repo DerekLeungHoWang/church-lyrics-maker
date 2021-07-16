@@ -3,18 +3,18 @@ import Container from '@material-ui/core/Container';
 import LyricsMaker from './LyricsMaker/LyricsMaker';
 import LyricsStorage from './LyricsStorage/LyricsStorage';
 import { Grid } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
-export default function Home() {
-
-
+export default function Home(props) {
+    const history = useHistory();
+    const [playId, setPlayId] = useState();
     const [lyrics, setLyrics] = useState({
-        title: "只要祝福",
-        content: `只有祝福令我欣慰，祂每天細心拖帶，給我鼓舞為我打氣。
-祂陪伴同上路，神導引讓我躺青草處，越過死蔭幽谷。
-慈愛盛載，福杯充滿，同渡過一世一生。
-願我生命只要祝福，突破不足畏懼心態。
-神愛讓我活在恩典，充滿祝福，就算手中只有一點，
-願獻主成千億祝福，神永讓我活在恩典中，讚美。`,
+        title: "",
+        content: ``,
+        fontSize: "60",
+        fontColor: "#fff",
+        img: "",
+        height: "",
 
     })
     const initializeState = () => (
@@ -27,10 +27,26 @@ export default function Home() {
         let newLyrics = lyrics.content.split("\n\n");
         let lyricsObject = {
             title: lyrics.title,
-            content: newLyrics
+            content: newLyrics,
+            fontSize: lyrics.fontSize,
+            fontColor: lyrics.fontColor,
+            img: lyrics.img,
+            height: lyrics.height
         }
+        setLyrics(state => ({
+            ...state,
+            title: "",
+            content: ``,
+        }))
         setCart(state => [...state, lyricsObject]);
 
+    }
+
+    const handleSetId = e => {
+        let id = e.currentTarget.name
+        console.log(id);
+        setPlayId(id)
+        history.push(`/player/${id}`)
     }
 
     const handleDelete = (e) => {
@@ -46,7 +62,7 @@ export default function Home() {
     }, [cart])
 
     return (
-        <Container maxWidth={false} >
+        <Container maxWidth="lg" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }} >
             <Grid
                 container
                 direction="row"
@@ -63,7 +79,9 @@ export default function Home() {
 
                 >
 
-                    <LyricsStorage cart={cart} handleDelete={handleDelete} />
+                    <LyricsStorage
+                        setPlayId={handleSetId}
+                        cart={cart} handleDelete={handleDelete} />
                 </Grid>
                 <Grid
                     lg={6}
