@@ -71,7 +71,7 @@ export default function MakerForm({
                     name="content"
                     value={lyrics.content}
                     onChange={handleChange}
-
+                    autoComplete="content"
                 />
                 <TextField
                     required

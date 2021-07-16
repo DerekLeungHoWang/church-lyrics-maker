@@ -26,7 +26,7 @@ export default function LyricsStorage({ setPlayId, cart, handleDelete }) {
                 </div>
 
             </Paper>
-            <Paper elevation={3}   >
+            <Paper elevation={3}  style={{ marginBottom: "20px" }} >
                 <List dense={false} >
                     {cart.length > 0 ? cart.map(({ title, content }, i) => {
                         return (<ListItem key={i}>

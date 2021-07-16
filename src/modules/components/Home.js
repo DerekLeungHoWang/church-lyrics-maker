@@ -33,11 +33,11 @@ export default function Home(props) {
             img: lyrics.img,
             height: lyrics.height
         }
-        setLyrics(state => ({
-            ...state,
-            title: "",
-            content: ``,
-        }))
+        // setLyrics(state => ({
+        //     ...state,
+        //     title: "",
+        //     content: ``,
+        // }))
         setCart(state => [...state, lyricsObject]);
 
     }
@@ -62,12 +62,17 @@ export default function Home(props) {
     }, [cart])
 
     return (
-        <Container maxWidth="lg" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }} >
+        <Container maxWidth="lg"
+            style={{
+
+                minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center"
+            }} >
             <Grid
                 container
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
+                style={{ padding: "20px 0px", }}
             >
                 <Grid
                     lg={6}
