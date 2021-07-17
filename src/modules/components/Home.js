@@ -44,16 +44,16 @@ export default function Home(props) {
 
     const handleSetId = e => {
         let id = e.currentTarget.name
-        console.log(id);
+        
         setPlayId(id)
         history.push(`/player/${id}`)
     }
 
     const handleDelete = (e) => {
         let id = +e.currentTarget.name
-        console.log(id);
+        
         let filtered = cart.filter((d, i) => i !== id)
-        console.log(filtered);
+        
         setCart(filtered);
     }
 
