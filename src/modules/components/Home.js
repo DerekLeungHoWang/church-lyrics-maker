@@ -8,10 +8,22 @@ import LyricsPlayer from './LyricsPlayer/LyricsPlayer';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { arrayToString, stringToArray } from './util/converter';
-
+import useForm from './LyricsMaker/MakerForm/useForm';
+import { validator } from './LyricsMaker/MakerForm/Validator'
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const initState = {
+    title: "",
+    content: ``,
+    fontSize: 60,
+    fontColor: "#fff",
+    img: "",
+    height: "",
+    textColor: "#fff",
+    lastPlayed: false
 }
 
 export default function Home(props) {
@@ -36,19 +48,10 @@ export default function Home(props) {
             clearTimeout()
         }
     }, [snack])
+    const { lyrics, setLyrics, errors, setErrors, handleBlur } = useForm(validator);
     const { vertical, horizontal, open, message } = snack;
     const [playId, setPlayId] = useState();
     const [isEditMode, setIsEditMode] = useState(false);
-    const [lyrics, setLyrics] = useState({
-        title: "",
-        content: ``,
-        fontSize: 60,
-        fontColor: "#fff",
-        img: "",
-        height: "",
-        textColor: "#fff",
-        lastPlayed: false
-    })
     const initializeState = () => (
         JSON.parse(localStorage.getItem("cart")) || []
     );
@@ -56,6 +59,19 @@ export default function Home(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        let result_title = validator(lyrics, 'title')
+        let result_content = validator(lyrics, 'content')
+        if (result_title.tilte || result_content.content) {
+            console.log(result_title);
+            setErrors(state => ({
+                ...state,
+                title: result_title.title ? result_title.title : "",
+                content: result_content.content ? result_content.content : "",
+               
+            }))
+            return;
+        }
+
 
         let newLyrics = lyrics.content
         if (!Array.isArray(lyrics.content)) {
@@ -144,48 +160,26 @@ export default function Home(props) {
     }, [cart])
     useEffect(() => {
         if (cart.length > 0) {
-
             let target = cart.filter(d => {
                 return d.lastPlayed
-            })[0]
-            target = arrayToString(cart, target)
-            if(target.lastPlayed){
-                setIsEditMode(true)
+            })
+
+            if (target.length > 0) {
+                target = arrayToString(cart, target[0])
+                if (target.lastPlayed) {
+                    setIsEditMode(true)
+                }
+                setLyrics(target)
             }
-            setLyrics(target)
         }
     }, [])
 
 
-    // useEffect(() => {
-    //     if (lyrics.img === "") {
-    //         
-    //         let newCart = cart.filter(d => d.title !== lyrics.title)
-    //         localStorage.setItem('cart', JSON.stringify(newCart))
-    //     }
-    // }, [lyrics.img])
 
-    // useEffect(() => {
-    //     let cart = JSON.parse(localStorage.getItem("cart"))
-    //     if (cart.length > 0) {
-    //         let lastCart = cart[cart.length - 1];
-    //         let newContent = "";
-    //         for (let i = 0; i < lastCart.content.length; i++) {
-    //             newContent += lastCart.content[i] + "\n\n"
-    //         }
-
-
-    //         lastCart.content = newContent.trim()
-    //         setLyrics(lastCart)
-
-
-    //     }
-
-
-    // }, [])
     const handleLoad = (e) => {
         let id = +e.currentTarget.name
         let target = cart.filter((d, i) => i == id)[0]
+
         target = arrayToString(cart, target)
         setIsEditMode(true)
 
@@ -243,6 +237,9 @@ export default function Home(props) {
                         isEditMode={isEditMode}
                         setIsEditMode={setIsEditMode}
                         cart={cart}
+                        errors={errors}
+                        setErrors={setErrors}
+                        handleBlur={handleBlur}
                     />
                 </Grid>
 

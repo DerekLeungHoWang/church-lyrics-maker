@@ -2,19 +2,25 @@ import { Container, Paper } from '@material-ui/core'
 import React from 'react'
 import MakerForm from './MakerForm/MakerForm'
 
-export default function LyricsMaker({ handleSubmit,
+export default function LyricsMaker({
+    handleBlur,
+    errors,
+    setErrors,
+    handleSubmit,
     setCart,
     lyrics,
     setLyrics,
     isEditMode,
     setIsEditMode,
-    cart
+    cart,
+    
 }) {
     return (
         <Container>
 
             <Paper elevation={3} style={{ borderRadius: "15px" }} >
                 <MakerForm
+                
                     handleSubmit={handleSubmit}
                     lyrics={lyrics}
                     setLyrics={setLyrics}
@@ -22,6 +28,9 @@ export default function LyricsMaker({ handleSubmit,
                     isEditMode={isEditMode}
                     setIsEditMode={setIsEditMode}
                     cart={cart}
+                    errors={errors}
+                    setErrors={setErrors}
+                    handleBlur={handleBlur}
                 />
             </Paper>
         </Container>

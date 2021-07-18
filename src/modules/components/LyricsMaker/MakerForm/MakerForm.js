@@ -1,10 +1,11 @@
-import { Button, Container, Grid, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
-import React, { useRef, useState } from 'react'
+import { Button, Container, FormHelperText, Grid, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
+import React, { useEffect, useRef, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import PublishIcon from '@material-ui/icons/Publish';
 import FontSizeSlider from './FontSizeSlider';
 import ImageArea from './ImageArea';
+import { validator } from './Validator';
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -27,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
 }), { index: 1 });
 
 export default function MakerForm({
+    handleBlur,
+    errors,
+    setErrors,
     handleSubmit,
     lyrics,
     setLyrics,
@@ -34,16 +38,13 @@ export default function MakerForm({
     isEditMode,
     setIsEditMode
 }) {
+
     let cart = JSON.parse(localStorage.getItem('cart')) || []
     let lastSize = 60
     let lastColor = "#fff"
     let lastImg = ""
 
-    // if (cart.length > 0) {
-    //     lastSize = cart[cart.length - 1].fontSize
-    //     lastColor = cart[cart.length - 1].textColor
-    //     lastImg = cart[cart.length - 1].img
-    // }
+
     const inputFile = useRef(null)
     const classes = useStyles();
 
@@ -66,19 +67,18 @@ export default function MakerForm({
 
     const handleUpload = () => {
         inputFile.current.click();
-
     }
     const handleFileChange = e => {
         const fileReader = new FileReader();
         fileReader.readAsText(e.target.files[0], "UTF-8");
         fileReader.onload = e => {
-            console.log("e.target.result", e.target.result);
-            console.log(JSON.parse(e.target.result));
+            
+            
             let cart = JSON.parse(e.target.result)
             setCart(cart)
         };
     }
-
+    console.log(errors);
 
     return (
         <Container >
@@ -104,9 +104,12 @@ export default function MakerForm({
 
             <form className={classes.form} onSubmit={handleSubmit}>
                 <TextField
+                   onBlur={handleBlur}
+                    error={errors.title ? true : false}
+                    helperText={errors.title}
                     variant="outlined"
                     margin="normal"
-                    required
+               
                     fullWidth
                     id="title"
                     label="歌名"
@@ -114,14 +117,17 @@ export default function MakerForm({
                     autoComplete="title"
                     onChange={handleChange}
                     value={lyrics.title}
-                    autoFocus
+                  
                     InputLabelProps={{
                         shrink: true
                     }}
                     placeholder="以空白鍵/逗號分開歌名和作者, 例:無言的讚頌 曲、詞：朱浩權"
                 />
                 <TextField
-                    required
+                    error={errors.content ? true : false}
+                    helperText={errors.content}
+                    onBlur={handleBlur}
+                  
                     fullWidth
                     variant="outlined"
                     id="standard-multiline-flexible"
@@ -139,12 +145,15 @@ export default function MakerForm({
                 //  lastColor={lastColor}
 
                 />
+
                 <ImageArea
                     classes={classes}
                     lyrics={lyrics}
                     setLyrics={setLyrics}
-                // lastImg={lastImg}
+                    setErrors={setErrors}
+                    errors={errors}
                 />
+        
 
 
 

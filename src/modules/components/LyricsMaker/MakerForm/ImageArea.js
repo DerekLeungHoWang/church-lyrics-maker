@@ -2,14 +2,19 @@ import { Button, CircularProgress, Container, Grid, List, ListItem, ListItemSeco
 import React, { useEffect, useState } from 'react'
 import useImage from '../../useImage';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-export default function ImageArea({ classes, setLyrics, lyrics
+
+
+export default function ImageArea({ classes, setLyrics, lyrics, errors, setErrors
 
     // lastImg 
 }) {
 
     const [loaded, setLoaded] = useState(false);
     let lyricsImg = lyrics.img
-    const [rawImg, setRawImg, handleUpload, isLoading, uploadedImg] = useImage(setLyrics, lyrics)
+    const [rawImg, setRawImg, handleUpload, isLoading, uploadedImg] = useImage(
+        setLyrics, lyrics,
+        errors, setErrors
+        )
     const handleRemove = (e) => {
         setLyrics(state => ({
             ...state,
@@ -29,16 +34,20 @@ export default function ImageArea({ classes, setLyrics, lyrics
                     <Grid
                         direction="row"
                         container justifyContent="center" alignContent="center">
-                        <Grid container item lg={8} >
+                        <Grid container item lg={8} justifyContent="flex-start" >
                             <List >
                                 <ListItem>
-                                    {!loaded && <CircularProgress
-                                        size={28} />}
+                                    {!loaded && lyricsImg &&
+
+                                        <CircularProgress />
+
+                                    }
                                     {lyricsImg && <img
-                                         onLoad={() => setLoaded(true)}
-                                        style={{ borderRadius: "5px", 
-                                        // display: loaded ? "unset" : "none"
-                                     }}
+                                        onLoad={() => setLoaded(true)}
+                                        style={{
+                                            borderRadius: "5px",
+                                            display: loaded ? "unset" : "none"
+                                        }}
                                         src={lyricsImg} alt="ad" width="100%" height="100%" />}
 
                                     {rawImg && !lyricsImg && <img style={{ borderRadius: "5px" }}
