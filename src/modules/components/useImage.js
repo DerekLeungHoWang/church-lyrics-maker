@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-export default function useImage(setLyrics) {
+import { storage } from "../firebase";
+export default function useImage(setLyrics,lyrics) {
 
     const [rawImg, setRawImg] = useState('')
     const [uploadedImg, setUploadedImg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [progress, setProgress] = useState(0);
+
     let clientId = "546c25a59c58ad7";
 
     useEffect(() => {
@@ -36,27 +39,57 @@ export default function useImage(setLyrics) {
     const handleUpload = (e) => {
         setIsLoading(true)
         let base64 = rawImg.replace(/^data:image\/(png|jpg);base64,/, "");
-        axios({
-            method: 'post',
-            url: 'https://api.imgur.com/3/image',
-            headers: {
-                'Authorization': 'Client-ID ' + clientId
+
+        const uploadTask = storage.ref('images').child(lyrics.title)
+            .putString(base64, 'base64', { contentType: 'image/jpg' })
+
+        uploadTask.on(
+            "state_changed",
+            snapshot => {
+                const progress = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                setProgress(progress);
             },
-            data: {
-                'image': base64,
-                'type':'base64'
+            error => {
+                console.log(error);
+            },
+            () => {
+                storage
+                    .ref("images")
+                    .child(lyrics.title)
+                    .getDownloadURL()
+                    .then(url => {
+                        setIsLoading(false)
+                        console.log(url);
+                        setLyrics(state => ({
+                            ...state,
+                            img: url
+                        }))
+                    });
             }
-        }).then(function (response) {
-            setIsLoading(false)
-            setUploadedImg(response.data.data.link)
-            console.log(response.data.data.link);
-            setLyrics(state=>({
-                ...state,
-                img:response.data.data.link
-            }))
-        }).catch(function (error) {
-            console.log(error.response);
-        });
+        );
+        // axios({
+        //     method: 'post',
+        //     url: 'https://api.imgur.com/3/image',
+        //     headers: {
+        //         'Authorization': 'Client-ID ' + clientId
+        //     },
+        //     data: {
+        //         'image': base64,
+        //         'type':'base64'
+        //     }
+        // }).then(function (response) {
+        //     setIsLoading(false)
+        //     setUploadedImg(response.data.data.link)
+        //     console.log(response.data.data.link);
+        //     setLyrics(state=>({
+        //         ...state,
+        //         img:response.data.data.link
+        //     }))
+        // }).catch(function (error) {
+        //     console.log(error.response);
+        // });
     }
 
 
