@@ -1,6 +1,10 @@
-import { Button, Container, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
-import React, { useState } from 'react'
+import { Button, Container, Grid, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
+import React, { useRef, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import PublishIcon from '@material-ui/icons/Publish';
+import FontSizeSlider from './FontSizeSlider';
+import ImageArea from './ImageArea';
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -21,31 +25,83 @@ const useStyles = makeStyles((theme) => ({
     },
 
 }), { index: 1 });
+
 export default function MakerForm({
     handleSubmit,
     lyrics,
-    setLyrics
+    setLyrics,
+    setCart,
+    isEditMode,
+    setIsEditMode
 }) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || []
+    let lastSize = 60
+    let lastColor = "#fff"
+    let lastImg = ""
+
+    // if (cart.length > 0) {
+    //     lastSize = cart[cart.length - 1].fontSize
+    //     lastColor = cart[cart.length - 1].textColor
+    //     lastImg = cart[cart.length - 1].img
+    // }
+    const inputFile = useRef(null)
     const classes = useStyles();
 
 
     const handleChange = (e) => {
+        let key = e.target.name
+        let value = e.target.value
+        setIsEditMode(true)
+        if (key === "title") {
+            setIsEditMode(false)
+        }
 
         setLyrics(state => ({
             ...state,
-            [e.target.name]: e.target.value
+            [key]: value
         }))
 
 
     }
 
+    const handleUpload = () => {
+        inputFile.current.click();
+
+    }
+    const handleFileChange = e => {
+        const fileReader = new FileReader();
+        fileReader.readAsText(e.target.files[0], "UTF-8");
+        fileReader.onload = e => {
+            console.log("e.target.result", e.target.result);
+            console.log(JSON.parse(e.target.result));
+            let cart = JSON.parse(e.target.result)
+            setCart(cart)
+        };
+    }
 
 
     return (
-        <Container>
-            <Typography component="h1" variant="h5" style={{ padding: "20px 0px 0px 0px" }}>
-                添加詩歌
-            </Typography>
+        <Container >
+            <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                direction="row"
+                style={{ padding: "10px 0px 0px 0px" }}
+            >
+                <Typography component="h1" variant="h5" >
+                    添加詩歌
+                </Typography>
+                <IconButton onClick={handleUpload}  >
+                    <input
+                        accept=".json"
+                        onChange={(e) => handleFileChange(e)}
+                        type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
+                    <PublishIcon />
+                </IconButton>
+            </Grid>
+
+
             <form className={classes.form} onSubmit={handleSubmit}>
                 <TextField
                     variant="outlined"
@@ -59,6 +115,10 @@ export default function MakerForm({
                     onChange={handleChange}
                     value={lyrics.title}
                     autoFocus
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    placeholder="以空白鍵/逗號分開歌名和作者, 例:無言的讚頌 曲、詞：朱浩權"
                 />
                 <TextField
                     required
@@ -67,82 +127,40 @@ export default function MakerForm({
                     id="standard-multiline-flexible"
                     label="歌詞"
                     multiline
-                    rows={10}
+                    rows={20}
                     name="content"
                     value={lyrics.content}
                     onChange={handleChange}
                     autoComplete="content"
                 />
-                <TextField
-                    required
-                    margin="normal"
-                    fullWidth
-                    id="fontSize"
-                    inputProps={{
-                        maxLength: 3,
-                    }}
-                    label="字體大小"
-                    name="fontSize"
-                    value={lyrics.fontSize}
-                    onChange={handleChange}
-                    variant="outlined"
-                    InputProps={{
-                        endAdornment: <InputAdornment position="start">px</InputAdornment>,
-                    }}
-                />
-                <TextField
 
-                    margin="normal"
-                    fullWidth
-                    id="fontColor"
-                   
-                    label="字幕顏色"
-                    name="fontColor"
-                    value={lyrics.fontColor}
-                    onChange={handleChange}
-                    variant="outlined"
-                    placeholder="例子, #74c4aa, 如不填寫則為白色 (#fff) "
-                    InputLabelProps={{
-                        shrink: true
-                    }}
+                <FontSizeSlider lyrics={lyrics} setLyrics={setLyrics}
+                // lastSize={lastSize}
+                //  lastColor={lastColor}
 
                 />
-                <TextField
-                    margin="normal"
-                    fullWidth
-                    id="img"
-                    label="背景圖片"
-                    name="img"
-                    value={lyrics.img}
-                    onChange={handleChange}
-                    variant="outlined"
-                    placeholder="選填, 不填寫則為全黑背景"
-                    InputLabelProps={{
-                        shrink: true
-                    }}
-                />
-                <TextField
-                    margin="normal"
-                    fullWidth
-                    id="height"
-                    label="圖片所佔高度 (%)"
-                    name="height"
-                    value={lyrics.height}
-                    onChange={handleChange}
-                    variant="outlined"
-                    placeholder="選填, 不填寫則為 20 "
-                 
-                    InputLabelProps={{
-                        shrink: true
-                    }}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="start">%</InputAdornment>,
-                    }}
+                <ImageArea
+                    classes={classes}
+                    lyrics={lyrics}
+                    setLyrics={setLyrics}
+                // lastImg={lastImg}
                 />
 
-                <Button type="submit" variant="outlined" style={{ margin: "15px 0px" }}>
-                    建立
-                </Button>
+
+
+                <Grid
+                    container
+                    justifyContent="center"
+                >
+                    <Button
+                        size="large"
+                        type="submit" variant="outlined" style={{
+                            margin: "20px 0px",
+
+                        }}>
+                        {isEditMode ? "儲存" : "建立"}
+                    </Button>
+                </Grid>
 
             </form>
 

@@ -4,11 +4,18 @@ import { useHistory } from 'react-router-dom';
 import './LyricsPlayer.scss'
 import Slider from "react-slick";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { wrap } from 'gsap/gsap-core';
 function LyricsPlayer(props) {
+    let lyricsId = +props.match.params.lyricsId
+    let cart = JSON.parse(localStorage.getItem('cart'))
+    let data = cart.filter((d, i) => (i === lyricsId))[0]
     const [fullScreen, setFullScreen] = useState(false)
     const [mouseMove, setMouseMove] = useState(false)
     const slider = useRef(null);
     const handle = useFullScreenHandle();
+
+    let title = data.title.split(/[ ,]+/)[0];
+    let author = data.title.split(/[ ,]+/)[1];
 
     var timer;
 
@@ -22,7 +29,7 @@ function LyricsPlayer(props) {
         timer = setTimeout(timeout, 1000);
         window.onmousemove = function () {
             setMouseMove(true)
-            
+
             clearTimeout(timer);
             timer = setTimeout(timeout, 1000);
         };
@@ -42,19 +49,18 @@ function LyricsPlayer(props) {
 
         }
     }, [])
-    let lyricsId = +props.match.params.lyricsId
-    let cart = JSON.parse(localStorage.getItem('cart'))
 
-    let data = cart.filter((d, i) => (i === lyricsId))[0]
+
+
+
     let fontSize = data.fontSize
-    let fontColor = data.fontColor === "" ? "#000" : data.fontColor;
-
-
+    let textColor = data.textColor === "" ? "#000" : data.textColor;
+    console.log(textColor);
+    console.log(cart);
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
         return (
             <div
-
                 style={{ display: "none", background: "red" }}
                 onClick={onClick}
             />
@@ -81,38 +87,45 @@ function LyricsPlayer(props) {
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />
     };
-    const height = data.height === "" ? 20 : data.height
+    const height = data.height === "" ? 30 : data.height
     const url = data.img ? data.img : "black";
 
-    
+
 
     const handleDivClick = () => {
         slider.current.innerSlider.list.setAttribute('tabindex', 0);
         slider.current.innerSlider.list.focus();
 
     }
-    
-    
+
+
     let id = +props.match.params.lyricsId
     const next = () => {
 
 
-        
-        if (id < cart.length - 1)
+
+        if (id < cart.length - 1) {
             props.history.push(`/player/${id + 1}`)
+            slider.current.slickGoTo(0);
+        }
+
 
     }
 
     const prev = () => {
-        if (id > 0)
+        if (id > 0) {
+
             props.history.push(`/player/${id - 1}`)
+            slider.current.slickGoTo(0);
+        }
+
     }
 
 
     return (
 
         <Container
-            maxWidth={false} className="lyricsPlayerContainer" style={{ color: fontColor }}
+            maxWidth={false} className="lyricsPlayerContainer" style={{ color: textColor }}
             onClick={() => handleDivClick()}
 
         >
@@ -157,16 +170,28 @@ function LyricsPlayer(props) {
                             style={{
                                 width: "100%",
                                 display: "flex",
+                                flexDirection: "row",
                                 alignItems: "center",
-                                fontSize: `${fontSize}px`,
                                 justifyContent: "center",
+                                fontSize: `${fontSize}px`,
                                 background: data.img === "" ? "black" : `url(${data.img})`,
                                 backgroundRepeat: "no-repeat",
                                 backgroundSize: "cover",
                                 minHeight: `${height}vh`
                             }}
                         >
-                            <h3>{data.title}</h3>
+                            <div style={{
+                                height: "100%",
+                                width: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+
+                            }}>
+                                <span>{title}</span>
+                                <span>{author}</span>
+                            </div>
                         </div>
                     </div>
                     {data.content.map((d, i) => {
@@ -178,9 +203,8 @@ function LyricsPlayer(props) {
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
-
+                                        overflowWrap: "break-word",
                                         fontSize: `${fontSize}px`,
-                                        padding: "0% 1%",
                                         textAlign: "center",
                                         background: data.img === "" ? "black" : `url(${data.img})`,
                                         backgroundRepeat: "no-repeat",
@@ -189,7 +213,7 @@ function LyricsPlayer(props) {
                                     }}
 
                                 >
-                                    <h3>{d}</h3>
+                                    <span>{d}</span>
                                 </div>
                             </div>
                         )
