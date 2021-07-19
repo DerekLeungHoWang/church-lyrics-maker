@@ -15,17 +15,7 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const initState = {
-    title: "",
-    content: ``,
-    fontSize: 60,
-    fontColor: "#fff",
-    img: "",
-    height: "",
-    textColor: "#fff",
-    lastPlayed: false,
-    isActive: true,
-}
+
 
 export default function Home(props) {
 
@@ -186,18 +176,24 @@ export default function Home(props) {
         let id = +e.currentTarget.name
         let target = cart.filter((d, i) => i == id)[0]
 
-        if (target.title !== active){
+        if (target.title !== active) {
             setLoaded(false)
         }
 
-            target = arrayToString(cart, target)
+        target = arrayToString(cart, target)
         setActive(target.title)
         setIsEditMode(true)
 
         setLyrics(target)
     }
     console.log(active);
-
+    useEffect(() => {
+        console.log(lyrics);
+        if (!lyrics.tilte && !lyrics.content) {
+            console.log('set');
+            setIsEditMode(false)
+        }
+    }, [lyrics])
     return (
         <Container maxWidth="lg"
             style={{

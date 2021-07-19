@@ -74,13 +74,13 @@ export default function MakerForm({
         const fileReader = new FileReader();
         fileReader.readAsText(e.target.files[0], "UTF-8");
         fileReader.onload = e => {
-            
-            
+
+
             let cart = JSON.parse(e.target.result)
             setCart(cart)
         };
     }
-    
+
 
     return (
         <Container >
@@ -94,24 +94,37 @@ export default function MakerForm({
                 <Typography component="h1" variant="h5" >
                     添加詩歌
                 </Typography>
-                <IconButton onClick={handleUpload}  >
-                    <input
-                        accept=".json"
-                        onChange={(e) => handleFileChange(e)}
-                        type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
-                    <PublishIcon />
-                </IconButton>
+                <div>
+                    <IconButton onClick={handleUpload}  >
+                        <input
+                            accept=".json"
+                            onChange={(e) => handleFileChange(e)}
+                            type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
+                        <PublishIcon />
+                    </IconButton>
+                    <Button variant="outlined" onClick={() => setLyrics(state => ({
+                        ...state,
+                        title: "",
+                        content: ``,
+                        fontSize: 60,
+                        fontColor: "#fff",
+                        height: "",
+                        textColor: "#fff",
+                        lastPlayed: false
+
+                    }))} >新的詩歌</Button>
+                </div>
             </Grid>
 
 
             <form className={classes.form} onSubmit={handleSubmit}>
                 <TextField
-                   onBlur={handleBlur}
+                    onBlur={handleBlur}
                     error={errors.title ? true : false}
                     helperText={errors.title}
                     variant="outlined"
                     margin="normal"
-               
+
                     fullWidth
                     id="title"
                     label="歌名"
@@ -119,7 +132,7 @@ export default function MakerForm({
                     autoComplete="title"
                     onChange={handleChange}
                     value={lyrics.title}
-                  
+
                     InputLabelProps={{
                         shrink: true
                     }}
@@ -129,7 +142,7 @@ export default function MakerForm({
                     error={errors.content ? true : false}
                     helperText={errors.content}
                     onBlur={handleBlur}
-                  
+
                     fullWidth
                     variant="outlined"
                     id="standard-multiline-flexible"
@@ -157,7 +170,7 @@ export default function MakerForm({
                     loaded={loaded}
                     setLoaded={setLoaded}
                 />
-        
+
 
 
 
