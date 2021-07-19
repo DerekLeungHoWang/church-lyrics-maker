@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { storage } from "../firebase";
 import { validator } from './LyricsMaker/MakerForm/Validator';
-export default function useImage(setLyrics, lyrics, errors, setErrors) {
+export default function useImage(setLyrics, lyrics, errors, setErrors, loaded, setLoaded) {
 
     const [rawImg, setRawImg] = useState('')
     const [uploadedImg, setUploadedImg] = useState('')
@@ -43,9 +43,10 @@ export default function useImage(setLyrics, lyrics, errors, setErrors) {
 
         if (result.title) {
             setIsLoading(false)
-            setErrors(state => ({ ...state, 
+            setErrors(state => ({
+                ...state,
                 title: result.title
-             }))
+            }))
         }
 
         const uploadTask = storage.ref('images').child(lyrics.title)
@@ -69,6 +70,7 @@ export default function useImage(setLyrics, lyrics, errors, setErrors) {
                     .getDownloadURL()
                     .then(url => {
                         setIsLoading(false)
+                        setLoaded(false)
                         console.log(url);
                         setLyrics(state => ({
                             ...state,
@@ -78,7 +80,7 @@ export default function useImage(setLyrics, lyrics, errors, setErrors) {
             }
         );
 
-        
+
     }
 
 

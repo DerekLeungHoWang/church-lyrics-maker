@@ -15,7 +15,8 @@ export default function ImageArea({ classes, setLyrics, lyrics, errors, setError
     let lyricsImg = lyrics.img
     const [rawImg, setRawImg, handleUpload, isLoading, uploadedImg] = useImage(
         setLyrics, lyrics,
-        errors, setErrors
+        errors, setErrors,
+        loaded, setLoaded
     )
     const handleRemove = (e) => {
         setLyrics(state => ({
