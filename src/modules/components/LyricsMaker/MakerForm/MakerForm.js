@@ -36,7 +36,9 @@ export default function MakerForm({
     setLyrics,
     setCart,
     isEditMode,
-    setIsEditMode
+    setIsEditMode,
+    loaded,
+    setLoaded
 }) {
 
     let cart = JSON.parse(localStorage.getItem('cart')) || []
@@ -152,6 +154,8 @@ export default function MakerForm({
                     setLyrics={setLyrics}
                     setErrors={setErrors}
                     errors={errors}
+                    loaded={loaded}
+                    setLoaded={setLoaded}
                 />
         
 

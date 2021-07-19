@@ -3,6 +3,8 @@ import React from 'react'
 import MakerForm from './MakerForm/MakerForm'
 
 export default function LyricsMaker({
+    loaded,
+    setLoaded,
     handleBlur,
     errors,
     setErrors,
@@ -13,14 +15,15 @@ export default function LyricsMaker({
     isEditMode,
     setIsEditMode,
     cart,
-    
+
 }) {
     return (
         <Container>
 
             <Paper elevation={3} style={{ borderRadius: "15px" }} >
                 <MakerForm
-                
+                    loaded={loaded}
+                    setLoaded={setLoaded}
                     handleSubmit={handleSubmit}
                     lyrics={lyrics}
                     setLyrics={setLyrics}

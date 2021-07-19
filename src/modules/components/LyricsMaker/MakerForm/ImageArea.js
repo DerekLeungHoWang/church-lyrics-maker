@@ -4,12 +4,14 @@ import useImage from '../../useImage';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 
-export default function ImageArea({ classes, setLyrics, lyrics, errors, setErrors
+export default function ImageArea({ classes, setLyrics, lyrics, errors, setErrors,
+    loaded, setLoaded
 
     // lastImg 
 }) {
 
-    const [loaded, setLoaded] = useState(false);
+
+
     let lyricsImg = lyrics.img
     const [rawImg, setRawImg, handleUpload, isLoading, uploadedImg] = useImage(
         setLyrics, lyrics,

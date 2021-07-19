@@ -48,6 +48,7 @@ export default function Home(props) {
             clearTimeout()
         }
     }, [snack])
+    const [loaded, setLoaded] = useState(false);
     const { lyrics, setLyrics, errors, setErrors, handleBlur } = useForm(validator);
     const { vertical, horizontal, open, message } = snack;
     const [playId, setPlayId] = useState();
@@ -177,6 +178,7 @@ export default function Home(props) {
 
 
     const handleLoad = (e) => {
+        setLoaded(false)
         let id = +e.currentTarget.name
         let target = cart.filter((d, i) => i == id)[0]
 
@@ -240,6 +242,9 @@ export default function Home(props) {
                         errors={errors}
                         setErrors={setErrors}
                         handleBlur={handleBlur}
+
+                        loaded={loaded}
+                        setLoaded={setLoaded}
                     />
                 </Grid>
 
