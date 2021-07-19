@@ -14,7 +14,7 @@ export default function ImageArea({ classes, setLyrics, lyrics, errors, setError
     const [rawImg, setRawImg, handleUpload, isLoading, uploadedImg] = useImage(
         setLyrics, lyrics,
         errors, setErrors
-        )
+    )
     const handleRemove = (e) => {
         setLyrics(state => ({
             ...state,
@@ -77,11 +77,11 @@ export default function ImageArea({ classes, setLyrics, lyrics, errors, setError
 
                         {rawImg && !lyricsImg &&
                             <Grid container item lg={4} direction="row" justifyContent="center" alignContent="center">
-                                <Button onClick={handleUpload}  >
+                                <Button onClick={handleUpload} disabled={isLoading ? true : false}  >
                                     {isLoading && <CircularProgress
                                         size={18} style={{ marginRight: "10px" }} />}
                                     確定</Button>
-                                <Button onClick={() => setRawImg("")} >取消</Button>
+                                <Button onClick={() => setRawImg("")} disabled={isLoading ? true : false} >取消</Button>
                             </Grid>}
 
                         {lyricsImg &&
