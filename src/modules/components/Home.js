@@ -23,7 +23,8 @@ const initState = {
     img: "",
     height: "",
     textColor: "#fff",
-    lastPlayed: false
+    lastPlayed: false,
+    isActive: true,
 }
 
 export default function Home(props) {
@@ -48,6 +49,7 @@ export default function Home(props) {
             clearTimeout()
         }
     }, [snack])
+    const [active, setActive] = useState("")
     const [loaded, setLoaded] = useState(false);
     const { lyrics, setLyrics, errors, setErrors, handleBlur } = useForm(validator);
     const { vertical, horizontal, open, message } = snack;
@@ -63,7 +65,7 @@ export default function Home(props) {
         let result_title = validator(lyrics, 'title')
         let result_content = validator(lyrics, 'content')
         if (result_title.tilte || result_content.content) {
-            console.log(result_title);
+
             setErrors(state => ({
                 ...state,
                 title: result_title.title ? result_title.title : "",
@@ -87,7 +89,8 @@ export default function Home(props) {
             img: lyrics.img,
             height: lyrics.height,
             textColor: lyrics.textColor,
-            lastPlayed: lyrics.lastPlayed
+            lastPlayed: lyrics.lastPlayed,
+
         }
 
         let isExist = cart.some(obj => obj.title.replace(/\s/g, '') === lyricsObject.title.replace(/\s/g, ''));
@@ -121,20 +124,22 @@ export default function Home(props) {
         cart.forEach(target => {
             target = stringToArray(cart, target)
             target.lastPlayed = false
+            target.isActive = false
             let newCart = cart.map((d, i) => {
                 if (d.title === target.title) {
-                    console.log('true  108 ', d.title, target);
+
                     d = target
                 }
 
                 if (i === id) {
                     d.lastPlayed = true
+                    d.isActive = true
                 }
 
 
                 return d
             })
-            console.log(newCart);
+
 
 
 
@@ -178,15 +183,20 @@ export default function Home(props) {
 
 
     const handleLoad = (e) => {
-        setLoaded(false)
         let id = +e.currentTarget.name
         let target = cart.filter((d, i) => i == id)[0]
 
-        target = arrayToString(cart, target)
+        if (target.title !== active){
+            setLoaded(false)
+        }
+
+            target = arrayToString(cart, target)
+        setActive(target.title)
         setIsEditMode(true)
 
         setLyrics(target)
     }
+    console.log(active);
 
     return (
         <Container maxWidth="lg"

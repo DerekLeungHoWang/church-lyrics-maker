@@ -55,8 +55,8 @@ function LyricsPlayer(props) {
 
     let fontSize = data.fontSize
     let textColor = data.textColor === "" ? "#000" : data.textColor;
-    console.log(textColor);
-    console.log(cart);
+    
+    
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
         return (

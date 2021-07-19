@@ -10,13 +10,13 @@ export const stringToArray = (cart, target) => {
 export const arrayToString = (cart, target) => {
     let newContent = target.content
     if (cart.length > 0 && Array.isArray(target.content)) {
-        console.log('yes is array');
+        
         newContent = target.content.map((d, i) => {
             if (i < target.content.length - 1) {
-                console.log('hi');
-                console.log(d);
+                
+                
                 d = d.concat("\n\n")
-                console.log(d);
+                
             }
             return d
         })

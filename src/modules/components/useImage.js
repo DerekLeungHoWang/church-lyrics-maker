@@ -70,7 +70,7 @@ export default function useImage(setLyrics, lyrics, errors, setErrors, loaded, s
                     .getDownloadURL()
                     .then(url => {
                         setIsLoading(false)
-                        setLoaded(false)
+                         setLoaded(false)
                         console.log(url);
                         setLyrics(state => ({
                             ...state,

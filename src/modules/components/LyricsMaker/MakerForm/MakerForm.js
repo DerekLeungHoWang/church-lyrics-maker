@@ -80,7 +80,7 @@ export default function MakerForm({
             setCart(cart)
         };
     }
-    console.log(errors);
+    
 
     return (
         <Container >
