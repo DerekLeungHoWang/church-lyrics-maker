@@ -121,7 +121,7 @@ export default function MakerForm({
                     InputLabelProps={{
                         shrink: true
                     }}
-                    placeholder="以空白鍵/逗號分開歌名和作者, 例:無言的讚頌 曲、詞：朱浩權"
+                    placeholder="以逗號分開歌名和作者, 例:無言的讚頌,曲、詞：朱浩權"
                 />
                 <TextField
                     error={errors.content ? true : false}
