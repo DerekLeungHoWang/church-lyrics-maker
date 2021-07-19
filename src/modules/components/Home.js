@@ -67,7 +67,7 @@ export default function Home(props) {
                 ...state,
                 title: result_title.title ? result_title.title : "",
                 content: result_content.content ? result_content.content : "",
-               
+
             }))
             return;
         }
@@ -89,7 +89,7 @@ export default function Home(props) {
             lastPlayed: lyrics.lastPlayed
         }
 
-        let isExist = cart.some(obj => obj.title === lyricsObject.title);
+        let isExist = cart.some(obj => obj.title.replace(/\s/g, '') === lyricsObject.title.replace(/\s/g, ''));
         if (isExist) {
             let newCart = cart.map(d => {
                 if (d.title === lyricsObject.title) {

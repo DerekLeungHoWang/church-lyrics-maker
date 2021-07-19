@@ -9,8 +9,11 @@ import LyricsPlayer from '../LyricsPlayer/LyricsPlayer';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import EditIcon from '@material-ui/icons/Edit';
 export default function LyricsStorage({ setPlayId, cart, handleDelete, handleLoad, lyrics }) {
-
-
+    // let lyricsId = +props.match.params.lyricsId
+    // let data = cart.filter((d, i) => (i === lyricsId))[0]
+    // let title = data.title.split(',')[0];
+    // let author_1 = data.title.split(',')[1] ? data.title.split(',')[1] : ""
+    // let author_2 = data.title.split(',')[2] ? data.title.split(',')[2] : ""
 
     return (
         <Container>
@@ -57,19 +60,27 @@ export default function LyricsStorage({ setPlayId, cart, handleDelete, handleLoa
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
-
                                 primary={
-                                    <div style={{ fontWeight: lyrics.title === title ? "600" : "unset" }}>
-                                        {title}
-                                    </div>
+                                    <Grid container
+                                    >
+                                        <span style={{ paddingRight: "10px", fontWeight: lyrics.title === title ? "600" : "unset" }} >{`${title.split(',')[0]}`}</span>
+
+                                    </Grid>
                                 }
                                 secondary={
-                                    Array.isArray(content) ?
-                                        content[0].substring(0, 9) + "..." :
-                                        content.substring(0, 9) + "..."
+                                    <Grid container  >
+                                       
+                                        <Grid container item xs={12}>
+                                            <span style={{paddingRight:"5px"}}> {`${title.split(',')[1] ?? ""}`}</span>
+                                            <span> {`${title.split(',')[2] ?? ""}`}</span>
+                                        </Grid>
+                                    </Grid>
                                 }
                             />
+
+
                             <ListItemSecondaryAction>
+
                                 <IconButton
                                     name={i}
                                     onClick={(e) => setPlayId(e)}

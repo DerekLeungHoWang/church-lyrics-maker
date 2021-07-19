@@ -14,9 +14,9 @@ function LyricsPlayer(props) {
     const slider = useRef(null);
     const handle = useFullScreenHandle();
 
-    let title = data.title.split(/[ ,]+/)[0];
-    let author = data.title.split(/[ ,]+/)[1];
-
+    let title = data.title.split(',')[0];
+    let author_1 = data.title.split(',')[1] ? data.title.split(',')[1] : ""
+    let author_2 = data.title.split(',')[2] ? data.title.split(',')[2] : ""
     var timer;
 
 
@@ -167,6 +167,7 @@ function LyricsPlayer(props) {
                 <Slider {...settings} ref={slider} >
                     <div  >
                         <div
+                            className="lyricsPlayer_img"
                             style={{
                                 width: "100%",
                                 display: "flex",
@@ -175,8 +176,6 @@ function LyricsPlayer(props) {
                                 justifyContent: "center",
                                 fontSize: `${fontSize}px`,
                                 background: data.img === "" ? "black" : `url(${data.img})`,
-                                backgroundRepeat: "no-repeat",
-                                backgroundSize: "cover",
                                 minHeight: `${height}vh`
                             }}
                         >
@@ -190,7 +189,8 @@ function LyricsPlayer(props) {
 
                             }}>
                                 <span>{title}</span>
-                                <span>{author}</span>
+                                <span style={{ fontSize: "50%" }}  >{`${author_1}  ${author_2}`}</span>
+
                             </div>
                         </div>
                     </div>
