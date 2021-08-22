@@ -19,6 +19,9 @@ const theme = createTheme({
       main: "#BDBDBD",
     //  contrastText: "#fff" //button text white instead of black
     },
+    secondary:{
+      main:"#01BFA6"
+    }
 
   },
 

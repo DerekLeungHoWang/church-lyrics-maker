@@ -6,14 +6,16 @@ const initState = {
     fontSize: 60,
     fontColor: "#fff",
     img: "",
-    height: "",
+    height: 100,
     textColor: "#fff",
     lastPlayed: false
 }
 // ******************************
 const useForm = (validator) => {
+    console.log(initState);
 
     const [lyrics, setLyrics] = useState(initState);
+    console.log(lyrics);
     const [errors, setErrors] = useState({
         title: "",
         content: ""

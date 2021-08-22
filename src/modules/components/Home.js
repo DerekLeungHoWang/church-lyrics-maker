@@ -42,6 +42,8 @@ export default function Home(props) {
     const [active, setActive] = useState("")
     const [loaded, setLoaded] = useState(false);
     const { lyrics, setLyrics, errors, setErrors, handleBlur } = useForm(validator);
+
+    console.log(lyrics);
     const { vertical, horizontal, open, message } = snack;
     const [playId, setPlayId] = useState();
     const [isEditMode, setIsEditMode] = useState(false);

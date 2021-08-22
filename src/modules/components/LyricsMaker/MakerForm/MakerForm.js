@@ -6,6 +6,8 @@ import PublishIcon from '@material-ui/icons/Publish';
 import FontSizeSlider from './FontSizeSlider';
 import ImageArea from './ImageArea';
 import { validator } from './Validator';
+import SettingsIcon from '@material-ui/icons/Settings';
+import AdvancedSettings from './AdvancedSettings/AdvancedSettings';
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -102,7 +104,7 @@ export default function MakerForm({
                             type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
                         <PublishIcon />
                     </IconButton>
-                    <Button variant="outlined" onClick={() => setLyrics(state => ({
+                    {/* <Button variant="outlined" onClick={() => setLyrics(state => ({
                         ...state,
                         title: "",
                         content: ``,
@@ -112,7 +114,9 @@ export default function MakerForm({
                         textColor: "#fff",
                         lastPlayed: false
 
-                    }))} >新的詩歌</Button>
+                    }))} >新的詩歌</Button> */}
+                    {/* <Button variant="outlined" startIcon={<SettingsIcon />} >Advanced</Button> */}
+                    <AdvancedSettings />
                 </div>
             </Grid>
 
@@ -155,11 +159,9 @@ export default function MakerForm({
                     autoComplete="content"
                 />
 
-                <FontSizeSlider lyrics={lyrics} setLyrics={setLyrics}
-                // lastSize={lastSize}
-                //  lastColor={lastColor}
+                <FontSizeSlider lyrics={lyrics} setLyrics={setLyrics} />
 
-                />
+
 
                 <ImageArea
                     classes={classes}

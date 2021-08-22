@@ -1,11 +1,37 @@
-import { Button, Container } from '@material-ui/core'
+import { Button, Container, makeStyles } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import './LyricsPlayer.scss'
 import Slider from "react-slick";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { wrap } from 'gsap/gsap-core';
+import styled from 'styled-components';
+
+const useStyles = makeStyles((theme) => ({
+
+}), { index: 1 });
+
+const SlideBackground = styled.div`
+
+width: 100%;
+display: flex;
+flex-direction: row;
+align-items: "center";
+justify-content: "center";
+font-size: ${props => `${props.fontSize}px`};
+background:  ${props => props.img === "" ? "black" : ` url(${props.img})`};
+min-height: ${props => {
+        console.log(props);
+
+        return `${props.height}`
+    }};
+background-repeat: no-repeat !important;
+background-size: cover !important;
+
+`
+
 function LyricsPlayer(props) {
+    const classes = useStyles()
     let lyricsId = +props.match.params.lyricsId
     let cart = JSON.parse(localStorage.getItem('cart'))
     let data = cart.filter((d, i) => (i === lyricsId))[0]
@@ -55,8 +81,8 @@ function LyricsPlayer(props) {
 
     let fontSize = data.fontSize
     let textColor = data.textColor === "" ? "#000" : data.textColor;
-    
-    
+
+
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
         return (
@@ -87,6 +113,7 @@ function LyricsPlayer(props) {
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />
     };
+    console.log(data.height);
     const height = data.height === "" ? 30 : data.height
     const url = data.img ? data.img : "black";
 
@@ -166,18 +193,10 @@ function LyricsPlayer(props) {
 
                 <Slider {...settings} ref={slider} >
                     <div  >
-                        <div
-                            className="lyricsPlayer_img"
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: `${fontSize}px`,
-                                background: data.img === "" ? "black" : `url(${data.img})`,
-                                minHeight: `${height}vh`
-                            }}
+                        <SlideBackground
+                            fontSize={fontSize}
+                            height={height}
+                            img={data.img}
                         >
                             <div style={{
                                 height: "100%",
@@ -192,7 +211,7 @@ function LyricsPlayer(props) {
                                 <span style={{ fontSize: "50%" }}  >{`${author_1}  ${author_2}`}</span>
 
                             </div>
-                        </div>
+                        </SlideBackground>
                     </div>
                     {data.content.map((d, i) => {
                         return (
