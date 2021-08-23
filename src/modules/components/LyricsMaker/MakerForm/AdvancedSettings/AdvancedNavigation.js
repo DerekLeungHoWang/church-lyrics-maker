@@ -9,10 +9,11 @@ import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import WorkIcon from '@material-ui/icons/Work';
 import BeachAccessIcon from '@material-ui/icons/BeachAccess';
-import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
-import StorefrontIcon from '@material-ui/icons/Storefront';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import styled from 'styled-components';
+import SettingsIcon from '@material-ui/icons/Settings';
+import TextFormatIcon from '@material-ui/icons/TextFormat';
+
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -45,16 +46,16 @@ const StyledListItem = styled(ListItem)`
 
 const sections = [
     {
-        name: "General",
-        icon: <PermContactCalendarIcon />
+        name: "Text Control",
+        icon: <TextFormatIcon />
     },
     {
-        name: "Order",
-        icon: <StorefrontIcon />
+        name: "Image Control",
+        icon: <ImageIcon />
     },
     {
-        name: "Credential",
-        icon: <VpnKeyIcon />
+        name: "Others",
+        icon: <SettingsIcon />
     },
 ]
 export default function AdvancedNavigation({ active, handleSetActive }) {

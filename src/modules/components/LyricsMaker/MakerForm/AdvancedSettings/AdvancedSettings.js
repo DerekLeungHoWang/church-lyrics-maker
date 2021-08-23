@@ -12,7 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-
+import AdvancedNavigation from './AdvancedNavigation';
+import SettingContainer from './SettingContainer';
+import SettingsIcon from '@material-ui/icons/Settings';
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: 'relative',
@@ -41,7 +43,7 @@ export default function AdvancedSettings() {
 
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            <Button startIcon={<SettingsIcon />} variant="outlined" color="primary" onClick={handleClickOpen}>
                 Advanced
             </Button>
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
@@ -51,22 +53,14 @@ export default function AdvancedSettings() {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            Sound
+                            Advanced Settings
                         </Typography>
                         <Button autoFocus color="inherit" onClick={handleClose}>
                             save
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <List>
-                    <ListItem button>
-                        <ListItemText primary="Phone ringtone" secondary="Titania" />
-                    </ListItem>
-                    <Divider />
-                    <ListItem button>
-                        <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-                    </ListItem>
-                </List>
+                <SettingContainer />
             </Dialog>
         </div>
     );
