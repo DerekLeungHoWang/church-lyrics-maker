@@ -18,6 +18,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: 'relative',
+        background: "#01BFA6",
+        color:"white"
     },
     title: {
         marginLeft: theme.spacing(2),

@@ -14,7 +14,7 @@ export default function SettingContainer() {
     }
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" style={{marginTop:"50px",marginBottom:"100px"}}>
             <Grid container >
 
                 <Grid container item lg={3} >

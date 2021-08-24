@@ -134,7 +134,7 @@ export default function FontSizeSlider({ lyrics, setLyrics,
                                     ...state,
                                     textColor: color.hex
                                 }))}
-                                onChangeComplete={handleSetColor}
+                                //onChangeComplete={handleSetColor}
                             />
                         </div> : null}
                         <div>
