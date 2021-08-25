@@ -24,19 +24,7 @@ const useForm = (validator) => {
     });
     const [isSubmited, setIsSubmited] = useState(false);
 
-
-    // ******************************
-    // useEffect(() => {
-    //     const isValidErrors = () =>
-    //         Object.values(errors).filter(error => typeof error !== "undefined")
-    //             .length > 0;
-    //     //if (isSubmited && !isValidErrors()) callback();
-
-    //     console.log('there is error form', errors);
-
-    // }, [errors]);
-
-    // ******************************
+ 
     const handleChange = e => {
         const { name, value } = e.target;
         setLyrics(() => ({

@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
 
 const StyledListItem = styled(ListItem)`
      border-left: ${({ active, name, theme }) => active === name ? `2px solid #01BFA6` : "unset"};
-     border-top-left-radius:${({ active, name, theme, firstSection }) => firstSection === name ? `8px` : "unset"};;
-     border-bottom-left-radius:${({ active, name, theme, lastSection }) => lastSection === name ? `8px` : "unset"};;
+     border-top-left-radius:${({ active, name, theme, firstsection }) => firstsection === name ? `8px` : "unset"};;
+     border-bottom-left-radius:${({ active, name, theme, lastsection }) => lastsection === name ? `8px` : "unset"};;
   
 `
 
@@ -72,9 +72,9 @@ export default function AdvancedNavigation({ active, handleSetActive }) {
             <Paper elevation={3} className={classes.paper}>
 
                 <List className={classes.list}>
-                    {sections.map(s => (
-                        <>
-                            <StyledListItem firstSection={firstSection} lastSection={lastSection} theme={theme} active={active} name={s.name.toLowerCase().replace(/ /g, '')} button onClick={handleSetActive} className={classes.listItem}  >
+                    {sections.map((s, i) => (
+                        <div key={i}>
+                            <StyledListItem firstsection={firstSection} lastsection={lastSection} theme={theme} active={active} name={s.name.toLowerCase().replace(/ /g, '')} button onClick={handleSetActive} className={classes.listItem}  >
                                 <ListItemAvatar>
                                     <Avatar>
                                         {s.icon}
@@ -83,7 +83,7 @@ export default function AdvancedNavigation({ active, handleSetActive }) {
                                 <ListItemText primary={s.name} />
                             </StyledListItem>
                             <Divider />
-                        </>
+                        </div>
                     ))}
 
 

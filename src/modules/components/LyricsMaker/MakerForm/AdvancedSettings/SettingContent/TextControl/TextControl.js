@@ -1,10 +1,35 @@
-import { Button, ButtonGroup, Container, Grid, IconButton, Paper, Slider, TextField, Typography } from '@material-ui/core'
+import { Button, ButtonGroup, Container, Grid, IconButton, makeStyles, Paper, Slider, TextField, Typography, useTheme } from '@material-ui/core'
 import React, { useContext } from 'react'
 import { PropertiesContext } from '../../../../../../context/PropertiesContext';
-import { font_size, text_properties, type_buttonColor, type_buttonGroup, type_textField } from '../SettingConstant';
+import { font_size, text_properties, type_buttonColor, type_buttonGroup, type_slider } from '../SettingConstant';
 import BrushIcon from '@material-ui/icons/Brush';
 import { useState } from 'react';
 import { ChromePicker } from 'react-color';
+import styled from 'styled-components';
+
+const AlignButton = styled(Button)`
+    background: ${({ theme, active, name, propValue }) => {
+        if (propValue == active[`${name}`]) {
+            return theme.palette.secondary.main
+        } else {
+            return "white"
+        }
+    }};
+    color: ${({ theme, active, name, propValue }) => {
+        if (propValue == active[`${name}`]) {
+            return "white"
+        } else {
+            return "black"
+        }
+    }};
+    &:hover{
+        background: ${props => props.theme.palette.secondary.main};
+         
+        color:white;
+    }
+
+`
+
 const popover = {
     position: 'absolute',
     zIndex: '999',
@@ -16,9 +41,13 @@ const cover = {
     bottom: '0px',
     left: '0px',
 }
+
 export default function TextControl() {
+    
+    const theme = useTheme();
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
-    const { properties, setProperties, handleSetProperties } = useContext(PropertiesContext)
+    const { properties, setProperties, handleSetProperties , classes} = useContext(PropertiesContext)
+
 
     console.log(properties);
 
@@ -27,7 +56,7 @@ export default function TextControl() {
     }
 
     const handleTextPropertyChange = name => (event, newValue) => {
-        console.log(name);
+        console.log(name, newValue);
 
         let config = {
             channel: "text",
@@ -36,25 +65,46 @@ export default function TextControl() {
         handleSetProperties(config, newValue)
     }
 
+    const handlePropertyClick = (e, propValue) => {
+        let propName = e.currentTarget.name;
+
+        console.log(propName);
+
+        setProperties(state => ({
+            ...state,
+            text: {
+                ...state.text,
+                [propName]: propValue
+            }
+        }))
+    }
+
     return (
         <Container maxWidth={false}>
-            <Typography variant="h4">Text</Typography>
-            <Typography variant="p">Text related properties</Typography>
-            <Paper elevation={3} style={{ padding: "55px", borderRadius: "8px" }}>
-                <Grid container>
-                    {text_properties.map(({ name, displayName, inputType, marks, min, max, step, options }) => {
-                        return (
-                            <>
+            <Typography variant="h5">Text Control</Typography>
+            <Typography style={{ marginTop: "5px", marginBottom: "20px", opacity: "0.7" }} >Text related properties</Typography>
 
-                                {inputType == type_textField &&
+            <Paper elevation={6} style={{ padding: "55px", borderRadius: "18px" }}>
+                <Grid container>
+                    {text_properties.map(({ propName, displayName, inputType, marks, min, max, step, options }, i) => {
+                        console.log(properties.text[`${propName}`]);
+                        return (
+                            <React.Fragment key={i}>
+
+                                {inputType == type_slider &&
                                     <>
-                                        <Typography variant="p" style={{ marginBottom: "40px", fontWeight: "600", fontSize: "15px" }}>{displayName}</Typography>
+                                        <Typography style={{
+                                            marginBottom: "40px",
+                                            fontWeight: "600", fontSize: "15px", valueLabel: { color: "white" }
+
+                                        }}>{displayName}</Typography>
                                         < Slider
+                                            classes={{ valueLabel: classes.valueLabel }}
                                             style={{ marginBottom: "50px" }}
-                                            name={name}
-                                            value={properties.text.name}
-                                            onChange={handleTextPropertyChange(name)}
-                                            defaultValue={60}
+                                            name={propName}
+                                            value={properties.text[`${propName}`]}
+                                            onChange={handleTextPropertyChange(propName)}
+                                            color="secondary"
                                             getAriaValueText={valuetext}
                                             aria-labelledby="discrete-slider-always"
                                             step={step}
@@ -68,11 +118,18 @@ export default function TextControl() {
                                 }
                                 {inputType == type_buttonGroup &&
                                     <Grid container direction="column" >
-                                        <Typography variant="p" style={{ marginBottom: "40px", fontWeight: "600", fontSize: "15px" }}>{displayName}</Typography>
+                                        <Typography style={{ marginBottom: "40px", fontWeight: "600", fontSize: "15px" }}>{displayName}</Typography>
                                         <div style={{ marginBottom: "40px" }}>
                                             <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                                                {options.map(option => (
-                                                    <IconButton >{option}</IconButton>
+                                                {options.map(({ icon, propValue }, i) => (
+                                                    <AlignButton
+                                                        size="large"
+                                                        variant="contained"
+                                                        theme={theme}
+                                                        active={properties.text}
+                                                        propValue={propValue}
+                                                        name={propName}
+                                                        onClick={(e) => handlePropertyClick(e, propValue)} key={i}>{icon}</AlignButton>
                                                 ))}
                                             </ButtonGroup>
                                         </div>
@@ -80,7 +137,7 @@ export default function TextControl() {
                                 }
                                 {inputType == type_buttonColor &&
                                     <Grid container direction="column" >
-                                        <Typography variant="p" style={{ marginBottom: "20px", fontWeight: "600", fontSize: "15px" }}>{displayName}</Typography>
+                                        <Typography style={{ marginBottom: "20px", fontWeight: "600", fontSize: "15px" }}>{displayName}</Typography>
                                         {displayColorPicker ? <div style={popover}>
                                             <div style={cover} onClick={() => setDisplayColorPicker(false)} />
                                             <ChromePicker
@@ -102,7 +159,7 @@ export default function TextControl() {
                                         </div>
                                     </Grid>
                                 }
-                            </>
+                            </React.Fragment>
                         )
                     })}
 
