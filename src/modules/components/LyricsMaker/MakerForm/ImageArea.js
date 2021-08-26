@@ -4,7 +4,7 @@ import useImage from '../../useImage';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 
-export default function ImageArea({ classes, setLyrics, lyrics, errors, setErrors,
+export default function ImageArea({ classes, setProperties, properties, errors, setErrors,
     loaded, setLoaded
 
     // lastImg 
@@ -12,14 +12,14 @@ export default function ImageArea({ classes, setLyrics, lyrics, errors, setError
 
 
 
-    let lyricsImg = lyrics.img
+    let lyricsImg = properties.img
     const [rawImg, setRawImg, handleUpload, isLoading, uploadedImg] = useImage(
-        setLyrics, lyrics,
+        setProperties, properties,
         errors, setErrors,
         loaded, setLoaded
     )
     const handleRemove = (e) => {
-        setLyrics(state => ({
+        setProperties(state => ({
             ...state,
             img: ""
         }))

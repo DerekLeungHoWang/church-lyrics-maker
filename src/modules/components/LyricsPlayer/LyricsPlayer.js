@@ -1,11 +1,12 @@
 import { Button, Container, makeStyles } from '@material-ui/core'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import './LyricsPlayer.scss'
 import Slider from "react-slick";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { wrap } from 'gsap/gsap-core';
 import styled from 'styled-components';
+import { PropertiesContext } from '../../context/PropertiesContext';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -21,9 +22,7 @@ justify-content: "center";
 font-size: ${props => `${props.fontSize}px`};
 background:  ${props => props.img === "" ? "black" : ` url(${props.img})`};
 min-height: ${props => {
-        console.log(props);
-
-        return `${props.height}`
+        return `${props.height}vh`
     }};
 background-repeat: no-repeat !important;
 background-size: cover !important;
@@ -33,8 +32,15 @@ background-size: cover !important;
 function LyricsPlayer(props) {
     const classes = useStyles()
     let lyricsId = +props.match.params.lyricsId
+
+
+    const { properties, setProperties, handleSetProperties } = useContext(PropertiesContext)
     let cart = JSON.parse(localStorage.getItem('cart'))
+   
+
+
     let data = cart.filter((d, i) => (i === lyricsId))[0]
+    
     const [fullScreen, setFullScreen] = useState(false)
     const [mouseMove, setMouseMove] = useState(false)
     const slider = useRef(null);
@@ -79,9 +85,10 @@ function LyricsPlayer(props) {
 
 
 
-    let fontSize = data.fontSize
-    let textColor = data.textColor === "" ? "#000" : data.textColor;
+    let fontSize = data.text.fontSize
+    let textColor = data.text.textColor === "" ? "#000" : data.text.textColor;
 
+    
 
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
@@ -113,8 +120,8 @@ function LyricsPlayer(props) {
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />
     };
-    console.log(data.height);
-    const height = data.height === "" ? 30 : data.height
+    
+    const height = data.image.height
     const url = data.img ? data.img : "black";
 
 

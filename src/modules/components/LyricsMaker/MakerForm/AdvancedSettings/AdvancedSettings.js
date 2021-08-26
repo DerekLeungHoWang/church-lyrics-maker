@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,11 +15,12 @@ import Slide from '@material-ui/core/Slide';
 import AdvancedNavigation from './AdvancedNavigation';
 import SettingContainer from './SettingContainer';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { PropertiesContext } from '../../../../context/PropertiesContext';
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: 'relative',
         background: "#01BFA6",
-        color:"white"
+        color: "white"
     },
     title: {
         marginLeft: theme.spacing(2),
@@ -32,6 +33,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function AdvancedSettings() {
+    const { properties, setProperties, handleSetProperties,handleSave } = useContext(PropertiesContext)
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -40,8 +42,11 @@ export default function AdvancedSettings() {
     };
 
     const handleClose = () => {
+        handleSave()
         setOpen(false);
     };
+
+
 
     return (
         <div>

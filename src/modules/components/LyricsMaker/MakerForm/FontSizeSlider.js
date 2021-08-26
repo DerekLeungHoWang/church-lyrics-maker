@@ -36,11 +36,11 @@ const marks = [
         label: '90px',
     },
 ];
-export default function FontSizeSlider({ lyrics, setLyrics, 
+export default function FontSizeSlider({ properties, setProperties, 
     // lastSize, lastColor
 
 }) {
- console.log(lyrics);
+  
 
 
 
@@ -65,14 +65,14 @@ export default function FontSizeSlider({ lyrics, setLyrics,
 
     const handleSetColor = (color) => {
         
-        setLyrics(state => ({
+        setProperties(state => ({
             ...state,
             textColor: color.hex
         }))
     }
 
     const handleFontSizeChange = (event, newValue) => {
-        setLyrics(state => ({
+        setProperties(state => ({
             ...state,
             fontSize: newValue
         }))
@@ -101,7 +101,7 @@ export default function FontSizeSlider({ lyrics, setLyrics,
                         </Grid>
                         <Grid item xs>
                             <Slider
-                                 value={lyrics.fontSize}
+                                 value={properties.fontSize}
                                 onChange={handleFontSizeChange}
                                 defaultValue={60}
                                 getAriaValueText={valuetext}
@@ -129,8 +129,8 @@ export default function FontSizeSlider({ lyrics, setLyrics,
                             <ChromePicker
                                 disableAlpha
                                
-                                color={lyrics.textColor}
-                                onChange={(color) => setLyrics(state => ({
+                                color={properties.textColor}
+                                onChange={(color) => setProperties(state => ({
                                     ...state,
                                     textColor: color.hex
                                 }))}

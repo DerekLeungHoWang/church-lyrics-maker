@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Container from '@material-ui/core/Container';
 import LyricsMaker from './LyricsMaker/LyricsMaker';
 import LyricsStorage from './LyricsStorage/LyricsStorage';
@@ -10,6 +10,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { arrayToString, stringToArray } from './util/converter';
 import useForm from './LyricsMaker/MakerForm/useForm';
 import { validator } from './LyricsMaker/MakerForm/Validator'
+import { PropertiesContext } from '../context/PropertiesContext';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -41,9 +42,10 @@ export default function Home(props) {
     }, [snack])
     const [active, setActive] = useState("")
     const [loaded, setLoaded] = useState(false);
-    const { lyrics, setLyrics, errors, setErrors, handleBlur } = useForm(validator);
+    //const { errors, setErrors, handleBlur } = useForm(validator);
+    const { properties, setProperties, handleSetProperties, errors, setErrors, handleBlur } = useContext(PropertiesContext)
 
-    console.log(lyrics);
+    console.log(properties);
     const { vertical, horizontal, open, message } = snack;
     const [playId, setPlayId] = useState();
     const [isEditMode, setIsEditMode] = useState(false);
@@ -54,8 +56,9 @@ export default function Home(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        let result_title = validator(lyrics, 'title')
-        let result_content = validator(lyrics, 'content')
+        console.log("handleing Submit Home.js", properties);
+        let result_title = validator(properties, 'title')
+        let result_content = validator(properties, 'content')
         if (result_title.tilte || result_content.content) {
 
             setErrors(state => ({
@@ -68,25 +71,30 @@ export default function Home(props) {
         }
 
 
-        let newLyrics = lyrics.content
-        if (!Array.isArray(lyrics.content)) {
-            newLyrics = lyrics.content.trim().split("\n\n");
+        let newLyrics = properties.content
+        if (!Array.isArray(properties.content)) {
+            newLyrics = properties.content.trim().split("\n\n");
         }
 
         let lyricsObject = {
-            title: lyrics.title,
+            title: properties.title,
             content: newLyrics,
-            fontSize: lyrics.fontSize,
-            fontColor: lyrics.fontColor,
-            img: lyrics.img,
-            height: lyrics.height,
-            textColor: lyrics.textColor,
-            lastPlayed: lyrics.lastPlayed,
+            fontSize: properties.fontSize,
+            fontColor: properties.fontColor,
+            img: properties.img,
+            height: properties.height,
+            textColor: properties.textColor,
+            lastPlayed: properties.lastPlayed,
+            text: properties.text,
+            image: properties.image,
+            others: properties.others
 
         }
-
+        console.log("lyricsObject = ", lyricsObject);
         let isExist = cart.some(obj => obj.title.replace(/\s/g, '') === lyricsObject.title.replace(/\s/g, ''));
         if (isExist) {
+            console.log("already exist : ", lyricsObject);
+
             let newCart = cart.map(d => {
                 if (d.title === lyricsObject.title) {
                     d = lyricsObject
@@ -97,9 +105,10 @@ export default function Home(props) {
             setSnack(state => ({
                 ...state,
                 open: true,
-                message: `已覆寫 ${lyrics.title} `
+                message: `已覆寫 ${properties.title} `
             }))
         } else {
+            console.log("does not exist");
             setSnack(state => ({
                 ...state,
                 open: false
@@ -167,7 +176,9 @@ export default function Home(props) {
                 if (target.lastPlayed) {
                     setIsEditMode(true)
                 }
-                setLyrics(target)
+                console.log("prop before set = ", properties);
+                console.log("target = ", target);
+                setProperties(target)
             }
         }
     }, [])
@@ -186,16 +197,21 @@ export default function Home(props) {
         setActive(target.title)
         setIsEditMode(true)
 
-        setLyrics(target)
+        setProperties(target)
     }
     console.log(active);
     useEffect(() => {
-        console.log(lyrics);
-        if (!lyrics.tilte && !lyrics.content) {
+        console.log(properties);
+        if (!properties.tilte && !properties.content) {
             console.log('set');
             setIsEditMode(false)
         }
-    }, [lyrics])
+    }, [properties])
+
+
+ 
+
+
     return (
         <Container maxWidth="lg"
             style={{
@@ -221,7 +237,7 @@ export default function Home(props) {
 
 
                     <LyricsStorage
-                        lyrics={lyrics}
+                        properties={properties}
                         handleLoad={handleLoad}
                         setPlayId={handleSetId}
                         cart={cart}
@@ -241,8 +257,8 @@ export default function Home(props) {
 
                     <LyricsMaker
                         setCart={setCart}
-                        lyrics={lyrics}
-                        setLyrics={setLyrics}
+                        properties={properties}
+                        setProperties={setProperties}
                         handleSubmit={handleSubmit}
                         isEditMode={isEditMode}
                         setIsEditMode={setIsEditMode}

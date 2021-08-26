@@ -10,8 +10,8 @@ export default function LyricsMaker({
     setErrors,
     handleSubmit,
     setCart,
-    lyrics,
-    setLyrics,
+    properties,
+    setProperties,
     isEditMode,
     setIsEditMode,
     cart,
@@ -25,8 +25,8 @@ export default function LyricsMaker({
                     loaded={loaded}
                     setLoaded={setLoaded}
                     handleSubmit={handleSubmit}
-                    lyrics={lyrics}
-                    setLyrics={setLyrics}
+                    properties={properties}
+                    setProperties={setProperties}
                     setCart={setCart}
                     isEditMode={isEditMode}
                     setIsEditMode={setIsEditMode}

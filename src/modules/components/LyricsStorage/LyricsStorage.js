@@ -8,7 +8,7 @@ import { ReactComponent as NoDataSvg } from '../../../Images/noData.svg'
 import LyricsPlayer from '../LyricsPlayer/LyricsPlayer';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import EditIcon from '@material-ui/icons/Edit';
-export default function LyricsStorage({ setPlayId, cart, handleDelete, handleLoad, lyrics }) {
+export default function LyricsStorage({ setPlayId, cart, handleDelete, handleLoad, properties }) {
 
     return (
         <Container>
@@ -42,7 +42,7 @@ export default function LyricsStorage({ setPlayId, cart, handleDelete, handleLoa
                                 primary={
                                     <Grid container
                                     >
-                                        <span style={{ paddingRight: "10px", fontWeight: lyrics.title === title ? "600" : "unset" }} >
+                                        <span style={{ paddingRight: "10px", fontWeight: properties.title === title ? "600" : "unset" }} >
                                             {`${title.split(',')[0]}`}</span>
 
                                     </Grid>

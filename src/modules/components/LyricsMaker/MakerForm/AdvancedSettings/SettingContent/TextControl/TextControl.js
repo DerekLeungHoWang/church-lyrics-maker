@@ -83,20 +83,17 @@ export default function TextControl() {
         <Container maxWidth={false}>
             <Typography variant="h5">Text Control</Typography>
             <Typography style={{ marginTop: "5px", marginBottom: "20px", opacity: "0.7" }} >Text related properties</Typography>
-
-            <Paper elevation={6} style={{ padding: "55px", borderRadius: "18px" }}>
+            <Paper elevation={6} style={{ padding: "55px", borderRadius: "8px" }}>
                 <Grid container>
                     {text_properties.map(({ propName, displayName, inputType, marks, min, max, step, options }, i) => {
                         console.log(properties.text[`${propName}`]);
                         return (
                             <React.Fragment key={i}>
-
                                 {inputType == type_slider &&
                                     <>
                                         <Typography style={{
                                             marginBottom: "40px",
                                             fontWeight: "600", fontSize: "15px", valueLabel: { color: "white" }
-
                                         }}>{displayName}</Typography>
                                         < Slider
                                             classes={{ valueLabel: classes.valueLabel }}

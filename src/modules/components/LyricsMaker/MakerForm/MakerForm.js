@@ -34,8 +34,8 @@ export default function MakerForm({
     errors,
     setErrors,
     handleSubmit,
-    lyrics,
-    setLyrics,
+    properties,
+    setProperties,
     setCart,
     isEditMode,
     setIsEditMode,
@@ -61,7 +61,7 @@ export default function MakerForm({
             setIsEditMode(false)
         }
 
-        setLyrics(state => ({
+        setProperties(state => ({
             ...state,
             [key]: value
         }))
@@ -135,7 +135,7 @@ export default function MakerForm({
                     name="title"
                     autoComplete="title"
                     onChange={handleChange}
-                    value={lyrics.title}
+                    value={properties.title}
 
                     InputLabelProps={{
                         shrink: true
@@ -154,19 +154,16 @@ export default function MakerForm({
                     multiline
                     rows={20}
                     name="content"
-                    value={lyrics.content}
+                    value={properties.content}
                     onChange={handleChange}
                     autoComplete="content"
                 />
 
-                <FontSizeSlider lyrics={lyrics} setLyrics={setLyrics} />
-
-
-
+                {/* <FontSizeSlider properties={properties} setProperties={setProperties} /> */}
                 <ImageArea
                     classes={classes}
-                    lyrics={lyrics}
-                    setLyrics={setLyrics}
+                    properties={properties}
+                    setProperties={setProperties}
                     setErrors={setErrors}
                     errors={errors}
                     loaded={loaded}

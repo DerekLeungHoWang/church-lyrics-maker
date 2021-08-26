@@ -13,15 +13,16 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Divider, Grid, ThemeProvider } from '@material-ui/core';
 import { createTheme } from '@material-ui/core/styles';
+import PropertiesContextProvider from './modules/context/PropertiesContext';
 const theme = createTheme({
   palette: {
     primary: {
       main: "#BDBDBD",
-    //  contrastText: "#fff" //button text white instead of black
+      //  contrastText: "#fff" //button text white instead of black
     },
-    secondary:{
-      main:"#01BFA6"
-     
+    secondary: {
+      main: "#01BFA6"
+
     }
 
   },
@@ -34,13 +35,15 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route exact path={"/"} render={props => <Home  {...props} />} />
-          <Route exact path="/player/:lyricsId" component={LyricsPlayer} />
-        </Switch>
+      <PropertiesContextProvider>
+        <Router>
+          <Switch>
+            <Route exact path={"/"} render={props => <Home  {...props} />} />
+            <Route exact path="/player/:lyricsId" component={LyricsPlayer} />
+          </Switch>
 
-      </Router>
+        </Router>
+      </PropertiesContextProvider>
     </ThemeProvider>
   );
 }
