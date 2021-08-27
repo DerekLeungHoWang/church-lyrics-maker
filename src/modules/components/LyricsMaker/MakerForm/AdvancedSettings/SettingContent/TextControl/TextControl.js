@@ -8,15 +8,15 @@ import { ChromePicker } from 'react-color';
 import styled from 'styled-components';
 
 const AlignButton = styled(Button)`
-    background: ${({ theme, active, name, propValue }) => {
-        if (propValue == active[`${name}`]) {
+    background: ${({ theme, active, name, propvalue }) => {
+        if (propvalue == active[`${name}`]) {
             return theme.palette.secondary.main
         } else {
             return "white"
         }
     }};
-    color: ${({ theme, active, name, propValue }) => {
-        if (propValue == active[`${name}`]) {
+    color: ${({ theme, active, name, propvalue }) => {
+        if (propvalue == active[`${name}`]) {
             return "white"
         } else {
             return "black"
@@ -47,9 +47,6 @@ export default function TextControl() {
     const theme = useTheme();
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
     const { properties, setProperties, handleSetProperties , classes} = useContext(PropertiesContext)
-
-
-    console.log(properties);
 
     function valuetext(value) {
         return `${value}px`;
@@ -124,7 +121,7 @@ export default function TextControl() {
                                                         variant="contained"
                                                         theme={theme}
                                                         active={properties.text}
-                                                        propValue={propValue}
+                                                        propvalue={propValue}
                                                         name={propName}
                                                         onClick={(e) => handlePropertyClick(e, propValue)} key={i}>{icon}</AlignButton>
                                                 ))}
