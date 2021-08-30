@@ -41,9 +41,9 @@ export default function ImageControl() {
                                             classes={{ valueLabel: classes.valueLabel }}
                                             style={{ marginBottom: "50px" }}
                                             name={propName}
-                                            value={properties.image.name}
+                                            value={properties.image[`${propName}`]}
                                             onChange={handleTextPropertyChange(propName)}
-                                            defaultValue={60}
+                                            // defaultValue={60}
                                             getAriaValueText={valuetext}
                                             aria-labelledby="discrete-slider-always"
                                             step={step}

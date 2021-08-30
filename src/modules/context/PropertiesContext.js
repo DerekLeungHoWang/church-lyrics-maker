@@ -6,13 +6,11 @@ export const PropertiesContext = createContext()
 function PropertiesContextProvider(props) {
     const initState = {
         title: "",
+        composer:"",
+        lyricist:"",
         content: ``,
-        // fontSize: 60,
-        // fontColor: "#fff",
         img: "",
-        // height: 100,
-        // textColor: "#fff",
-        lastPlayed: false,
+
         text: {
             fontSize: 60,
             fontWeight: 400,
@@ -22,8 +20,8 @@ function PropertiesContextProvider(props) {
         },
         image: {
             height: 100,
-            opacity: "",
-            filter: ""
+            opacity: 100,
+            filter: 100
         },
         others: {
             slideAnimation: true

@@ -1,4 +1,4 @@
-import { Button, Container, FormHelperText, Grid, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
+import { Box, Button, Container, FormHelperText, Grid, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -97,13 +97,13 @@ export default function MakerForm({
                     添加詩歌
                 </Typography>
                 <div>
-                    <IconButton onClick={handleUpload}  >
+                    {/* <IconButton onClick={handleUpload}  >
                         <input
                             accept=".json"
                             onChange={(e) => handleFileChange(e)}
                             type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
                         <PublishIcon />
-                    </IconButton>
+                    </IconButton> */}
                     {/* <Button variant="outlined" onClick={() => setLyrics(state => ({
                         ...state,
                         title: "",
@@ -142,6 +142,62 @@ export default function MakerForm({
                     }}
                     placeholder="以逗號分開歌名和作者, 例:無言的讚頌,曲、詞：朱浩權"
                 />
+                <Box mb={2}>
+                    <Grid
+                        container
+                        item
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        spacing={3}
+                    >
+                        <Grid
+                            container
+                            item
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                            xs={6}
+                        >
+                            <TextField
+                                fullWidth
+                                variant="outlined"
+                                margin="normal"
+                                name="composer"
+                                label="Composer"
+                                id="cardCvc"
+                                value={properties.composer}
+                                onChange={handleChange}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        </Grid>
+                        <Grid
+                            container
+                            item
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                            xs={6}
+                        >
+                            <TextField
+                                fullWidth
+                                variant="outlined"
+                                margin="normal"
+                                name="lyricist"
+                                label="Lyricist"
+                                id="lyricist"
+                                value={properties.lyricist}
+                                onChange={handleChange}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </Box>
+
                 <TextField
                     error={errors.content ? true : false}
                     helperText={errors.content}
@@ -158,6 +214,7 @@ export default function MakerForm({
                     onChange={handleChange}
                     autoComplete="content"
                 />
+
 
                 {/* <FontSizeSlider properties={properties} setProperties={setProperties} /> */}
                 <ImageArea

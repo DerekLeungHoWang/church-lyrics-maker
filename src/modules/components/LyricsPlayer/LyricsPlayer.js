@@ -7,27 +7,13 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { wrap } from 'gsap/gsap-core';
 import styled from 'styled-components';
 import { PropertiesContext } from '../../context/PropertiesContext';
+import { BackgroundImage, SlideBackground } from './LyricsPlayerStyles';
 
 const useStyles = makeStyles((theme) => ({
 
 }), { index: 1 });
 
-const SlideBackground = styled.div`
 
-width: 100%;
-display: flex;
-flex-direction: row;
-align-items: "center";
-justify-content: "center";
-font-size: ${props => `${props.fontSize}px`};
-background:  ${props => props.img === "" ? "black" : ` url(${props.img})`};
-min-height: ${props => {
-        return `${props.height}vh`
-    }};
-background-repeat: no-repeat !important;
-background-size: cover !important;
-
-`
 
 function LyricsPlayer(props) {
     const classes = useStyles()
@@ -36,19 +22,23 @@ function LyricsPlayer(props) {
 
     const { properties, setProperties, handleSetProperties } = useContext(PropertiesContext)
     let cart = JSON.parse(localStorage.getItem('cart'))
-   
+
 
 
     let data = cart.filter((d, i) => (i === lyricsId))[0]
-    
+
     const [fullScreen, setFullScreen] = useState(false)
     const [mouseMove, setMouseMove] = useState(false)
     const slider = useRef(null);
     const handle = useFullScreenHandle();
 
-    let title = data.title.split(',')[0];
-    let author_1 = data.title.split(',')[1] ? data.title.split(',')[1] : ""
-    let author_2 = data.title.split(',')[2] ? data.title.split(',')[2] : ""
+    let title = data.title;
+    let author_1 = data.composer
+    let author_2 = data.lyricist
+    let fontSize = data.text.fontSize
+    let textColor = data.text.textColor === "" ? "#000" : data.text.textColor;
+    let alignItems = data.text.alignItems
+    let justifyContent = data.text.justifyContent
     var timer;
 
 
@@ -85,10 +75,9 @@ function LyricsPlayer(props) {
 
 
 
-    let fontSize = data.text.fontSize
-    let textColor = data.text.textColor === "" ? "#000" : data.text.textColor;
 
-    
+
+
 
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
@@ -120,7 +109,7 @@ function LyricsPlayer(props) {
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />
     };
-    
+
     const height = data.image.height
     const url = data.img ? data.img : "black";
 
@@ -165,38 +154,9 @@ function LyricsPlayer(props) {
         >
             <div>
 
-                <Button
-                    onClick={next}
-                    color="primary" variant="outlined"
-                    style={{
-                        display: mouseMove ? "block" : "none",
-                        position: "fixed", bottom: "1%", right: "0.5%",
-                        color: "grey"
-                    }}
-                >
-                    下一首
-                </Button>
-                <Button
-                    onClick={prev}
-                    style={{
-                        display: mouseMove ? "block" : "none",
-                        position: "fixed", bottom: "1%", left: "0.5%",
-                        color: "grey"
-                    }}
-                    variant="outlined" color="primary">
-                    上一首
-                </Button>
 
-                <Button
-                    onClick={() => props.history.push("/")}
-                    style={{
-                        display: mouseMove ? "block" : "none",
-                        position: "fixed", bottom: "1%", left: "50%",
-                        color: "grey"
-                    }}
-                    variant="outlined" color="primary">
-                    首頁
-                </Button>
+
+
 
                 <Slider {...settings} ref={slider} >
                     <div  >
@@ -210,8 +170,8 @@ function LyricsPlayer(props) {
                                 width: "100%",
                                 display: "flex",
                                 flexDirection: "column",
-                                alignItems: "center",
-                                justifyContent: "center",
+                                alignItems: alignItems,
+                                justifyContent: justifyContent,
 
                             }}>
                                 <span>{title}</span>
@@ -223,29 +183,66 @@ function LyricsPlayer(props) {
                     {data.content.map((d, i) => {
                         return (
                             <div key={i}  >
-                                <div
-                                    style={{
-                                        width: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        overflowWrap: "break-word",
-                                        fontSize: `${fontSize}px`,
-                                        textAlign: "center",
-                                        background: data.img === "" ? "black" : `url(${data.img})`,
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundSize: "cover",
-                                        minHeight: `${height}vh`
-                                    }}
+                                <BackgroundImage
+                                    alignItems={alignItems}
+                                    justifyContent={justifyContent}
+                                    fontSize={fontSize}
+                                    img={data.img}
+                                    height={height}
+                                // style={{
+                                //     width: "100%",
+                                //     display: "flex",
+                                //     alignItems: alignItems,
+                                //     justifyContent: justifyContent,
+                                //     overflowWrap: "break-word",
+                                //     fontSize: `${fontSize}px`,
+                                //     textAlign: "center",
+                                //     background: data.img === "" ? "black" : `url(${data.img})`,
+                                //     zIndex:"-1",
+                                //     backgroundRepeat: "no-repeat",
+                                //     backgroundSize: "cover",
+                                //     minHeight: `${height}vh`
+                                // }}
 
                                 >
                                     <span>{d}</span>
-                                </div>
+                                </BackgroundImage>
                             </div>
                         )
                     })}
                 </Slider>
             </div>
+            <Button
+                onClick={next}
+                color="secondary" variant="contained"
+                style={{
+                    display: mouseMove ? "block" : "none",
+                    position: "fixed", bottom: "1%", right: "0.5%",
+                    color: "white"
+                }}
+            >
+                下一首
+            </Button>
+            <Button
+                onClick={() => props.history.push("/")}
+                style={{
+                    display: mouseMove ? "block" : "none",
+                    position: "fixed", bottom: "1%", left: "50%",
+                    color: "white"
+                }}
+                variant="contained" color="secondary">
+                首頁
+            </Button>
+            <Button
+                onClick={prev}
+                style={{
+                    display: mouseMove ? "block" : "none",
+                    position: "fixed", bottom: "1%", left: "0.5%",
+                    color: "white"
+                }}
+                variant="contained" color="secondary">
+                上一首
+            </Button>
 
         </Container>
 

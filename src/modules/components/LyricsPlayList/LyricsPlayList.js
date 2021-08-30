@@ -8,30 +8,13 @@ import { ReactComponent as NoDataSvg } from '../../../Images/noData.svg'
 import LyricsPlayer from '../LyricsPlayer/LyricsPlayer';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import EditIcon from '@material-ui/icons/Edit';
-export default function LyricsStorage({ setPlayId, cart, handleDelete, handleLoad, properties }) {
+export default function LyricsPlayList({ setPlayId, cart, handleDelete, properties }) {
 
     return (
-        <Container>
-
-            <Paper elevation={3} style={{ position: "relative", marginBottom: "20px", borderRadius: "15px" }} >
-                {cart.length > 0 && <div style={{ paddingBottom: "30px", paddingTop: '15px' }}>
-                    <IconButton
-                        href={`data:text/json;charset=utf-8,${encodeURIComponent(
-                            JSON.stringify(cart)
-                        )}`}
-                        download="lyrics.json"
-                        style={{
-                            position: "absolute",
-                            right: "1%"
-                        }}   >
-                        <GetAppIcon />
-                    </IconButton>
-
-                </div>}
-
+        <Container maxWidth={false} style={{ padding: "0px" }}>
+            <Paper elevation={3} style={{ position: "relative", marginBottom: "20px", borderRadius: "18px" }} >
                 <List dense={false} >
-
-                    {cart.length > 0 ? cart.map(({ title, content }, i) => {
+                    {cart.length > 0 ? cart.map(({ title, composer, lyricist, content }, i) => {
                         return (<ListItem key={i}>
                             <ListItemAvatar>
                                 <Avatar>
@@ -43,19 +26,16 @@ export default function LyricsStorage({ setPlayId, cart, handleDelete, handleLoa
                                     <Grid container
                                     >
                                         <span style={{ paddingRight: "10px", fontWeight: properties.title === title ? "600" : "unset" }} >
-                                            {`${title.split(',')[0]}`}</span>
-
+                                            {title}</span>
                                     </Grid>
                                 }
                                 secondary={
                                     <Grid container component="span" >
 
                                         <Typography component="span" >
-                                            {title.split(',')[1] ? title.split(',')[1] : ""}
+                                            {content}
                                         </Typography >
-                                        <Typography component="span">
-                                            {title.split(',')[2] ? title.split(',')[2] : ""}
-                                        </Typography>
+
 
 
                                     </Grid>
@@ -68,16 +48,11 @@ export default function LyricsStorage({ setPlayId, cart, handleDelete, handleLoa
                                 <IconButton
                                     name={i}
                                     onClick={(e) => setPlayId(e)}
-                                    edge="end" aria-label="play">
+                                    aria-label="play">
                                     <PlayCircleFilledIcon />
                                 </IconButton>
-                                <IconButton edge="end"
-                                    name={i} aria-label="load"
-                                    onClick={(e) => handleLoad(e)}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton edge="end"
+
+                                <IconButton
                                     name={i} aria-label="delete"
                                     onClick={(e) => handleDelete(e)}
                                 >
