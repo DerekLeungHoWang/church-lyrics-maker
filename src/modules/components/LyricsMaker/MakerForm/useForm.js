@@ -5,9 +5,9 @@ import { PropertiesContext } from "../../../context/PropertiesContext";
 // ******************************
 const useForm = (validator) => {
     const { initState } = useContext(PropertiesContext)
-    console.log(initState);
+    
     const [properties, setProperties] = useState(initState);
-    console.log(properties);
+    
     const [errors, setErrors] = useState({
         title: "",
         content: ""
@@ -28,7 +28,7 @@ const useForm = (validator) => {
 
     // ******************************
     const handleBlur = e => {
-        console.log(e.target.name);
+        
         const { name: fieldName } = e.target;
         const faildFiels = validator(properties, fieldName);
         setErrors(() => ({
@@ -48,7 +48,7 @@ const useForm = (validator) => {
         }));
         setIsSubmited(true);
     };
-    console.log("useForm errors ", errors);
+    
     return {
         properties,
         setProperties,

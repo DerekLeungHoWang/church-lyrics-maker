@@ -14,20 +14,23 @@ export default function SettingContent({ active }) {
     );
     const [cart, setCart] = useState(initializeState())
     useEffect(() => {
-  
-        if (cart.length > 0) {
-            let target = cart.filter(d => {
-                return d.lastPlayed
-            })
 
-            if (target.length > 0) {
-                target = arrayToString(cart, target[0])
-              
-                console.log("prop before set = ", properties);
-                console.log("target = ", target);
-                setProperties(target)
-            }
-        }
+        // let tempAdvSetting = JSON.parse(localStorage.getItem('tempAdvSetting'))||{}
+        // if(tempAdvSetting){
+
+        // }
+        
+  
+        // if (cart.length > 0) {
+        //     let target = cart.filter(d => {
+        //         return d.lastPlayed
+        //     })
+
+        //     if (target.length > 0) {
+        //         target = arrayToString(cart, target[0])
+        //         setProperties(target)
+        //     }
+        // }
     }, [])
 
     return (
@@ -35,7 +38,7 @@ export default function SettingContent({ active }) {
             <Container maxWidth={false}>
                 {active == text_control && <TextControl />}
                 {active == image_control && <ImageControl />}
-                {active == others_settings && <Others />}
+                {/* {active == others_settings && <Others />} */}
 
             </Container>
       

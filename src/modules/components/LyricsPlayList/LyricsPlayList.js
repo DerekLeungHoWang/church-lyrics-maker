@@ -1,4 +1,4 @@
-import { Avatar, Button, Container, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Paper, Typography } from '@material-ui/core'
+import { Avatar, Box, Button, Container, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, Paper, Typography } from '@material-ui/core'
 import React from 'react'
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -13,8 +13,16 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
     return (
         <Container maxWidth={false} style={{ padding: "0px" }}>
             <Paper elevation={3} style={{ position: "relative", marginBottom: "20px", borderRadius: "18px" }} >
+                <Box ml={3} pt={3}>
+                    <Typography variant="h6" component="div" >Playlist</Typography>
+                </Box>
                 <List dense={false} >
                     {cart.length > 0 ? cart.map(({ title, composer, lyricist, content }, i) => {
+                        if (Array.isArray(content)) {
+                            content = content.join(",")
+
+                        }
+                        content = content.substring(0, 30)
                         return (<ListItem key={i}>
                             <ListItemAvatar>
                                 <Avatar>
@@ -33,7 +41,7 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
                                     <Grid container component="span" >
 
                                         <Typography component="span" >
-                                            {content}
+                                            {content} ...
                                         </Typography >
 
 

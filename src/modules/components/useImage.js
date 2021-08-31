@@ -18,7 +18,7 @@ export default function useImage(setProperties, properties, errors, setErrors, l
                 let bodyFormData = new FormData();
                 var reader = new FileReader();
                 reader.onload = function (event) {
-                    console.log('onload');
+                    
                     let raw = event.target.result;
                     setRawImg(raw)
                 };
@@ -31,7 +31,7 @@ export default function useImage(setProperties, properties, errors, setErrors, l
         });
         return () => {
             window.removeEventListener("paste", () => {
-                console.log('removed paste');
+                
             })
         }
     }, [])
@@ -61,7 +61,7 @@ export default function useImage(setProperties, properties, errors, setErrors, l
                 setProgress(progress);
             },
             error => {
-                console.log(error);
+                
             },
             () => {
                 storage
@@ -71,7 +71,7 @@ export default function useImage(setProperties, properties, errors, setErrors, l
                     .then(url => {
                         setIsLoading(false)
                          setLoaded(false)
-                        console.log(url);
+                        
                         setProperties(state => ({
                             ...state,
                             img: url

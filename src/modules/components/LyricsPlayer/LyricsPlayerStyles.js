@@ -21,9 +21,9 @@ export const BackgroundImage = styled.div`
     align-items: ${props => props.alignItems};
     justify-content:  ${props => props.justifyContent};
     overflow-wrap:break-word ;
-    font-size: ${props => props.fontSize};
+    font-size: ${props => `${props.fontSize}px`};
     text-align :center;
-    background:${props => props.img===""?"black":`url(${ props.img })`};
+    background:${props => props.img === "" ? "black" : `url(${props.img})`};
     z-index: -1;
     background-repeat: no-repeat;
     background-size: cover;

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { lighten, makeStyles, alpha } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,7 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { Button } from '@material-ui/core';
+import { Button, Grid, TextField, InputAdornment } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
@@ -26,26 +26,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import gsap from 'gsap'
-// function createData(title, author, createdAt, lastModifiedAt, actions) {
-//   return { title, author, createdAt, lastModifiedAt, actions };
-// }
-
-// const rows = [
-//   createData('Cupcake', 305, 3.7, 67, 4.3),
-//   createData('Donut', 452, 25.0, 51, 4.9),
-//   createData('Eclair', 262, 16.0, 24, 6.0),
-//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-//   createData('Gingerbread', 356, 16.0, 49, 3.9),
-//   createData('Honeycomb', 408, 3.2, 87, 6.5),
-//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-//   createData('Jelly Bean', 375, 0.0, 94, 0.0),
-//   createData('KitKat', 518, 26.0, 65, 7.0),
-//   createData('Lollipop', 392, 0.2, 98, 0.0),
-//   createData('Marshmallow', 318, 0, 81, 2.0),
-//   createData('Nougat', 360, 19.0, 9, 37.0),
-//   createData('Oreo', 437, 18.0, 63, 4.0),
-// ];
-
+import SearchIcon from '@material-ui/icons/Search';
+import CancelIcon from '@material-ui/icons/Cancel';
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -90,14 +72,7 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {/* <TableCell padding="checkbox">
-                    <Checkbox
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{ 'aria-label': 'select all desserts' }}
-                    />
-                </TableCell> */}
+
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
@@ -150,40 +125,50 @@ const useToolbarStyles = makeStyles((theme) => ({
                 backgroundColor: theme.palette.secondary.dark,
             },
     title: {
-        flex: '1 1 100%',
+
+        marginLeft: theme.spacing(2),
+        marginTop: theme.spacing(1),
     },
+    searchField: {
+        margin: theme.spacing(1),
+    }
+
 }));
 
-const EnhancedTableToolbar = (props) => {
+const EnhancedTableToolbar = ({ handleSearch, searchTerm, setSearchTerm }) => {
     const classes = useToolbarStyles();
-    const { numSelected } = props;
+
 
     return (
-        <Toolbar
-            className={clsx(classes.root, {
-                [classes.highlight]: numSelected > 0,
-            })}
-        >
-
+        <Grid container direction="row" justifyContent="space-between">
             <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
                 All Songs
             </Typography>
 
+            <div className={classes.searchField}>
+                <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                        <SearchIcon />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            value={searchTerm}
+                            InputProps={{
 
-            {/* {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton aria-label="delete">
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <Tooltip title="Filter list">
-                    <IconButton aria-label="filter list">
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            )} */}
-        </Toolbar>
+                                endAdornment: searchTerm && (
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setSearchTerm("")}
+                                    ><CancelIcon style={{ fontSize: '18px' }} /></IconButton>
+                                )
+                            }}
+                            type="text" onChange={handleSearch} id="input-with-icon-grid" label="Search..." />
+                    </Grid>
+                </Grid>
+            </div>
+
+
+        </Grid>
     );
 };
 
@@ -224,7 +209,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function LyricsTable({ lyricsData, handleAddToPlayList, handleFindOneFromTable, handleDeleteFromTable, loadingLyricsData }) {
+export default function LyricsTable({
+
+    lyricsData, handleAddToPlayList, handleFindOneFromTable, handleDeleteFromTable, loadingLyricsData }) {
     let rows = lyricsData
     const tableDataRef = useRef(null)
     const classes = useStyles();
@@ -233,6 +220,7 @@ export default function LyricsTable({ lyricsData, handleAddToPlayList, handleFin
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(3);
+    const [searchTerm, setSearchTerm] = useState("")
 
 
     const handleRequestSort = (event, property) => {
@@ -279,6 +267,12 @@ export default function LyricsTable({ lyricsData, handleAddToPlayList, handleFin
         setPage(0);
     };
 
+    const handleSearch = e => {
+        setPage(0)
+        setSearchTerm(e.currentTarget.value.trim().toLowerCase())
+
+    }
+
 
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -299,11 +293,21 @@ export default function LyricsTable({ lyricsData, handleAddToPlayList, handleFin
 
     }, [loadingLyricsData])
 
+    let data = stableSort(rows, getComparator(order, orderBy))
+        .filter(d => {
+            if (searchTerm == "") {
+                return d;
+            } else if (d.title.trim().toLowerCase().includes(searchTerm)) {
+                return d;
+            }
+        })
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
     return (
         <div className={classes.root}>
 
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar handleSearch={handleSearch} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 {loadingLyricsData ?
                     <div className={classes.loaderContainer}>
                         <CircularProgress />
@@ -326,15 +330,11 @@ export default function LyricsTable({ lyricsData, handleAddToPlayList, handleFin
                                 rowCount={rows.length}
                             />
                             <TableBody >
-                                {stableSort(rows, getComparator(order, orderBy))
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row, index) => {
+                                {
+                                    data.map((row, index) => {
+                                        console.log('map');
                                         console.log(row);
-                                        const isItemSelected = isSelected(row.name);
-                                        const labelId = `enhanced-table-checkbox-${index}`;
-
                                         return (
-
                                             <TableRow
                                                 key={index}
                                                 ref={tableDataRef}
@@ -348,7 +348,7 @@ export default function LyricsTable({ lyricsData, handleAddToPlayList, handleFin
 
                                                 <TableCell align="left">{moment(row.createdAt).format("LL")}</TableCell>
                                                 <TableCell align="left">
-                                                    <IconButton name={row._id} onClick={(e)=>handleAddToPlayList(e.currentTarget.name)} aria-label="add">
+                                                    <IconButton name={row._id} onClick={(e) => handleAddToPlayList(e.currentTarget.name)} aria-label="add">
                                                         <AddIcon />
                                                     </IconButton>
                                                     <IconButton aria-label="edit" name={row._id} onClick={handleFindOneFromTable}>
@@ -362,6 +362,7 @@ export default function LyricsTable({ lyricsData, handleAddToPlayList, handleFin
                                             </TableRow>
                                         );
                                     })}
+
                                 {emptyRows > 0 && (
                                     <TableRow style={{ height: 53 * emptyRows }}>
                                         <TableCell colSpan={6} />
@@ -371,6 +372,10 @@ export default function LyricsTable({ lyricsData, handleAddToPlayList, handleFin
 
 
                         </Table>
+                        {data.length == 0 && <Grid container justifyContent="center">
+                            <Typography>No Matching Data</Typography>
+                        </Grid>
+                        }
                     </TableContainer>}
                 <TablePagination
                     rowsPerPageOptions={[3, 5, 10]}

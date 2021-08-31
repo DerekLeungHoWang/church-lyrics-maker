@@ -2,7 +2,7 @@
 
 // ******************************
 export const validator = (values, fieldName) => {
-    console.log(fieldName);
+    
     let errors = {};
     switch (fieldName) {
         case "title":
@@ -28,7 +28,7 @@ function validateTitle(title, errors) {
         errors.title = "*必須填寫此欄";
         result = false;
     }
-    console.log('result = ', result);
+    
     return result;
 }
 // ******************************

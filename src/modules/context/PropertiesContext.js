@@ -6,9 +6,9 @@ export const PropertiesContext = createContext()
 function PropertiesContextProvider(props) {
     const initState = {
         title: "",
-        composer:"",
-        lyricist:"",
-        content: ``,
+        composer: "",
+        lyricist: "",
+        content: "",
         img: "",
 
         text: {
@@ -46,7 +46,7 @@ function PropertiesContextProvider(props) {
 
 
     const handleSetProperties = (config, newValue) => {
-        console.log('setting', config, newValue);
+
         setProperties(state => ({
             ...state,
             [config.channel]: {
@@ -58,12 +58,13 @@ function PropertiesContextProvider(props) {
 
     }
     const handleSave = () => {
-        console.log("handling save");
-        let cart = JSON.parse(localStorage.getItem('cart')) || []
-        console.log(properties);
+
+      //  let advancedSetting = JSON.parse(localStorage.getItem('advancedSetting')) || {}
+       //  localStorage.setItem('tempAdvSetting',JSON.stringify(properties))
+
     }
     const handleBlur = e => {
-        console.log(e.target.name);
+
         const { name: fieldName } = e.target;
         const faildFiels = validator(properties, fieldName);
         setErrors(() => ({
@@ -73,7 +74,7 @@ function PropertiesContextProvider(props) {
     };
 
     const classes = useStyles()
-    const value = { properties, setProperties, handleSetProperties, classes, handleSave, initState,errors, setErrors, handleBlur }
+    const value = { properties, setProperties, handleSetProperties, classes, handleSave, initState, errors, setErrors, handleBlur }
 
     return (
 

@@ -14,6 +14,7 @@ import { PropertiesContext } from '../context/PropertiesContext';
 import LyricsTable from './LyricsTable/LyricsTable';
 import axios from 'axios';
 import { API_BASE_URL } from '../constant';
+import DeleteDialog from './util/DeleteDialog';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -46,10 +47,20 @@ export default function Home(props) {
     }, [snack])
     const [active, setActive] = useState("")
     const [loaded, setLoaded] = useState(false);
-    //const { errors, setErrors, handleBlur } = useForm(validator);
+    const [submitting, setSubmitting] = useState(false)
+    const [deleteDialog, setDeleteDialog] = useState({
+        open: false,
+        title: "",
+        heading: "Are you sure ? ",
+        message: "This action will delete the selected item permantenly, press 'Confirm' if you wish to continue.",
+        cancel: "Cancel",
+        confirm: "Confirm",
+        deleting: false,
+    })
+    console.log(deleteDialog);
     const { properties, setProperties, handleSetProperties, errors, setErrors, handleBlur } = useContext(PropertiesContext)
 
-    console.log(properties);
+
     const { vertical, horizontal, open, message } = snack;
     const [playId, setPlayId] = useState();
     const [isEditMode, setIsEditMode] = useState(false);
@@ -60,11 +71,10 @@ export default function Home(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("handleing Submit Home.js", properties);
+        setSubmitting(true)
         let result_title = validator(properties, 'title')
         let result_content = validator(properties, 'content')
         if (result_title.tilte || result_content.content) {
-
             setErrors(state => ({
                 ...state,
                 title: result_title.title ? result_title.title : "",
@@ -74,12 +84,12 @@ export default function Home(props) {
             return;
         }
 
-
+        console.log(properties.content);
         let newLyrics = properties.content
         if (!Array.isArray(properties.content)) {
             newLyrics = properties.content.trim().split("\n\n");
         }
-
+        console.log(newLyrics);
         let lyricsObject = {
 
             title: properties.title,
@@ -92,16 +102,39 @@ export default function Home(props) {
             others: properties.others
 
         }
-        console.log("lyricsObject = ", lyricsObject);
+
         axios.post(`${API_BASE_URL}/lyrics/add`, lyricsObject)
             .then((res) => {
                 getSongList()
                     .then(songList => {
-                        console.log(songList);
 
+                        console.log(cart);
                         let target = songList.data.filter(d => d.title.trim().toLowerCase() === lyricsObject.title.trim().toLowerCase())
-                        console.log(target);
-                        handleAddToPlayList(target[0]._id)
+                        let isExist = cart.length > 0 && cart.some(obj => {
+                            console.log(obj);
+                            console.log(target);
+                            return obj.title.replace(/\s/g, '') === target[0].title.replace(/\s/g, '')
+                        });
+                        if (isExist) {
+                            let newCart = cart
+                            newCart = newCart.map(d => {
+                                if (d._id == target[0]._id) {
+                                    d = properties
+                                }
+                                return d
+                            })
+
+                            setCart(newCart)
+                        }
+                        setProperties(state => ({
+                            ...state,
+                            title: "",
+                            content: "",
+                            composer: "",
+                            lyricist: "",
+                            img: ""
+                        }))
+                        setSubmitting(false)
                     })
 
 
@@ -142,28 +175,31 @@ export default function Home(props) {
     const handleDelete = (e) => {
         let id = +e.currentTarget.name
         let filtered = cart.filter((d, i) => i !== id)
-
         setCart(filtered);
+
     }
     const handleAddToPlayList = id => {
-        console.log("handled id " , id);
+
         let target = lyricsData.filter(d => d._id == id)[0]
-        let isExist = cart.some(obj => obj.title.replace(/\s/g, '') === target.title.replace(/\s/g, ''));
+        target._id = id
+        let isExist = cart.some(obj => obj._id === target._id);
+
+        console.log(target);
         if (isExist) {
-            console.log("yes exist !!!");
-            console.log("target = ", target);
-            let newCart = cart
-            newCart=newCart.map(d => {
-                console.log(d);
-                if (d._id == id) {
-                    d=properties
-                }
-                return d
-            })
-            console.log(newCart);
-            setCart(newCart)
+
+
+            // let newCart = cart
+            // newCart = newCart.map(d => {
+
+            //     if (d._id == id) {
+            //         d = properties
+            //     }
+            //     return d
+            // })
+
+            // setCart(newCart)
         } else {
-            console.log("does not exist");
+
             setSnack(state => ({
                 ...state,
                 open: false
@@ -176,9 +212,17 @@ export default function Home(props) {
     }
 
     const handleDeleteFromTable = e => {
-        let id = e.currentTarget.name
-        axios.delete(`${API_BASE_URL}/lyrics/${id}`)
+        setDeleteDialog(state => ({ ...state, deleting: true }))
+        axios.delete(`${API_BASE_URL}/lyrics/${deleteDialog.id}`)
             .then((res) => {
+                setDeleteDialog(state => ({
+                    ...state,
+                    id: "",
+                    open: false,
+                    deleting: false
+                }))
+                let newCart = cart.filter(d => d._id !== deleteDialog.id)
+                setCart(newCart)
                 getSongList()
             })
     }
@@ -187,48 +231,18 @@ export default function Home(props) {
         let id = e.currentTarget.name
         axios.get(`${API_BASE_URL}/lyrics/${id}`)
             .then((res) => {
+                console.log('res data ', res.data);
                 setProperties(res.data)
 
             })
     }
 
     useEffect(() => {
-        console.log("latest cart",cart);
+
         localStorage.setItem('cart', JSON.stringify(cart))
     }, [cart])
 
-    //======================================================================================initialLoad
-    // useEffect(() => {
-    //     if (cart.length > 0) {
-    //         let target = cart.filter(d => {
-    //             return d.lastPlayed
-    //         })
-
-    //         if (target.length > 0) {
-    //             target = arrayToString(cart, target[0])
-    //             if (target.lastPlayed) {
-    //                 setIsEditMode(true)
-    //             }
-    //             console.log("prop before set = ", properties);
-    //             console.log("target = ", target);
-    //             setProperties(target)
-    //         }
-    //     }
-    // }, [])
-
-
-
-
-
-    console.log(active);
-
-    // useEffect(() => {
-    //     console.log(properties);
-    //     if (!properties.tilte && !properties.content) {
-    //         console.log('set');
-    //         setIsEditMode(false)
-    //     }
-    // }, [properties])
+    
 
     //=============================================================Load Table
     useEffect(() => {
@@ -274,7 +288,7 @@ export default function Home(props) {
                     <LyricsTable
                         lyricsData={lyricsData}
                         handleAddToPlayList={handleAddToPlayList}
-                        handleDeleteFromTable={handleDeleteFromTable}
+                        handleDeleteFromTable={(e, title) => setDeleteDialog(state => ({ ...state, id: e.currentTarget.name, open: true }))}
                         handleFindOneFromTable={handleFindOneFromTable}
                         loadingLyricsData={loadingLyricsData}
                     />
@@ -311,6 +325,7 @@ export default function Home(props) {
                         handleBlur={handleBlur}
                         loaded={loaded}
                         setLoaded={setLoaded}
+                        submitting={submitting}
                     />
                 </Grid>
 
@@ -327,7 +342,10 @@ export default function Home(props) {
                     {message}
                 </Alert>
             </Snackbar>
-
+            <DeleteDialog
+                handleConfirm={handleDeleteFromTable}
+                deleteDialog={deleteDialog}
+                setDeleteDialog={setDeleteDialog} />
 
         </Container>
     )

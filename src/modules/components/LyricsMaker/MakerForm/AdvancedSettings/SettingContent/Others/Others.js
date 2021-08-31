@@ -20,7 +20,7 @@ export default function Others() {
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
     const { properties, setProperties, handleSetProperties } = useContext(PropertiesContext)
 
-    console.log(properties);
+    
 
     function valuetext(value) {
         return `${value}px`;

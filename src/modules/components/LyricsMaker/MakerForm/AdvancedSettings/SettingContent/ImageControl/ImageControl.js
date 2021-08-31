@@ -14,7 +14,7 @@ export default function ImageControl() {
 
 
     const handleTextPropertyChange = propName => (event, newValue) => {
-        console.log(propName);
+        
 
         let config = {
             channel: "image",
@@ -22,7 +22,7 @@ export default function ImageControl() {
         }
         handleSetProperties(config, newValue)
     }
-    console.log(properties);
+    
     return (
         <Container maxWidth={false}>
             <Typography variant="h5">Image Control</Typography>

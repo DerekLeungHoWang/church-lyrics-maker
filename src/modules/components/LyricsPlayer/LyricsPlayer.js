@@ -39,6 +39,7 @@ function LyricsPlayer(props) {
     let textColor = data.text.textColor === "" ? "#000" : data.text.textColor;
     let alignItems = data.text.alignItems
     let justifyContent = data.text.justifyContent
+    let slideAnimation = data.others.slideAnimation
     var timer;
 
 
@@ -103,7 +104,7 @@ function LyricsPlayer(props) {
     const settings = {
         dots: false,
         infinite: false,
-        speed: 300,
+        speed: 0,
         slidesToShow: 1,
         slidesToScroll: 1,
         nextArrow: <SampleNextArrow />,
@@ -166,13 +167,13 @@ function LyricsPlayer(props) {
                             img={data.img}
                         >
                             <div style={{
-                                height: "100%",
+                                height: `${height}vh`,
                                 width: "100%",
                                 display: "flex",
                                 flexDirection: "column",
-                                alignItems: alignItems,
-                                justifyContent: justifyContent,
-
+                                alignItems: justifyContent,
+                                justifyContent: alignItems,
+                                
                             }}>
                                 <span>{title}</span>
                                 <span style={{ fontSize: "50%" }}  >{`${author_1}  ${author_2}`}</span>
@@ -189,20 +190,6 @@ function LyricsPlayer(props) {
                                     fontSize={fontSize}
                                     img={data.img}
                                     height={height}
-                                // style={{
-                                //     width: "100%",
-                                //     display: "flex",
-                                //     alignItems: alignItems,
-                                //     justifyContent: justifyContent,
-                                //     overflowWrap: "break-word",
-                                //     fontSize: `${fontSize}px`,
-                                //     textAlign: "center",
-                                //     background: data.img === "" ? "black" : `url(${data.img})`,
-                                //     zIndex:"-1",
-                                //     backgroundRepeat: "no-repeat",
-                                //     backgroundSize: "cover",
-                                //     minHeight: `${height}vh`
-                                // }}
 
                                 >
                                     <span>{d}</span>

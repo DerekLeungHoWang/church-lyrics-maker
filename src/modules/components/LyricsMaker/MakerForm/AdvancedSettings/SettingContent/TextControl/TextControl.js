@@ -53,7 +53,7 @@ export default function TextControl() {
     }
 
     const handleTextPropertyChange = name => (event, newValue) => {
-        console.log(name, newValue);
+        
 
         let config = {
             channel: "text",
@@ -65,7 +65,7 @@ export default function TextControl() {
     const handlePropertyClick = (e, propValue) => {
         let propName = e.currentTarget.name;
 
-        console.log(propName);
+        
 
         setProperties(state => ({
             ...state,
@@ -83,7 +83,7 @@ export default function TextControl() {
             <Paper elevation={6} style={{ padding: "55px", borderRadius: "8px" }}>
                 <Grid container>
                     {text_properties.map(({ propName, displayName, inputType, marks, min, max, step, options }, i) => {
-                        console.log(properties.text[`${propName}`]);
+                        
                         return (
                             <React.Fragment key={i}>
                                 {inputType == type_slider &&

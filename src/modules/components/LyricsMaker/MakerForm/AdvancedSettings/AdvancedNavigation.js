@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
     // listItem: {
     //     borderLeft: props => {
-    //         console.log(props);
+    //         
     //     }
     // }
 }));
@@ -53,10 +53,10 @@ const sections = [
         name: "Image Control",
         icon: <ImageIcon />
     },
-    {
-        name: "Others",
-        icon: <SettingsIcon />
-    },
+    // {
+    //     name: "Others",
+    //     icon: <SettingsIcon />
+    // },
 ]
 export default function AdvancedNavigation({ active, handleSetActive }) {
     const theme = useTheme();
@@ -66,7 +66,7 @@ export default function AdvancedNavigation({ active, handleSetActive }) {
     const classes = useStyles(styleProps);
     let firstSection = sections[0].name.toLowerCase().replace(/ /g, '')
     let lastSection = sections[sections.length - 1].name.toLowerCase().replace(/ /g, '')
-    console.log(lastSection);
+    
     return (
         <Container className={classes.container}>
             <Paper elevation={3} className={classes.paper}>

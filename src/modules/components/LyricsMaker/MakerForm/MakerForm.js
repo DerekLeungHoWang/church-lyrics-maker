@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormHelperText, Grid, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
+import { Box, Button, CircularProgress, Container, FormHelperText, Grid, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -40,13 +40,20 @@ export default function MakerForm({
     isEditMode,
     setIsEditMode,
     loaded,
-    setLoaded
+    setLoaded,
+    submitting
 }) {
 
     let cart = JSON.parse(localStorage.getItem('cart')) || []
     let lastSize = 60
     let lastColor = "#fff"
     let lastImg = ""
+    let contentValue = JSON.parse(JSON.stringify(properties.content));
+    if (Array.isArray(contentValue)) {
+        contentValue = contentValue.join("\n\n")
+    }
+
+
 
 
     const inputFile = useRef(null)
@@ -210,7 +217,7 @@ export default function MakerForm({
                     multiline
                     rows={20}
                     name="content"
-                    value={properties.content}
+                    value={contentValue}
                     onChange={handleChange}
                     autoComplete="content"
                 />
@@ -234,13 +241,17 @@ export default function MakerForm({
                     container
                     justifyContent="center"
                 >
+
                     <Button
+                        disabled={submitting}
                         size="large"
                         type="submit" variant="outlined" style={{
                             margin: "20px 0px",
 
                         }}>
-                        {isEditMode ? "儲存" : "建立"}
+                         {submitting && <CircularProgress
+                            size={18} style={{ marginRight: "10px" }} />}
+                        Submit
                     </Button>
                 </Grid>
 

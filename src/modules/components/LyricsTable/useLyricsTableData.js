@@ -7,7 +7,7 @@ export default function useLyricsTableData() {
     useEffect(() => {
         axios.get(`${API_BASE_URL}/lyrics/getAll`)
             .then(res => {
-                console.log(res);
+                
                 // setCart(res.data)
             })
     }, [])

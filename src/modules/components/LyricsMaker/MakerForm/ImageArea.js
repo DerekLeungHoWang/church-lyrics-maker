@@ -60,11 +60,11 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
                                         <Grid container justifyContent="center" >
                                             <span
                                                 style={{ color: "#9E9E9E", fontWeight: 600 }}
-                                            >WINDOW + SHIFT + S 選取圖片 <br />
+                                            >WINDOW + SHIFT + S to capture<br />
                                             </span>
                                             <span
                                                 style={{ color: "#9E9E9E", fontWeight: 600 }}
-                                            > CTRL + V 貼上圖片
+                                            > CTRL + V to paste
                                             </span>
                                         </Grid>
 
@@ -83,8 +83,8 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
                                 <Button onClick={handleUpload} disabled={isLoading ? true : false}  >
                                     {isLoading && <CircularProgress
                                         size={18} style={{ marginRight: "10px" }} />}
-                                    確定</Button>
-                                <Button onClick={() => setRawImg("")} disabled={isLoading ? true : false} >取消</Button>
+                                    Confirm</Button>
+                                <Button onClick={() => setRawImg("")} disabled={isLoading ? true : false} >Cancel</Button>
                             </Grid>}
 
                         {lyricsImg &&
@@ -97,7 +97,7 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
                                 {/* <CheckCircleIcon style={{ marginLeft: "11px" }} /> */}
                                 <Button
                                     size="large"
-                                    onClick={handleRemove}  >移除</Button>
+                                    onClick={handleRemove}  >Remove</Button>
 
 
                             </Grid>
