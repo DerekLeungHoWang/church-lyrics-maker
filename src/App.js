@@ -48,7 +48,7 @@ function App({ locale }) {
 
 
             <Route exact path="/:locale/player/:lyricsId" render={props => <LyricsPlayer locale={locale}  {...props} />} />
-            {/* <Redirect to={`/${locale}`} /> */}
+            <Redirect to={`/${locale}`} />
           </Switch>
 
         </Router>
