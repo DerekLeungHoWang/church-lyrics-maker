@@ -16,14 +16,15 @@ import axios from 'axios';
 import { API_BASE_URL } from '../constant';
 import DeleteDialog from './util/DeleteDialog';
 import { DragDropContext } from "react-beautiful-dnd";
-
+import Navbar from './Navbar/Navbar';
+import { FormattedMessage } from 'react-intl';
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 
 
-export default function Home(props) {
+export default function Home({locale}) {
 
     const history = useHistory();
     const [loadingLyricsData, setLoadingLyricsData] = useState(false)
@@ -53,14 +54,14 @@ export default function Home(props) {
     const [deleteDialog, setDeleteDialog] = useState({
         open: false,
         title: "",
-        heading: "Are you sure ? ",
-        message: "This action will delete the selected item permantenly, press 'Confirm' if you wish to continue.",
-        cancel: "Cancel",
-        confirm: "Confirm",
+        heading: <FormattedMessage id="lyricsMaker.deleteAlert.heading" />,
+        message: <FormattedMessage id="lyricsMaker.deleteAlert.message" />,
+        cancel: <FormattedMessage id="lyricsMaker.deleteAlert.cancel" />,
+        confirm: <FormattedMessage id="lyricsMaker.deleteAlert.confirm" />,
         deleting: false,
     })
     console.log(deleteDialog);
-    const { properties, setProperties, handleSetProperties, errors, setErrors, handleBlur } = useContext(PropertiesContext)
+    const { properties, setProperties, handleSetProperties, errors, setErrors, handleBlur, handleSmartSplit } = useContext(PropertiesContext)
 
 
     const { vertical, horizontal, open, message } = snack;
@@ -170,7 +171,7 @@ export default function Home(props) {
             localStorage.setItem('cart', JSON.stringify(cart))
         })
         setPlayId(id)
-        history.push(`/player/${id}`)
+        history.push(`/${locale}/player/${id}`)
     }
 
 
@@ -187,21 +188,7 @@ export default function Home(props) {
         let isExist = cart.some(obj => obj._id === target._id);
 
         console.log(target);
-        if (isExist) {
-
-
-            // let newCart = cart
-            // newCart = newCart.map(d => {
-
-            //     if (d._id == id) {
-            //         d = properties
-            //     }
-            //     return d
-            // })
-
-            // setCart(newCart)
-        } else {
-
+        if (!isExist) {
             setSnack(state => ({
                 ...state,
                 open: false
@@ -297,87 +284,91 @@ export default function Home(props) {
     return (
         <Container maxWidth="xl"
             style={{
-
                 minHeight: "100vh"
             }} >
-            <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="flex-start"
-                style={{ padding: "20px 0px", }}
-            >
+
+            <div>
+                <Navbar locale={locale}/>
                 <Grid
-                    lg={6}
                     container
-                    item
                     direction="row"
                     justifyContent="center"
-                    alignItems="center"
-
+                    alignItems="flex-start"
+                    style={{ padding: "0px 10px 0px 0px", }}
                 >
-                    <LyricsTable
-                        lyricsData={lyricsData}
-                        handleAddToPlayList={handleAddToPlayList}
-                        handleDeleteFromTable={(e, title) => setDeleteDialog(state => ({ ...state, id: e.currentTarget.name, open: true }))}
-                        handleFindOneFromTable={handleFindOneFromTable}
-                        loadingLyricsData={loadingLyricsData}
-                    />
+                    <Grid
+                        lg={6}
+                        container
+                        item
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
 
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <LyricsPlayList
+                    >
+                        <LyricsTable
+                            lyricsData={lyricsData}
+                            handleAddToPlayList={handleAddToPlayList}
+                            handleDeleteFromTable={(e, title) => setDeleteDialog(state => ({ ...state, id: e.currentTarget.name, open: true }))}
+                            handleFindOneFromTable={handleFindOneFromTable}
+                            loadingLyricsData={loadingLyricsData}
+                        />
+
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <LyricsPlayList
+                                properties={properties}
+                                setPlayId={handleSetId}
+                                cart={cart}
+                                handleDelete={handleDelete} />
+
+                        </DragDropContext>
+
+                    </Grid>
+                    <Grid
+                        lg={4}
+                        container
+                        item
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+
+                        <LyricsMaker
+                            setCart={setCart}
                             properties={properties}
-                            setPlayId={handleSetId}
+                            setProperties={setProperties}
+                            handleSubmit={handleSubmit}
+                            isEditMode={isEditMode}
+                            setIsEditMode={setIsEditMode}
                             cart={cart}
-                            handleDelete={handleDelete} />
-
-                    </DragDropContext>
+                            errors={errors}
+                            setErrors={setErrors}
+                            handleBlur={handleBlur}
+                            loaded={loaded}
+                            setLoaded={setLoaded}
+                            submitting={submitting}
+                            loadingOne={loadingOne}
+                            handleSmartSplit={handleSmartSplit}
+                        />
+                    </Grid>
 
                 </Grid>
-                <Grid
-                    lg={4}
-                    container
-                    item
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
+
+                <Snackbar
+
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={open}
+                    message="已覆寫"
+                    key={vertical + horizontal}
                 >
-
-                    <LyricsMaker
-                        setCart={setCart}
-                        properties={properties}
-                        setProperties={setProperties}
-                        handleSubmit={handleSubmit}
-                        isEditMode={isEditMode}
-                        setIsEditMode={setIsEditMode}
-                        cart={cart}
-                        errors={errors}
-                        setErrors={setErrors}
-                        handleBlur={handleBlur}
-                        loaded={loaded}
-                        setLoaded={setLoaded}
-                        submitting={submitting}
-                        loadingOne={loadingOne}
-                    />
-                </Grid>
-
-            </Grid>
-
-            <Snackbar
-
-                anchorOrigin={{ vertical, horizontal }}
-                open={open}
-                message="已覆寫"
-                key={vertical + horizontal}
-            >
-                <Alert severity="success">
-                    {message}
-                </Alert>
-            </Snackbar>
-            <DeleteDialog
-                handleConfirm={handleDeleteFromTable}
-                deleteDialog={deleteDialog}
-                setDeleteDialog={setDeleteDialog} />
+                    <Alert severity="success">
+                        {message}
+                    </Alert>
+                </Snackbar>
+                <DeleteDialog
+                    handleConfirm={handleDeleteFromTable}
+                    deleteDialog={deleteDialog}
+                    setDeleteDialog={setDeleteDialog} />
+            </div>
 
         </Container>
     )

@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Container, Grid, List, ListItem, ListIte
 import React, { useEffect, useState } from 'react'
 import useImage from '../../useImage';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
+import { FormattedMessage } from 'react-intl';
 
 export default function ImageArea({ classes, setProperties, properties, errors, setErrors,
     loaded, setLoaded
@@ -55,18 +55,19 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
                                         src={rawImg} alt="ad" width="100%" height="100%" />}
 
                                     {!rawImg && !lyricsImg &&
-                                      
-                                            <Grid container justifyContent="center" >
-                                                <span
-                                                    style={{ color: "#9E9E9E", fontWeight: 600 }}
-                                                >WINDOW + SHIFT + S to capture<br />
-                                                </span>
-                                                <span
-                                                    style={{ color: "#9E9E9E", fontWeight: 600 }}
-                                                > CTRL + V to paste
-                                                </span>
-                                            </Grid>
-                                     
+
+                                        <Grid container justifyContent="center" >
+                                            <span
+                                                style={{ color: "#9E9E9E", fontWeight: 600 }}
+                                            ><FormattedMessage id="lyricsMaker.capture.message_1" /><br />
+                                            </span>
+                                            <span
+                                                style={{ color: "#9E9E9E", fontWeight: 600 }}
+                                            >
+                                                <FormattedMessage id="lyricsMaker.capture.message_2" />
+                                            </span>
+                                        </Grid>
+
 
                                     }
 

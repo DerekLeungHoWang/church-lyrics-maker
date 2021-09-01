@@ -5,7 +5,8 @@ import {
   HashRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 import LyricsPlayer from './modules/components/LyricsPlayer/LyricsPlayer';
 import { useState } from 'react';
@@ -28,7 +29,7 @@ const theme = createTheme({
   },
 
 })
-function App() {
+function App({ locale }) {
 
 
 
@@ -38,8 +39,16 @@ function App() {
       <PropertiesContextProvider>
         <Router>
           <Switch>
-            <Route exact path={"/"} render={props => <Home  {...props} />} />
-            <Route exact path="/player/:lyricsId" component={LyricsPlayer} />
+            <Route exact path={"/:locale([a-z]{2})"} >
+              {(props) => {
+                return <Home locale={locale}  {...props} />
+              }}
+            </Route>
+
+
+
+            <Route exact path="/:locale/player/:lyricsId" render={props => <LyricsPlayer locale={locale}  {...props} />} />
+            {/* <Redirect to={`/${locale}`} /> */}
           </Switch>
 
         </Router>

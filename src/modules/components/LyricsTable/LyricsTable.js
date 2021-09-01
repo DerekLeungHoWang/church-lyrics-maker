@@ -28,6 +28,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import gsap from 'gsap'
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { FormattedMessage } from 'react-intl';
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -55,12 +56,12 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'title', numeric: false, disablePadding: false, label: 'Title' },
-    { id: 'composer', numeric: true, disablePadding: false, label: 'Composer' },
-    { id: 'lyricist', numeric: true, disablePadding: false, label: 'Lyricist' },
-    { id: 'createdAt', numeric: true, disablePadding: false, label: 'Created At' },
+    { id: 'title', numeric: false, disablePadding: false, label: <FormattedMessage id="lyricsTable.column.title" /> },
+    { id: 'composer', numeric: true, disablePadding: false, label: <FormattedMessage id="lyricsTable.column.composer" />},
+    { id: 'lyricist', numeric: true, disablePadding: false, label: <FormattedMessage id="lyricsTable.column.lyricist" /> },
+    { id: 'createdAt', numeric: true, disablePadding: false, label: <FormattedMessage id="lyricsTable.column.createdAt" /> },
     //   { id: 'lastModifiedAt', numeric: true, disablePadding: false, label: 'Last Modified At' },
-    { id: 'actions', numeric: true, disablePadding: false, label: 'Actions' },
+    { id: 'actions', numeric: true, disablePadding: false, label: <FormattedMessage id="lyricsTable.column.actions" />},
 ];
 
 function EnhancedTableHead(props) {
@@ -102,7 +103,7 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
     classes: PropTypes.object.isRequired,
-    numSelected: PropTypes.number.isRequired,
+    // numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
     onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
@@ -143,7 +144,7 @@ const EnhancedTableToolbar = ({ handleSearch, searchTerm, setSearchTerm }) => {
     return (
         <Grid container direction="row" justifyContent="space-between">
             <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                All Songs
+                <FormattedMessage id="lyricsTable.heading" />
             </Typography>
 
             <div className={classes.searchField}>
@@ -163,7 +164,7 @@ const EnhancedTableToolbar = ({ handleSearch, searchTerm, setSearchTerm }) => {
                                     ><CancelIcon style={{ fontSize: '18px' }} /></IconButton>
                                 )
                             }}
-                            type="text" onChange={handleSearch} id="input-with-icon-grid" label="Search..." />
+                            type="text" onChange={handleSearch} id="input-with-icon-grid" label={<FormattedMessage id="lyricsTable.search" />} />
                     </Grid>
                 </Grid>
             </div>
@@ -174,7 +175,7 @@ const EnhancedTableToolbar = ({ handleSearch, searchTerm, setSearchTerm }) => {
 };
 
 EnhancedTableToolbar.propTypes = {
-    numSelected: PropTypes.number.isRequired,
+    // numSelected: PropTypes.number.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -374,7 +375,7 @@ export default function LyricsTable({
 
                         </Table>
                         {data.length == 0 && <Grid style={{ height: "100px" }} container alignItems="center" justifyContent="center">
-                            <Typography style={{ fontWeight: "600", color: "grey" }}>No Matching Data</Typography>
+                            <Typography style={{ fontWeight: "600", color: "grey" }}>     <FormattedMessage id="lyricsTable.noData" /></Typography>
                         </Grid>
                         }
                     </TableContainer>}

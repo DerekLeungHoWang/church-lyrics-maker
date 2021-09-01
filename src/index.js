@@ -4,10 +4,28 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { IntlProvider } from 'react-intl';
+import en from './i18n/en';
+import zh from './i18n/zh';
+
+if (localStorage.getItem('locale') == null)
+  localStorage.setItem('locale', navigator.language)
+
+let locale = localStorage.getItem('locale')
+console.log('locale =', locale);
+let messages;
+if (locale.includes('zh')) {
+  messages = zh;
+} else {
+  messages = en;
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <CssBaseline />
-    <App />
+    <IntlProvider locale={locale} key={locale} messages={messages}   >
+      <App locale={locale} />
+    </IntlProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

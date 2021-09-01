@@ -5,6 +5,8 @@ import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter';
 import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight';
+import { FormattedMessage } from 'react-intl';
+
 export const text_control = "textcontrol"
 export const image_control = "imagecontrol"
 export const others_settings = "others"
@@ -18,7 +20,7 @@ export const type_switch = "switch"
 export const text_properties = [
     {
         "propName": "fontSize",
-        "displayName": "Font Size",
+        "displayName":  <FormattedMessage id="lyricsMaker.advance.fontSize" />,
         "inputType": type_slider,
         "marks": [
             {
@@ -43,7 +45,7 @@ export const text_properties = [
 
     {
         "propName": "fontWeight",
-        "displayName": "Font Weight",
+        "displayName": <FormattedMessage id="lyricsMaker.advance.fontWeight" />,
         "inputType": type_slider,
         "marks": [
             {
@@ -86,7 +88,7 @@ export const text_properties = [
     },
     {
         "propName": "justifyContent",
-        "displayName": "Horizontal Alignment",
+        "displayName": <FormattedMessage id="lyricsMaker.advance.justifyContent" />,
         "inputType": "buttonGroup",
         "options": [
             {
@@ -105,7 +107,7 @@ export const text_properties = [
     },
     {
         "propName": "alignItems",
-        "displayName": "Vertical Alignment",
+        "displayName": <FormattedMessage id="lyricsMaker.advance.alignItems" />,
         "inputType": "buttonGroup",
         "options": [
             {
@@ -124,7 +126,7 @@ export const text_properties = [
     },
     {
         "propName": "color",
-        "displayName": "Text Colour",
+        "displayName": <FormattedMessage id="lyricsMaker.advance.textColor" />,
         "inputType": "color",
 
     },
@@ -133,7 +135,7 @@ export const image_properties = [
 
     {
         "propName": "height",
-        "displayName": "Height",
+        "displayName": <FormattedMessage id="lyricsMaker.advance.height" />,
         "inputType": type_slider,
         "marks": [
             {
@@ -157,7 +159,7 @@ export const image_properties = [
     },
     {
         "propName": "opacity",
-        "displayName": "Opacity",
+        "displayName": <FormattedMessage id="lyricsMaker.advance.opacity" />,
         "inputType": type_slider,
         "marks": [
             {
@@ -181,7 +183,7 @@ export const image_properties = [
     },
     {
         "propName": "blurriness",
-        "displayName": "blurriness",
+        "displayName": <FormattedMessage id="lyricsMaker.advance.blurriness" />,
         "inputType": type_slider,
         "marks": [
             {

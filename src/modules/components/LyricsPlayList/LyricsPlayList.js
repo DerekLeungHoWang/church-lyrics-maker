@@ -10,6 +10,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import EditIcon from '@material-ui/icons/Edit';
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import RootRef from "@material-ui/core/RootRef";
+import { FormattedMessage } from 'react-intl';
 
 export default function LyricsPlayList({ setPlayId, cart, handleDelete, properties }) {
     const ref = React.createRef();
@@ -19,10 +20,10 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
 
                 <Grid container justifyContent="space-between">
                     <Box ml={4} pt={3}>
-                        <Typography variant="h6" component="div" >Playlist</Typography>
+                        <Typography variant="h6" component="div" ><FormattedMessage id="lyricsPlaylist.heading" /></Typography>
                     </Box>
                     <Box mr={4} pt={3}>
-                        <Typography style={{opacity:".6", fontWeight:"600"}}   >Drag and Drop to Re-order the list</Typography>
+                        <Typography style={{ opacity: ".6", fontWeight: "600" }}   ><FormattedMessage id="lyricsPlaylist.dragInstruction" /></Typography>
                     </Box>
                 </Grid>
 
@@ -107,7 +108,7 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
                                     <NoDataSvg style={{ height: "100px", width: "100px" }} />
 
                                     <p style={{ fontWeight: "600", color: "grey" }} >
-                                        No Data
+                                        <FormattedMessage id="lyricsTable.noData" />
                                     </p>
                                 </Grid>}
                                 {provided.placeholder}

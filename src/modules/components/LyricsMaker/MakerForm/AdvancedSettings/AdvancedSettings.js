@@ -16,6 +16,7 @@ import AdvancedNavigation from './AdvancedNavigation';
 import SettingContainer from './SettingContainer';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { PropertiesContext } from '../../../../context/PropertiesContext';
+import { FormattedMessage } from 'react-intl';
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: 'relative',
@@ -33,7 +34,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function AdvancedSettings() {
-    const { properties, setProperties, handleSetProperties,handleSave } = useContext(PropertiesContext)
+    const { properties, setProperties, handleSetProperties, handleSave } = useContext(PropertiesContext)
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -51,7 +52,7 @@ export default function AdvancedSettings() {
     return (
         <div>
             <Button startIcon={<SettingsIcon />} variant="outlined" color="secondary" onClick={handleClickOpen}>
-                Advanced
+                <FormattedMessage id="lyricsMaker.advance.label" />
             </Button>
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
                 <AppBar className={classes.appBar}>
@@ -60,10 +61,10 @@ export default function AdvancedSettings() {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            Advanced Settings
+                        <FormattedMessage id="lyricsMaker.advance.label" />
                         </Typography>
                         <Button autoFocus color="inherit" onClick={handleClose}>
-                            save
+                        <FormattedMessage id="lyricsMaker.advance.save" />
                         </Button>
                     </Toolbar>
                 </AppBar>

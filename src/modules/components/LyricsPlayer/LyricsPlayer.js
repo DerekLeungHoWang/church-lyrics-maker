@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function LyricsPlayer(props) {
+    const { locale } = props
     const classes = useStyles()
     let lyricsId = +props.match.params.lyricsId
     const { properties, setProperties, handleSetProperties } = useContext(PropertiesContext)

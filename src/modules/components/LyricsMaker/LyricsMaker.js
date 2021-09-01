@@ -16,7 +16,8 @@ export default function LyricsMaker({
     setIsEditMode,
     cart,
     submitting,
-    loadingOne
+    loadingOne,
+    handleSmartSplit
 
 }) {
     return (
@@ -38,6 +39,7 @@ export default function LyricsMaker({
                     handleBlur={handleBlur}
                     submitting={submitting}
                     loadingOne={loadingOne}
+                    handleSmartSplit={handleSmartSplit}
                 />
             </Paper>
         </Container>

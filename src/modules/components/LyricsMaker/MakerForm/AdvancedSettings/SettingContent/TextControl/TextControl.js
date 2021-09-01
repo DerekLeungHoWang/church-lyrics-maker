@@ -6,7 +6,7 @@ import BrushIcon from '@material-ui/icons/Brush';
 import { useState } from 'react';
 import { ChromePicker } from 'react-color';
 import styled from 'styled-components';
-
+import { FormattedMessage } from 'react-intl';
 const AlignButton = styled(Button)`
     background: ${({ theme, active, name, propvalue }) => {
         if (propvalue == active[`${name}`]) {
@@ -78,8 +78,8 @@ export default function TextControl() {
 
     return (
         <Container maxWidth={false}>
-            <Typography variant="h5">Text Control</Typography>
-            <Typography style={{ marginTop: "5px", marginBottom: "20px", opacity: "0.7" }} >Text related properties</Typography>
+            <Typography variant="h5"><FormattedMessage id="lyricsMaker.advance.textControl" /></Typography>
+            <Typography style={{ marginTop: "5px", marginBottom: "20px", opacity: "0.7" }} ><FormattedMessage id="lyricsMaker.advance.textControl.description" /></Typography>
             <Paper elevation={3} style={{ padding: "55px", borderRadius: "18px" }}>
                 <Grid container>
                     {text_properties.map(({ propName, displayName, inputType, marks, min, max, step, options }, i) => {

@@ -12,7 +12,7 @@ import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import styled from 'styled-components';
 import SettingsIcon from '@material-ui/icons/Settings';
 import TextFormatIcon from '@material-ui/icons/TextFormat';
-
+import { FormattedMessage } from 'react-intl';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -46,11 +46,11 @@ const StyledListItem = styled(ListItem)`
 
 const sections = [
     {
-        name: "Text Control",
+        name: "textControl",
         icon: <TextFormatIcon />
     },
     {
-        name: "Image Control",
+        name: "imageControl",
         icon: <ImageIcon />
     },
     // {
@@ -80,7 +80,7 @@ export default function AdvancedNavigation({ active, handleSetActive }) {
                                         {s.icon}
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary={s.name} />
+                                <ListItemText primary={<FormattedMessage id={`lyricsMaker.advance.${s.name}`} />} />
                             </StyledListItem>
                             <Divider />
                         </div>

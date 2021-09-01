@@ -43,6 +43,38 @@ function PropertiesContextProvider(props) {
         title: "",
         content: ""
     });
+    const handleSmartSplit = () => {
+        let content = properties.content
+        console.log(content);
+        if (Array.isArray(content)) {
+            content = content.join("\n\n")
+        }
+        content = content.split(/\r?\n/);
+        let myarray = [];
+        for (let i = 0; i < content.length; i += 2) {
+
+            if (content[i] == "") {
+                console.log("the if statement");
+                i++;
+
+            }
+            if (content[i + 1] == undefined || content[i + 1] == "") {
+                myarray.push(content[i]); //this doesn't strip '\n'
+            } else {
+
+                myarray.push(content[i] + "\n" + content[i + 1]); //this doesn't strip '\n'
+            }
+
+        }
+        console.log(myarray);
+        setProperties(state => ({
+            ...state,
+            content: myarray
+        }))
+
+
+    }
+
 
 
     const handleSetProperties = (config, newValue) => {
@@ -59,8 +91,8 @@ function PropertiesContextProvider(props) {
     }
     const handleSave = () => {
 
-      //  let advancedSetting = JSON.parse(localStorage.getItem('advancedSetting')) || {}
-       //  localStorage.setItem('tempAdvSetting',JSON.stringify(properties))
+        //  let advancedSetting = JSON.parse(localStorage.getItem('advancedSetting')) || {}
+        //  localStorage.setItem('tempAdvSetting',JSON.stringify(properties))
 
     }
     const handleBlur = e => {
@@ -74,7 +106,7 @@ function PropertiesContextProvider(props) {
     };
 
     const classes = useStyles()
-    const value = { properties, setProperties, handleSetProperties, classes, handleSave, initState, errors, setErrors, handleBlur }
+    const value = { properties, setProperties, handleSetProperties, classes, handleSave, initState, errors, setErrors, handleBlur, handleSmartSplit }
 
     return (
 

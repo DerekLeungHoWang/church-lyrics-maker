@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Container, FormHelperText, Grid, InputAdornment, MenuItem, Paper, TextField, Typography } from '@material-ui/core'
+import { Box, Button, CircularProgress, Container, FormHelperText, Grid, InputAdornment, MenuItem, Paper, TextField, Tooltip, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,6 +9,8 @@ import { validator } from './Validator';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AdvancedSettings from './AdvancedSettings/AdvancedSettings';
 import gsap from 'gsap'
+import FlashOnIcon from '@material-ui/icons/FlashOn';
+import { FormattedMessage } from 'react-intl';
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -43,7 +45,8 @@ export default function MakerForm({
     loaded,
     setLoaded,
     submitting,
-    loadingOne
+    loadingOne,
+    handleSmartSplit
 }) {
     const formRef = useRef(null)
     let cart = JSON.parse(localStorage.getItem('cart')) || []
@@ -54,8 +57,7 @@ export default function MakerForm({
     if (Array.isArray(contentValue)) {
         contentValue = contentValue.join("\n\n")
     }
-
-
+    let countOfRows = contentValue.split(/\r*\n/).length
 
 
     const inputFile = useRef(null)
@@ -104,6 +106,14 @@ export default function MakerForm({
 
     }, [loadingOne])
 
+    // const handleSmartSplit = () => {
+    //     let content = properties.content
+    //     content = content.map(d => {
+    //         console.log(d);
+    //     })
+
+    // }
+
 
     return (
         <Container >
@@ -115,7 +125,7 @@ export default function MakerForm({
                 style={{ padding: "20px 0px 0px 0px" }}
             >
                 <Typography component="h6" variant="h6" >
-                    Lyrics
+                    <FormattedMessage id="lyricsMaker.heading" />
                 </Typography>
                 <AdvancedSettings />
                 <Button variant="outlined" color="primary" onClick={() => setProperties(state => (
@@ -123,7 +133,7 @@ export default function MakerForm({
                         ...state,
                         title: "", content: "", composer: "", lyricist: "", img: ""
 
-                    }))} >Clear</Button>
+                    }))} >  <FormattedMessage id="lyricsMaker.clear.label" /></Button>
             </Grid>
 
 
@@ -143,7 +153,7 @@ export default function MakerForm({
 
                         fullWidth
                         id="title"
-                        label="Song Name"
+                        label={ <FormattedMessage id="lyricsMaker.songName.label" />}
                         name="title"
                         autoComplete="title"
                         onChange={handleChange}
@@ -176,7 +186,7 @@ export default function MakerForm({
                                     variant="outlined"
                                     margin="normal"
                                     name="composer"
-                                    label="Composer"
+                                    label={ <FormattedMessage id="lyricsMaker.composer.label" />}
                                     id="cardCvc"
                                     value={properties.composer}
                                     onChange={handleChange}
@@ -198,7 +208,7 @@ export default function MakerForm({
                                     variant="outlined"
                                     margin="normal"
                                     name="lyricist"
-                                    label="Lyricist"
+                                    label={ <FormattedMessage id="lyricsMaker.lyricist.label" />}
                                     id="lyricist"
                                     value={properties.lyricist}
                                     onChange={handleChange}
@@ -210,23 +220,32 @@ export default function MakerForm({
                         </Grid>
                     </Box>
 
-                    <TextField
-                        error={errors.content ? true : false}
-                        helperText={errors.content}
-                        onBlur={handleBlur}
+                    <div style={{ position: "relative" }}>
+                        <TextField
+                            error={errors.content ? true : false}
+                            helperText={errors.content}
+                            onBlur={handleBlur}
+                            fullWidth
+                            variant="outlined"
+                            id="standard-multiline-flexible"
+                            label={ <FormattedMessage id="lyricsMaker.content.label" />}
+                            multiline
+                            rows={18}
+                            name="content"
+                            value={contentValue}
+                            onChange={handleChange}
+                            autoComplete="content"
 
-                        fullWidth
-                        variant="outlined"
-                        id="standard-multiline-flexible"
-                        label="Lyrics"
-                        multiline
-                        rows={20}
-                        name="content"
-                        value={contentValue}
-                        onChange={handleChange}
-                        autoComplete="content"
-                    />
-
+                        />
+                        <Tooltip title={<FormattedMessage id="lyricsMaker.flash.tooltip" />} aria-label="add">
+                            <IconButton onClick={handleSmartSplit} style={{
+                                position: "absolute",
+                                top: "10px", right: countOfRows > 10 ? "35px" : "10px"
+                            }}>
+                                <FlashOnIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
 
                     {/* <FontSizeSlider properties={properties} setProperties={setProperties} /> */}
                     <ImageArea
@@ -256,7 +275,7 @@ export default function MakerForm({
                             }}>
                             {submitting && <CircularProgress
                                 size={18} style={{ marginRight: "10px" }} />}
-                            Submit
+                         <FormattedMessage id="lyricsMaker.submit.label" />
                         </Button>
                     </Grid>
 

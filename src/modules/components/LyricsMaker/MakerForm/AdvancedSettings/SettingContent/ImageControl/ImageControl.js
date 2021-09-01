@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Button, ButtonGroup, Container, Grid, IconButton, Paper, Slider, TextField, Typography } from '@material-ui/core'
 import { image_properties, type_slider } from '../SettingConstant'
 import { PropertiesContext } from '../../../../../../context/PropertiesContext';
-
+import { FormattedMessage } from 'react-intl';
 export default function ImageControl() {
 
 
@@ -25,8 +25,8 @@ export default function ImageControl() {
     
     return (
         <Container maxWidth={false}>
-            <Typography variant="h5">Image Control</Typography>
-            <Typography style={{ marginTop: "5px", marginBottom: "20px", opacity: "0.7" }} >Image related properties</Typography>
+            <Typography variant="h5"><FormattedMessage id="lyricsMaker.advance.imageControl" /></Typography>
+            <Typography style={{ marginTop: "5px", marginBottom: "20px", opacity: "0.7" }} ><FormattedMessage id="lyricsMaker.advance.imageControl.description" /></Typography>
             <Paper elevation={3} style={{ padding: "55px", borderRadius: "18px" }}>
 
                 <Grid container>
