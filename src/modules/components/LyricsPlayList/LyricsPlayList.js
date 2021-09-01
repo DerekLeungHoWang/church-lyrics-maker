@@ -8,80 +8,114 @@ import { ReactComponent as NoDataSvg } from '../../../Images/noData.svg'
 import LyricsPlayer from '../LyricsPlayer/LyricsPlayer';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import EditIcon from '@material-ui/icons/Edit';
-export default function LyricsPlayList({ setPlayId, cart, handleDelete, properties }) {
+import { Droppable, Draggable } from "react-beautiful-dnd";
+import RootRef from "@material-ui/core/RootRef";
 
+export default function LyricsPlayList({ setPlayId, cart, handleDelete, properties }) {
+    const ref = React.createRef();
     return (
         <Container maxWidth={false} style={{ padding: "0px" }}>
             <Paper elevation={3} style={{ position: "relative", marginBottom: "20px", borderRadius: "18px" }} >
-                <Box ml={3} pt={3}>
-                    <Typography variant="h6" component="div" >Playlist</Typography>
-                </Box>
-                <List dense={false} >
-                    {cart.length > 0 ? cart.map(({ title, composer, lyricist, content }, i) => {
-                        if (Array.isArray(content)) {
-                            content = content.join(",")
 
-                        }
-                        content = content.substring(0, 30)
-                        return (<ListItem key={i}>
-                            <ListItemAvatar>
-                                <Avatar>
-                                    <MusicNoteIcon />
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={
-                                    <Grid container
-                                    >
-                                        <span style={{ paddingRight: "10px", fontWeight: properties.title === title ? "600" : "unset" }} >
-                                            {title}</span>
-                                    </Grid>
-                                }
-                                secondary={
-                                    <Grid container component="span" >
+                <Grid container justifyContent="space-between">
+                    <Box ml={4} pt={3}>
+                        <Typography variant="h6" component="div" >Playlist</Typography>
+                    </Box>
+                    <Box mr={4} pt={3}>
+                        <Typography style={{opacity:".6", fontWeight:"600"}}   >Drag and Drop to Re-order the list</Typography>
+                    </Box>
+                </Grid>
 
-                                        <Typography component="span" >
-                                            {content} ...
-                                        </Typography >
+                <Droppable droppableId="droppable">
+                    {(provided,) => {
+                        return (
+
+                            <List dense={false} ref={provided.innerRef}>
+                                {cart.length > 0 ? cart.map(({ title, composer, lyricist, content }, i) => {
+                                    if (Array.isArray(content)) {
+                                        content = content.join(",")
+
+                                    }
+                                    content = content.substring(0, 30)
+                                    return (
+                                        <Draggable key={i} draggableId={`${title}_${i}`} index={i}>
+                                            {(provided, snapshot) => {
+                                                return (
+                                                    <ListItem
+                                                        ContainerComponent="li"
+                                                        ContainerProps={{ ref: provided.innerRef }}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+
+                                                        key={i}>
+                                                        <ListItemAvatar>
+                                                            <Avatar>
+                                                                <MusicNoteIcon />
+                                                            </Avatar>
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary={
+                                                                <Grid container
+                                                                >
+                                                                    <span style={{ paddingRight: "10px", fontWeight: properties.title === title ? "600" : "unset" }} >
+                                                                        {title}</span>
+                                                                </Grid>
+                                                            }
+                                                            secondary={
+                                                                <Grid container component="span" >
+
+                                                                    <Typography component="span" >
+                                                                        {content} ...
+                                                                    </Typography >
 
 
 
-                                    </Grid>
-                                }
-                            />
+                                                                </Grid>
+                                                            }
+                                                        />
 
 
-                            <ListItemSecondaryAction>
 
-                                <IconButton
-                                    name={i}
-                                    onClick={(e) => setPlayId(e)}
-                                    aria-label="play">
-                                    <PlayCircleFilledIcon />
-                                </IconButton>
 
-                                <IconButton
-                                    name={i} aria-label="delete"
-                                    onClick={(e) => handleDelete(e)}
+                                                        <IconButton
+                                                            name={i}
+                                                            onClick={(e) => setPlayId(e)}
+                                                            aria-label="play">
+                                                            <PlayCircleFilledIcon />
+                                                        </IconButton>
+
+                                                        <IconButton
+                                                            name={i} aria-label="delete"
+                                                            onClick={(e) => handleDelete(e)}
+                                                        >
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                        <ListItemSecondaryAction />
+                                                    </ListItem>
+                                                )
+                                            }}
+                                        </Draggable>
+
+                                    )
+                                }) : <Grid
+                                    container
+                                    direction="column"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    style={{ height: "100%" }}
                                 >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </ListItemSecondaryAction>
-                        </ListItem>)
-                    }) : <Grid
-                        container
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        style={{ height: "200px" }}
-                    >
-                        <NoDataSvg style={{ height: "100px", width: "100px" }} />
+                                    <NoDataSvg style={{ height: "100px", width: "100px" }} />
 
-                        <p style={{ fontWeight: "600", color: "grey" }} >
-                            沒有資料
-                        </p>
-                    </Grid>}
-                </List>
+                                    <p style={{ fontWeight: "600", color: "grey" }} >
+                                        No Data
+                                    </p>
+                                </Grid>}
+                                {provided.placeholder}
+                            </List>
+
+                        )
+                    }}
+                </Droppable>
             </Paper>
 
 

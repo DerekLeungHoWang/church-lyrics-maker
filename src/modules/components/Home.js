@@ -15,6 +15,7 @@ import LyricsTable from './LyricsTable/LyricsTable';
 import axios from 'axios';
 import { API_BASE_URL } from '../constant';
 import DeleteDialog from './util/DeleteDialog';
+import { DragDropContext } from "react-beautiful-dnd";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -47,6 +48,7 @@ export default function Home(props) {
     }, [snack])
     const [active, setActive] = useState("")
     const [loaded, setLoaded] = useState(false);
+    const [loadingOne, setLoadingOne] = useState(false);
     const [submitting, setSubmitting] = useState(false)
     const [deleteDialog, setDeleteDialog] = useState({
         open: false,
@@ -71,7 +73,7 @@ export default function Home(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setSubmitting(true)
+
         let result_title = validator(properties, 'title')
         let result_content = validator(properties, 'content')
         if (result_title.tilte || result_content.content) {
@@ -83,7 +85,7 @@ export default function Home(props) {
             }))
             return;
         }
-
+        setSubmitting(true)
         console.log(properties.content);
         let newLyrics = properties.content
         if (!Array.isArray(properties.content)) {
@@ -228,12 +230,13 @@ export default function Home(props) {
     }
 
     const handleFindOneFromTable = e => {
+        setLoadingOne(true)
         let id = e.currentTarget.name
         axios.get(`${API_BASE_URL}/lyrics/${id}`)
             .then((res) => {
                 console.log('res data ', res.data);
                 setProperties(res.data)
-
+                setLoadingOne(false)
             })
     }
 
@@ -242,7 +245,7 @@ export default function Home(props) {
         localStorage.setItem('cart', JSON.stringify(cart))
     }, [cart])
 
-    
+
 
     //=============================================================Load Table
     useEffect(() => {
@@ -258,8 +261,36 @@ export default function Home(props) {
                 return res
             })
     }
+    const reorder = (list, startIndex, endIndex) => {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
 
+        return result;
+    };
+    const onDragEnd = ({ destination, source, draggableId }) => {
 
+        console.log('on drag end : ', destination, source, draggableId);
+        if (!destination) {
+            console.log("no destination");
+            return;
+        }
+
+        if (destination.draggableId === source.draggableId &&
+            destination.index === source.index
+        ) {
+            console.log("equal return");
+            return;
+        }
+
+        const newCart = reorder(
+            cart,
+            source.index,
+            destination.index
+        );
+        console.log("setting new cart");
+        setCart(newCart)
+    }
 
 
 
@@ -293,14 +324,14 @@ export default function Home(props) {
                         loadingLyricsData={loadingLyricsData}
                     />
 
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <LyricsPlayList
+                            properties={properties}
+                            setPlayId={handleSetId}
+                            cart={cart}
+                            handleDelete={handleDelete} />
 
-                    <LyricsPlayList
-                        properties={properties}
-                        setPlayId={handleSetId}
-                        cart={cart}
-                        handleDelete={handleDelete} />
-
-
+                    </DragDropContext>
 
                 </Grid>
                 <Grid
@@ -326,6 +357,7 @@ export default function Home(props) {
                         loaded={loaded}
                         setLoaded={setLoaded}
                         submitting={submitting}
+                        loadingOne={loadingOne}
                     />
                 </Grid>
 

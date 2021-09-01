@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StyledListItem = styled(ListItem)`
-     border-left: ${({ active, name, theme }) => active === name ? `2px solid #01BFA6` : "unset"};
+     border-left: ${({ active, name, theme }) => active === name ? `2px solid #000` : "unset"};
      border-top-left-radius:${({ active, name, theme, firstsection }) => firstsection === name ? `8px` : "unset"};;
      border-bottom-left-radius:${({ active, name, theme, lastsection }) => lastsection === name ? `8px` : "unset"};;
   

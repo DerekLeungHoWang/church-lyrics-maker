@@ -21,7 +21,7 @@ const theme = createTheme({
       //  contrastText: "#fff" //button text white instead of black
     },
     secondary: {
-      main: "#01BFA6"
+      main: "#000"
 
     }
 

@@ -180,26 +180,26 @@ export const image_properties = [
 
     },
     {
-        "propName": "filter",
-        "displayName": "Filter",
+        "propName": "blurriness",
+        "displayName": "blurriness",
         "inputType": type_slider,
         "marks": [
             {
-                value: 20,
-                label: '20px',
+                value: 0,
+                label: '0px',
             },
 
+            {
+                value: 30,
+                label: '30px',
+            },
             {
                 value: 60,
                 label: '60px',
             },
-            {
-                value: 90,
-                label: '90px',
-            },
         ],
-        "min": 20,
-        "max": 90,
+        "min": 0,
+        "max": 60,
         "step": 1,
 
     },

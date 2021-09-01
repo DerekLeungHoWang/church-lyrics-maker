@@ -18,31 +18,29 @@ const useStyles = makeStyles((theme) => ({
 function LyricsPlayer(props) {
     const classes = useStyles()
     let lyricsId = +props.match.params.lyricsId
-
-
     const { properties, setProperties, handleSetProperties } = useContext(PropertiesContext)
     let cart = JSON.parse(localStorage.getItem('cart'))
-
-
-
     let data = cart.filter((d, i) => (i === lyricsId))[0]
-
     const [fullScreen, setFullScreen] = useState(false)
     const [mouseMove, setMouseMove] = useState(false)
     const slider = useRef(null);
     const handle = useFullScreenHandle();
-
     let title = data.title;
     let author_1 = data.composer
     let author_2 = data.lyricist
-    let fontSize = data.text.fontSize
-    let textColor = data.text.textColor === "" ? "#000" : data.text.textColor;
-    let alignItems = data.text.alignItems
-    let justifyContent = data.text.justifyContent
-    let slideAnimation = data.others.slideAnimation
-    var timer;
+    let timer;
 
-
+    const cssSettings = {
+        img: data.img,
+        fontSize: data.text.fontSize,
+        fontWeight: data.text.fontWeight,
+        textColor: data.text.textColor === "" ? "#000" : data.text.textColor,
+        alignItems: data.text.alignItems,
+        justifyContent: data.text.justifyContent,
+        height: data.image.height,
+        opacity: data.image.opacity / 100,
+        blurriness: data.image.blurriness
+    }
 
     useEffect(() => {
         var timeout = function () {
@@ -111,8 +109,8 @@ function LyricsPlayer(props) {
         prevArrow: <SamplePrevArrow />
     };
 
-    const height = data.image.height
-    const url = data.img ? data.img : "black";
+
+    // const url = data.img ? data.img : "black";
 
 
 
@@ -124,6 +122,8 @@ function LyricsPlayer(props) {
 
 
     let id = +props.match.params.lyricsId
+
+
     const next = () => {
 
 
@@ -149,7 +149,7 @@ function LyricsPlayer(props) {
     return (
 
         <Container
-            maxWidth={false} className="lyricsPlayerContainer" style={{ color: textColor }}
+            maxWidth={false} className="lyricsPlayerContainer" style={{ color: cssSettings.textColor }}
             onClick={() => handleDivClick()}
 
         >
@@ -162,18 +162,18 @@ function LyricsPlayer(props) {
                 <Slider {...settings} ref={slider} >
                     <div  >
                         <SlideBackground
-                            fontSize={fontSize}
-                            height={height}
-                            img={data.img}
+                            cssSettings={cssSettings}
+
                         >
+                            <div class="bg"></div>
                             <div style={{
-                                height: `${height}vh`,
+                                height: `${cssSettings.height}vh`,
                                 width: "100%",
                                 display: "flex",
                                 flexDirection: "column",
-                                alignItems: justifyContent,
-                                justifyContent: alignItems,
-                                
+                                alignItems: cssSettings.justifyContent,
+                                justifyContent: cssSettings.alignItems,
+
                             }}>
                                 <span>{title}</span>
                                 <span style={{ fontSize: "50%" }}  >{`${author_1}  ${author_2}`}</span>
@@ -185,13 +185,11 @@ function LyricsPlayer(props) {
                         return (
                             <div key={i}  >
                                 <BackgroundImage
-                                    alignItems={alignItems}
-                                    justifyContent={justifyContent}
-                                    fontSize={fontSize}
-                                    img={data.img}
-                                    height={height}
+                                    cssSettings={cssSettings}
+
 
                                 >
+                                    <div class="bg"></div>
                                     <span>{d}</span>
                                 </BackgroundImage>
                             </div>
@@ -208,7 +206,7 @@ function LyricsPlayer(props) {
                     color: "white"
                 }}
             >
-                下一首
+                {cart[id + 1] ? `Next Song: ${cart[id + 1].title}` : "NO NEXT SONG"}
             </Button>
             <Button
                 onClick={() => props.history.push("/")}
@@ -218,7 +216,7 @@ function LyricsPlayer(props) {
                     color: "white"
                 }}
                 variant="contained" color="secondary">
-                首頁
+                Home
             </Button>
             <Button
                 onClick={prev}
@@ -228,7 +226,7 @@ function LyricsPlayer(props) {
                     color: "white"
                 }}
                 variant="contained" color="secondary">
-                上一首
+                {cart[id - 1] ? `Previous Song: ${cart[id - 1].title}` : "NO PREVIOUS SONG"}
             </Button>
 
         </Container>

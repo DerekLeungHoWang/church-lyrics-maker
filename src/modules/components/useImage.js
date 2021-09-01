@@ -11,6 +11,7 @@ export default function useImage(setProperties, properties, errors, setErrors, l
 
 
     useEffect(() => {
+        setLoaded(false)
         window.addEventListener("paste", function (e) {
             var item = e.clipboardData.items[0];
             if (item.type.indexOf("image") === 0) {

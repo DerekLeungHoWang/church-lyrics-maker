@@ -80,7 +80,7 @@ export default function TextControl() {
         <Container maxWidth={false}>
             <Typography variant="h5">Text Control</Typography>
             <Typography style={{ marginTop: "5px", marginBottom: "20px", opacity: "0.7" }} >Text related properties</Typography>
-            <Paper elevation={6} style={{ padding: "55px", borderRadius: "8px" }}>
+            <Paper elevation={3} style={{ padding: "55px", borderRadius: "18px" }}>
                 <Grid container>
                     {text_properties.map(({ propName, displayName, inputType, marks, min, max, step, options }, i) => {
                         

@@ -21,7 +21,7 @@ function PropertiesContextProvider(props) {
         image: {
             height: 100,
             opacity: 100,
-            filter: 100
+            blurriness: 0
         },
         others: {
             slideAnimation: true

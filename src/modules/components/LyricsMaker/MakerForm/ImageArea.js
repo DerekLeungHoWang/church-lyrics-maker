@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Container, Grid, List, ListItem, ListItemSecondaryAction, ListItemText, Modal, Paper, TextField } from '@material-ui/core'
+import { Box, Button, CircularProgress, Container, Grid, List, ListItem, ListItemSecondaryAction, ListItemText, Modal, Paper, TextField } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import useImage from '../../useImage';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -27,7 +27,7 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
     }
     return (
         <Grid
-            style={{ margin: "10px 0px" }}
+            style={{ margin: "25px 0px" }}
             justifyContent="center"
             alignItems="center"
             container item>
@@ -41,9 +41,7 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
                             <List >
                                 <ListItem>
                                     {!loaded && lyricsImg &&
-
                                         <CircularProgress />
-
                                     }
                                     {lyricsImg && <img
                                         onLoad={() => setLoaded(true)}
@@ -57,16 +55,18 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
                                         src={rawImg} alt="ad" width="100%" height="100%" />}
 
                                     {!rawImg && !lyricsImg &&
-                                        <Grid container justifyContent="center" >
-                                            <span
-                                                style={{ color: "#9E9E9E", fontWeight: 600 }}
-                                            >WINDOW + SHIFT + S to capture<br />
-                                            </span>
-                                            <span
-                                                style={{ color: "#9E9E9E", fontWeight: 600 }}
-                                            > CTRL + V to paste
-                                            </span>
-                                        </Grid>
+                                      
+                                            <Grid container justifyContent="center" >
+                                                <span
+                                                    style={{ color: "#9E9E9E", fontWeight: 600 }}
+                                                >WINDOW + SHIFT + S to capture<br />
+                                                </span>
+                                                <span
+                                                    style={{ color: "#9E9E9E", fontWeight: 600 }}
+                                                > CTRL + V to paste
+                                                </span>
+                                            </Grid>
+                                     
 
                                     }
 

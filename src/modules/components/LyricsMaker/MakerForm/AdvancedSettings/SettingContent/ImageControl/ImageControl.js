@@ -27,7 +27,7 @@ export default function ImageControl() {
         <Container maxWidth={false}>
             <Typography variant="h5">Image Control</Typography>
             <Typography style={{ marginTop: "5px", marginBottom: "20px", opacity: "0.7" }} >Image related properties</Typography>
-            <Paper elevation={6} style={{ padding: "55px", borderRadius: "8px" }}>
+            <Paper elevation={3} style={{ padding: "55px", borderRadius: "18px" }}>
 
                 <Grid container>
                     {image_properties.map(({ propName, displayName, inputType, marks, min, max, step }, i) => {

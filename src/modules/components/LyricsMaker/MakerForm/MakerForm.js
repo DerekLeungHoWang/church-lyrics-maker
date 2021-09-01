@@ -8,6 +8,7 @@ import ImageArea from './ImageArea';
 import { validator } from './Validator';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AdvancedSettings from './AdvancedSettings/AdvancedSettings';
+import gsap from 'gsap'
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -41,9 +42,10 @@ export default function MakerForm({
     setIsEditMode,
     loaded,
     setLoaded,
-    submitting
+    submitting,
+    loadingOne
 }) {
-
+    const formRef = useRef(null)
     let cart = JSON.parse(localStorage.getItem('cart')) || []
     let lastSize = 60
     let lastColor = "#fff"
@@ -90,6 +92,18 @@ export default function MakerForm({
         };
     }
 
+    useEffect(() => {
+
+        if (!loadingOne) {
+            gsap.from(formRef.current, {
+                duration: .5,
+                opacity: 0,
+                ease: "Power3.easeInOut",
+            })
+        }
+
+    }, [loadingOne])
+
 
     return (
         <Container >
@@ -98,164 +112,155 @@ export default function MakerForm({
                 justifyContent="space-between"
                 alignItems="center"
                 direction="row"
-                style={{ padding: "10px 0px 0px 0px" }}
+                style={{ padding: "20px 0px 0px 0px" }}
             >
-                <Typography component="h1" variant="h5" >
-                    添加詩歌
+                <Typography component="h6" variant="h6" >
+                    Lyrics
                 </Typography>
-                <div>
-                    {/* <IconButton onClick={handleUpload}  >
-                        <input
-                            accept=".json"
-                            onChange={(e) => handleFileChange(e)}
-                            type='file' id='file' ref={inputFile} style={{ display: 'none' }} />
-                        <PublishIcon />
-                    </IconButton> */}
-                    {/* <Button variant="outlined" onClick={() => setLyrics(state => ({
+                <AdvancedSettings />
+                <Button variant="outlined" color="primary" onClick={() => setProperties(state => (
+                    {
                         ...state,
-                        title: "",
-                        content: ``,
-                        fontSize: 60,
-                        fontColor: "#fff",
-                        height: "",
-                        textColor: "#fff",
-                        lastPlayed: false
+                        title: "", content: "", composer: "", lyricist: "", img: ""
 
-                    }))} >新的詩歌</Button> */}
-                    {/* <Button variant="outlined" startIcon={<SettingsIcon />} >Advanced</Button> */}
-                    <AdvancedSettings />
-                </div>
+                    }))} >Clear</Button>
             </Grid>
 
 
-            <form className={classes.form} onSubmit={handleSubmit}>
-                <TextField
-                    onBlur={handleBlur}
-                    error={errors.title ? true : false}
-                    helperText={errors.title}
-                    variant="outlined"
-                    margin="normal"
-
-                    fullWidth
-                    id="title"
-                    label="歌名"
-                    name="title"
-                    autoComplete="title"
-                    onChange={handleChange}
-                    value={properties.title}
-
-                    InputLabelProps={{
-                        shrink: true
-                    }}
-                    placeholder="以逗號分開歌名和作者, 例:無言的讚頌,曲、詞：朱浩權"
-                />
-                <Box mb={2}>
-                    <Grid
-                        container
-                        item
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        spacing={3}
-                    >
-                        <Grid
-                            container
-                            item
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center"
-                            xs={6}
-                        >
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                margin="normal"
-                                name="composer"
-                                label="Composer"
-                                id="cardCvc"
-                                value={properties.composer}
-                                onChange={handleChange}
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                            />
-                        </Grid>
-                        <Grid
-                            container
-                            item
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center"
-                            xs={6}
-                        >
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                margin="normal"
-                                name="lyricist"
-                                label="Lyricist"
-                                id="lyricist"
-                                value={properties.lyricist}
-                                onChange={handleChange}
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-                </Box>
-
-                <TextField
-                    error={errors.content ? true : false}
-                    helperText={errors.content}
-                    onBlur={handleBlur}
-
-                    fullWidth
-                    variant="outlined"
-                    id="standard-multiline-flexible"
-                    label="歌詞"
-                    multiline
-                    rows={20}
-                    name="content"
-                    value={contentValue}
-                    onChange={handleChange}
-                    autoComplete="content"
-                />
-
-
-                {/* <FontSizeSlider properties={properties} setProperties={setProperties} /> */}
-                <ImageArea
-                    classes={classes}
-                    properties={properties}
-                    setProperties={setProperties}
-                    setErrors={setErrors}
-                    errors={errors}
-                    loaded={loaded}
-                    setLoaded={setLoaded}
-                />
-
-
-
-
-                <Grid
-                    container
-                    justifyContent="center"
-                >
-
-                    <Button
-                        disabled={submitting}
-                        size="large"
-                        type="submit" variant="outlined" style={{
-                            margin: "20px 0px",
-
-                        }}>
-                         {submitting && <CircularProgress
-                            size={18} style={{ marginRight: "10px" }} />}
-                        Submit
-                    </Button>
+            {loadingOne ?
+                <Grid container style={{ height: "800px" }} justifyContent="center" alignItems="center">
+                    <CircularProgress
+                        size={58} style={{ marginRight: "20px" }} />
                 </Grid>
 
-            </form>
+                : <form className={classes.form} onSubmit={handleSubmit} ref={formRef}>
+                    <TextField
+                        onBlur={handleBlur}
+                        error={errors.title ? true : false}
+                        helperText={errors.title}
+                        variant="outlined"
+                        margin="normal"
+
+                        fullWidth
+                        id="title"
+                        label="Song Name"
+                        name="title"
+                        autoComplete="title"
+                        onChange={handleChange}
+                        value={properties.title}
+
+                        InputLabelProps={{
+                            shrink: true
+                        }}
+                        placeholder=""
+                    />
+                    <Box mb={2}>
+                        <Grid
+                            container
+                            item
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            spacing={3}
+                        >
+                            <Grid
+                                container
+                                item
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                                xs={6}
+                            >
+                                <TextField
+                                    fullWidth
+                                    variant="outlined"
+                                    margin="normal"
+                                    name="composer"
+                                    label="Composer"
+                                    id="cardCvc"
+                                    value={properties.composer}
+                                    onChange={handleChange}
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                />
+                            </Grid>
+                            <Grid
+                                container
+                                item
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                                xs={6}
+                            >
+                                <TextField
+                                    fullWidth
+                                    variant="outlined"
+                                    margin="normal"
+                                    name="lyricist"
+                                    label="Lyricist"
+                                    id="lyricist"
+                                    value={properties.lyricist}
+                                    onChange={handleChange}
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Box>
+
+                    <TextField
+                        error={errors.content ? true : false}
+                        helperText={errors.content}
+                        onBlur={handleBlur}
+
+                        fullWidth
+                        variant="outlined"
+                        id="standard-multiline-flexible"
+                        label="Lyrics"
+                        multiline
+                        rows={20}
+                        name="content"
+                        value={contentValue}
+                        onChange={handleChange}
+                        autoComplete="content"
+                    />
+
+
+                    {/* <FontSizeSlider properties={properties} setProperties={setProperties} /> */}
+                    <ImageArea
+                        classes={classes}
+                        properties={properties}
+                        setProperties={setProperties}
+                        setErrors={setErrors}
+                        errors={errors}
+                        loaded={loaded}
+                        setLoaded={setLoaded}
+                    />
+
+
+
+
+                    <Grid
+                        container
+                        justifyContent="center"
+                    >
+
+                        <Button
+                            disabled={submitting}
+                            size="large"
+                            type="submit" variant="outlined" style={{
+                                margin: "20px 0px",
+
+                            }}>
+                            {submitting && <CircularProgress
+                                size={18} style={{ marginRight: "10px" }} />}
+                            Submit
+                        </Button>
+                    </Grid>
+
+                </form>}
 
 
 

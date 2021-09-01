@@ -19,7 +19,7 @@ import { PropertiesContext } from '../../../../context/PropertiesContext';
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: 'relative',
-        background: "#01BFA6",
+        background: "#000",
         color: "white"
     },
     title: {
@@ -50,7 +50,7 @@ export default function AdvancedSettings() {
 
     return (
         <div>
-            <Button startIcon={<SettingsIcon />} variant="outlined" color="primary" onClick={handleClickOpen}>
+            <Button startIcon={<SettingsIcon />} variant="outlined" color="secondary" onClick={handleClickOpen}>
                 Advanced
             </Button>
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>

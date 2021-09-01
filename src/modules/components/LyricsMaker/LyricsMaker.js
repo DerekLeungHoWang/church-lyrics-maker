@@ -15,7 +15,8 @@ export default function LyricsMaker({
     isEditMode,
     setIsEditMode,
     cart,
-    submitting
+    submitting,
+    loadingOne
 
 }) {
     return (
@@ -36,6 +37,7 @@ export default function LyricsMaker({
                     setErrors={setErrors}
                     handleBlur={handleBlur}
                     submitting={submitting}
+                    loadingOne={loadingOne}
                 />
             </Paper>
         </Container>
