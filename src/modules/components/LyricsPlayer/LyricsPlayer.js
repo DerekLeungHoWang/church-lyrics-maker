@@ -127,23 +127,21 @@ function LyricsPlayer(props) {
 
     const next = () => {
 
-
-
         if (id < cart.length - 1) {
-            props.history.push(`/player/${id + 1}`)
-            slider.current.slickGoTo(0);
-        }
+            props.history.push(`/${locale}/player/${id + 1}`)
 
+        }
+        slider.current.slickGoTo(0);
 
     }
 
     const prev = () => {
         if (id > 0) {
 
-            props.history.push(`/player/${id - 1}`)
-            slider.current.slickGoTo(0);
-        }
+            props.history.push(`/${locale}/player/${id - 1}`)
 
+        }
+        slider.current.slickGoTo(0);
     }
 
 
