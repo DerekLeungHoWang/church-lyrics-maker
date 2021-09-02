@@ -24,7 +24,7 @@ function Alert(props) {
 
 
 
-export default function Home({locale}) {
+export default function Home({ locale }) {
 
     const history = useHistory();
     const [loadingLyricsData, setLoadingLyricsData] = useState(false)
@@ -77,7 +77,7 @@ export default function Home({locale}) {
 
         let result_title = validator(properties, 'title')
         let result_content = validator(properties, 'content')
-        if (result_title.tilte || result_content.content) {
+        if (result_title.title || result_content.content) {
             setErrors(state => ({
                 ...state,
                 title: result_title.title ? result_title.title : "",
@@ -224,6 +224,7 @@ export default function Home({locale}) {
                 console.log('res data ', res.data);
                 setProperties(res.data)
                 setLoadingOne(false)
+                setErrors(state => ({ ...state, title: "", content: "" }))
             })
     }
 
@@ -288,7 +289,7 @@ export default function Home({locale}) {
             }} >
 
             <div>
-                <Navbar locale={locale}/>
+                <Navbar locale={locale} />
                 <Grid
                     container
                     direction="row"

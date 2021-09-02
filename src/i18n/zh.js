@@ -38,6 +38,8 @@ const zh = {
     'lyricsMaker.deleteAlert.message': '此行動將永久刪除所選的歌詞, 如果確定無誤請按下確認按鈕以繼續',
     'lyricsMaker.deleteAlert.cancel': '取消',
     'lyricsMaker.deleteAlert.confirm': '確認',
+    'lyricsPlayer.composer': '作曲',
+    'lyricsPlayer.lyricist': '作詞',
 
 };
 export default zh;

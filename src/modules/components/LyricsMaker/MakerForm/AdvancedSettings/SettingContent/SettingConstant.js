@@ -139,8 +139,8 @@ export const image_properties = [
         "inputType": type_slider,
         "marks": [
             {
-                value: 10,
-                label: '10%',
+                value: 20,
+                label: '20%',
             },
 
             {
@@ -152,9 +152,9 @@ export const image_properties = [
                 label: '100%',
             },
         ],
-        "min": 10,
+        "min": 20,
         "max": 100,
-        "step": 10,
+        "step": 1,
 
     },
     {

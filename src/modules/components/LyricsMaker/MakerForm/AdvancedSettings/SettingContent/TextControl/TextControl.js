@@ -33,6 +33,7 @@ const AlignButton = styled(Button)`
 const popover = {
     position: 'absolute',
     zIndex: '999',
+    right: "50vw"
 }
 const cover = {
     position: 'fixed',
@@ -40,20 +41,21 @@ const cover = {
     right: '0px',
     bottom: '0px',
     left: '0px',
+
 }
 
 export default function TextControl() {
-    
+
     const theme = useTheme();
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
-    const { properties, setProperties, handleSetProperties , classes} = useContext(PropertiesContext)
+    const { properties, setProperties, handleSetProperties, classes } = useContext(PropertiesContext)
 
     function valuetext(value) {
         return `${value}px`;
     }
 
     const handleTextPropertyChange = name => (event, newValue) => {
-        
+
 
         let config = {
             channel: "text",
@@ -65,7 +67,7 @@ export default function TextControl() {
     const handlePropertyClick = (e, propValue) => {
         let propName = e.currentTarget.name;
 
-        
+
 
         setProperties(state => ({
             ...state,
@@ -83,7 +85,7 @@ export default function TextControl() {
             <Paper elevation={3} style={{ padding: "55px", borderRadius: "18px" }}>
                 <Grid container>
                     {text_properties.map(({ propName, displayName, inputType, marks, min, max, step, options }, i) => {
-                        
+
                         return (
                             <React.Fragment key={i}>
                                 {inputType == type_slider &&
@@ -148,8 +150,16 @@ export default function TextControl() {
                                             // onChangeComplete={handleSetColor}
                                             />
                                         </div> : null}
-                                        <div>
+                                        <div style={{position:"relative"}}>
+
                                             <IconButton onClick={() => setDisplayColorPicker(!displayColorPicker)} ><BrushIcon /></IconButton>
+                                            <div style={{ 
+                                                border: "1px solid black",
+                                                position: "absolute",
+                                                top:"25px",
+                                                left:"1px",
+                                                background: properties.text.textColor, 
+                                                height: "9px", width: "9px", borderRadius: "50%" }} ></div>
                                         </div>
                                     </Grid>
                                 }

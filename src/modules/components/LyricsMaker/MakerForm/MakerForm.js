@@ -240,7 +240,7 @@ export default function MakerForm({
                         <Tooltip title={<FormattedMessage id="lyricsMaker.flash.tooltip" />} aria-label="add">
                             <IconButton onClick={handleSmartSplit} style={{
                                 position: "absolute",
-                                top: "10px", right: countOfRows > 10 ? "35px" : "10px"
+                                top: "10px", right: countOfRows > 18 ? "35px" : "10px"
                             }}>
                                 <FlashOnIcon />
                             </IconButton>
@@ -267,6 +267,7 @@ export default function MakerForm({
                     >
 
                         <Button
+                        color="primary"
                             disabled={submitting}
                             size="large"
                             type="submit" variant="outlined" style={{

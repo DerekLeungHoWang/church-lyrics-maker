@@ -1,4 +1,4 @@
-import { Button, Container, makeStyles } from '@material-ui/core'
+import { Box, Button, Container, makeStyles } from '@material-ui/core'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import './LyricsPlayer.scss'
@@ -8,7 +8,7 @@ import { wrap } from 'gsap/gsap-core';
 import styled from 'styled-components';
 import { PropertiesContext } from '../../context/PropertiesContext';
 import { BackgroundImage, SlideBackground } from './LyricsPlayerStyles';
-
+import { FormattedMessage } from 'react-intl';
 const useStyles = makeStyles((theme) => ({
 
 }), { index: 1 });
@@ -165,19 +165,24 @@ function LyricsPlayer(props) {
 
                         >
                             <div class="bg"></div>
-                            <div style={{
+                            <span style={{
                                 height: `${cssSettings.height}vh`,
                                 width: "100%",
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: cssSettings.justifyContent,
                                 justifyContent: cssSettings.alignItems,
+                              
 
                             }}>
                                 <span>{title}</span>
-                                <span style={{ fontSize: "50%" }}  >{`${author_1}  ${author_2}`}</span>
+                                <span style={{ fontSize: "50%" }}  >
+                                    <FormattedMessage id="lyricsPlayer.composer" />:  {`${author_1} `}
+                                     
+                                    <FormattedMessage id="lyricsPlayer.lyricist" />:  {author_1}
+                                </span>
 
-                            </div>
+                            </span>
                         </SlideBackground>
                     </div>
                     {data.content.map((d, i) => {
