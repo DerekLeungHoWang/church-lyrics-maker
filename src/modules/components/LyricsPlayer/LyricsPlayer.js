@@ -43,6 +43,8 @@ function LyricsPlayer(props) {
         blurriness: data.image.blurriness
     }
 
+    //const [activeSlide, setActiveSlide] = useState(0)
+
     useEffect(() => {
         var timeout = function () {
 
@@ -61,16 +63,6 @@ function LyricsPlayer(props) {
         }
     }, [timer])
 
-
-    useEffect(() => {
-
-        slider.current.innerSlider.list.setAttribute('tabindex', 0);
-        slider.current.innerSlider.list.focus();
-
-        return () => {
-
-        }
-    }, [])
 
 
 
@@ -104,10 +96,13 @@ function LyricsPlayer(props) {
         dots: false,
         infinite: false,
         speed: 0,
-        slidesToShow: 1,
-        slidesToScroll: 1,
+
         nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />
+        prevArrow: <SamplePrevArrow />,
+        // afterChange: (indexOfCurrentSlide) => {
+        //     console.log("indexOfCurrentSlide = ", indexOfCurrentSlide);
+        //     setActiveSlide(indexOfCurrentSlide)
+        // }
     };
 
 
@@ -126,24 +121,45 @@ function LyricsPlayer(props) {
 
 
     const next = () => {
-
-        if (id < cart.length - 1) {
-            props.history.push(`/${locale}/player/${id + 1}`)
-
-        }
+        
         slider.current.slickGoTo(0);
+        if (id < cart.length - 1) {
+
+            props.history.push(`/${locale}/player/${id + 1}`)
+           // props.history.go()
+        }
+
+        console.log("nexted");
 
     }
 
     const prev = () => {
+        slider.current.slickGoTo(0);
         if (id > 0) {
 
             props.history.push(`/${locale}/player/${id - 1}`)
 
         }
-        slider.current.slickGoTo(0);
-    }
 
+    }
+    useEffect(() => {
+        console.log("mounted");
+        slider.current.innerSlider.list.setAttribute('tabindex', 0);
+        slider.current.innerSlider.list.focus();
+        slider.current.slickGoTo(0);
+        return () => {
+
+        }
+    }, [id])
+
+    // useEffect(() => {
+      
+    //     slider.current.slickGoTo(0);
+    //     console.log("changed route");
+    //     return () => {
+
+    //     }
+    // }, [id])
 
     return (
 
@@ -158,13 +174,13 @@ function LyricsPlayer(props) {
 
 
 
-                <Slider {...settings} ref={slider} >
+                <Slider  key={id} {...settings} ref={slider} >
                     <div  >
                         <SlideBackground
                             cssSettings={cssSettings}
 
                         >
-                            <div class="bg"></div>
+                            <div className="bg"></div>
                             <span style={{
                                 height: `${cssSettings.height}vh`,
                                 width: "100%",
@@ -172,13 +188,13 @@ function LyricsPlayer(props) {
                                 flexDirection: "column",
                                 alignItems: cssSettings.justifyContent,
                                 justifyContent: cssSettings.alignItems,
-                              
+
 
                             }}>
                                 <span>{title}</span>
                                 <span style={{ fontSize: "50%" }}  >
                                     <FormattedMessage id="lyricsPlayer.composer" />:  {`${author_1} `}
-                                     
+
                                     <FormattedMessage id="lyricsPlayer.lyricist" />:  {author_1}
                                 </span>
 
@@ -193,7 +209,7 @@ function LyricsPlayer(props) {
 
 
                                 >
-                                    <div class="bg"></div>
+                                    <div className="bg"></div>
                                     <span>{d}</span>
                                 </BackgroundImage>
                             </div>
