@@ -236,7 +236,18 @@ export default function Home({ locale }) {
 
 
     //=============================================================Load Table
+   
     useEffect(() => {
+        let name = 'churchLyricsMaker'
+        let version = '1.0.0'
+        console.log(`${name} v${version}`)
+        const last_version = localStorage.getItem(`${name}-Version`)
+        if (last_version !== version) {
+            console.log('New Version Available ! 😝')
+            localStorage.setItem(`${name}-Version`, version)
+           localStorage.removeItem("cart")
+        }
+
         getSongList()
     }, [])
 

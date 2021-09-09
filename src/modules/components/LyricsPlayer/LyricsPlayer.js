@@ -16,12 +16,21 @@ const useStyles = makeStyles((theme) => ({
 
 
 function LyricsPlayer(props) {
+    const [slideState, setSlideState] = useState({
+        oldSlide: 0,
+        nextSlide: 0,
+        activeSlide: 0
+    })
+
+    let id = +props.match.params.lyricsId
     const { locale } = props
     const classes = useStyles()
-    let lyricsId = +props.match.params.lyricsId
+
     const { properties, setProperties, handleSetProperties } = useContext(PropertiesContext)
     let cart = JSON.parse(localStorage.getItem('cart'))
-    let data = cart.filter((d, i) => (i === lyricsId))[0]
+    let data = cart.filter((d, i) => (i === +props.match.params.lyricsId))[0]
+    let slideCount = data.content.length
+
     const [fullScreen, setFullScreen] = useState(false)
     const [mouseMove, setMouseMove] = useState(false)
     const slider = useRef(null);
@@ -42,8 +51,6 @@ function LyricsPlayer(props) {
         opacity: data.image.opacity / 100,
         blurriness: data.image.blurriness
     }
-
-    //const [activeSlide, setActiveSlide] = useState(0)
 
     useEffect(() => {
         var timeout = function () {
@@ -67,16 +74,18 @@ function LyricsPlayer(props) {
 
 
 
-
+    const handleSlideClick = (e) => {
+        alert("sdf")
+    }
 
 
 
     function SampleNextArrow(props) {
-        const { className, style, onClick } = props;
+
         return (
             <div
                 style={{ display: "none", background: "red" }}
-                onClick={onClick}
+                onClick={handleSlideClick}
             />
         );
     }
@@ -99,10 +108,19 @@ function LyricsPlayer(props) {
 
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
-        // afterChange: (indexOfCurrentSlide) => {
-        //     console.log("indexOfCurrentSlide = ", indexOfCurrentSlide);
-        //     setActiveSlide(indexOfCurrentSlide)
-        // }
+        beforeChange: (current, next) => {
+            console.log(current,next);
+            setSlideState(state => ({ ...state, oldSlide: current, nextSlide: next }))
+
+
+
+
+        }
+        ,
+        afterChange: current => {
+
+            setSlideState(state => ({ ...state, activeSlide: current }))
+        }
     };
 
 
@@ -117,19 +135,19 @@ function LyricsPlayer(props) {
     }
 
 
-    let id = +props.match.params.lyricsId
+
 
 
     const next = () => {
-        
+
         slider.current.slickGoTo(0);
         if (id < cart.length - 1) {
 
-            props.history.push(`/${locale}/player/${id + 1}`)
-           // props.history.go()
+            props.history.push(`/ ${locale} /player/${id + 1} `)
+            // props.history.go()
         }
 
-        console.log("nexted");
+
 
     }
 
@@ -137,30 +155,69 @@ function LyricsPlayer(props) {
         slider.current.slickGoTo(0);
         if (id > 0) {
 
-            props.history.push(`/${locale}/player/${id - 1}`)
+            props.history.push(`/ ${locale} /player/${id - 1} `)
 
         }
 
     }
     useEffect(() => {
-        console.log("mounted");
+
         slider.current.innerSlider.list.setAttribute('tabindex', 0);
         slider.current.innerSlider.list.focus();
-        slider.current.slickGoTo(0);
+       // slider.current.slickGoTo(0);
         return () => {
 
         }
     }, [id])
 
-    // useEffect(() => {
+    function handleEsc(event) {
       
-    //     slider.current.slickGoTo(0);
-    //     console.log("changed route");
-    //     return () => {
+        //ESC
+        if (event.keyCode === 27) {
+            props.history.push(`/${locale}`)
+        }
+        //LEFT
+        if (event.keyCode === 37) {
+            const { activeSlide } = slideState
 
-    //     }
-    // }, [id])
+            let lyricsId = +props.match.params.lyricsId
 
+         
+        
+            if (activeSlide == 0 && lyricsId !== 0) {
+
+                let prevSlideCount =  cart.filter((d, i) => (i === +props.match.params.lyricsId-1))[0].content.length
+                console.log("prevSlideCount ", prevSlideCount);
+              
+                props.history.push(`/${locale}/player/${lyricsId - 1}`)
+                slider.current.slickGoTo(prevSlideCount);
+            }
+        }
+
+        if (event.keyCode === 39) {
+            const { activeSlide } = slideState
+            let lyricsId = +props.match.params.lyricsId
+            console.log("slideCount = ", data.content.length);
+            console.log("lyricsId = ", lyricsId);
+
+            console.log("activeSlide = ", slideState);
+            if (slideCount == activeSlide && activeSlide > 0 && lyricsId < cart.length - 1) {
+
+
+                props.history.push(`/${locale}/player/${lyricsId + 1}`)
+                slider.current.slickGoTo(0);
+
+            }
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleEsc);
+        return () => {
+            window.removeEventListener("keydown", handleEsc);
+        };
+    }, [slideState]);
+    console.log("slideState ...",slideState);
     return (
 
         <Container
@@ -174,7 +231,7 @@ function LyricsPlayer(props) {
 
 
 
-                <Slider  key={id} {...settings} ref={slider} >
+                <Slider key={id} {...settings} ref={slider} >
                     <div  >
                         <SlideBackground
                             cssSettings={cssSettings}
@@ -182,7 +239,7 @@ function LyricsPlayer(props) {
                         >
                             <div className="bg"></div>
                             <span style={{
-                                height: `${cssSettings.height}vh`,
+                                height: `${cssSettings.height} vh`,
                                 width: "100%",
                                 display: "flex",
                                 flexDirection: "column",
@@ -226,7 +283,7 @@ function LyricsPlayer(props) {
                     color: "white"
                 }}
             >
-                {cart[id + 1] ? `Next Song: ${cart[id + 1].title}` : "NO NEXT SONG"}
+                {cart[id + 1] ? `Next Song: ${cart[id + 1].title} ` : "NO NEXT SONG"}
             </Button>
             <Button
                 onClick={() => props.history.push("/")}
@@ -246,7 +303,7 @@ function LyricsPlayer(props) {
                     color: "white"
                 }}
                 variant="contained" color="secondary">
-                {cart[id - 1] ? `Previous Song: ${cart[id - 1].title}` : "NO PREVIOUS SONG"}
+                {cart[id - 1] ? `Previous Song: ${cart[id - 1].title} ` : "NO PREVIOUS SONG"}
             </Button>
 
         </Container>

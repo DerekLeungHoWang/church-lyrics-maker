@@ -31,7 +31,7 @@ span{
     background-repeat: no-repeat !important;
     background-size: cover !important;
     filter:${props => {
-        console.log(props.cssSettings);
+        
         
         return `blur(${props.cssSettings.blurriness}px)`
     }};

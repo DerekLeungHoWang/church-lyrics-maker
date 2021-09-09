@@ -37,7 +37,8 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
                                         content = content.join(",")
 
                                     }
-                                    content = content.substring(0, 30)
+                                   
+                                    content = content?content.substring(0, 30):""
                                     return (
                                         <Draggable key={i} draggableId={`${title}_${i}`} index={i}>
                                             {(provided, snapshot) => {
