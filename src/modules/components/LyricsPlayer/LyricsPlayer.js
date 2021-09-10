@@ -139,11 +139,13 @@ function LyricsPlayer(props) {
 
 
     const next = () => {
+        let lyricsId = +props.match.params.lyricsId
 
+ 
         slider.current.slickGoTo(0);
-        if (id < cart.length - 1) {
+        if (lyricsId < cart.length - 1) {
 
-            props.history.push(`/ ${locale} /player/${id + 1} `)
+            props.history.push(`/${locale}/player/${lyricsId + 1}`)
             // props.history.go()
         }
 
@@ -152,10 +154,11 @@ function LyricsPlayer(props) {
     }
 
     const prev = () => {
+        let lyricsId = +props.match.params.lyricsId
         slider.current.slickGoTo(0);
-        if (id > 0) {
+        if (lyricsId > 0) {
 
-            props.history.push(`/ ${locale} /player/${id - 1} `)
+            props.history.push(`/${locale}/player/${lyricsId - 1}`)
 
         }
 
