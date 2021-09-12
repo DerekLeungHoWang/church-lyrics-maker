@@ -109,7 +109,7 @@ function LyricsPlayer(props) {
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
         beforeChange: (current, next) => {
-            console.log(current,next);
+            
             setSlideState(state => ({ ...state, oldSlide: current, nextSlide: next }))
 
 
@@ -190,7 +190,7 @@ function LyricsPlayer(props) {
             if (activeSlide == 0 && lyricsId !== 0) {
 
                 let prevSlideCount =  cart.filter((d, i) => (i === +props.match.params.lyricsId-1))[0].content.length
-                console.log("prevSlideCount ", prevSlideCount);
+                
               
                 props.history.push(`/${locale}/player/${lyricsId - 1}`)
                 slider.current.slickGoTo(prevSlideCount);
@@ -200,10 +200,10 @@ function LyricsPlayer(props) {
         if (event.keyCode === 39) {
             const { activeSlide } = slideState
             let lyricsId = +props.match.params.lyricsId
-            console.log("slideCount = ", data.content.length);
-            console.log("lyricsId = ", lyricsId);
+            
+            
 
-            console.log("activeSlide = ", slideState);
+            
             if (slideCount == activeSlide && activeSlide > 0 && lyricsId < cart.length - 1) {
 
 
@@ -220,7 +220,7 @@ function LyricsPlayer(props) {
             window.removeEventListener("keydown", handleEsc);
         };
     }, [slideState]);
-    console.log("slideState ...",slideState);
+    
     return (
 
         <Container

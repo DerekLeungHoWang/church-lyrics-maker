@@ -45,7 +45,7 @@ function PropertiesContextProvider(props) {
     });
     const handleSmartSplit = () => {
         let content = properties.content
-        console.log(content);
+        
         if (Array.isArray(content)) {
             content = content.join("\n\n")
         }
@@ -54,7 +54,7 @@ function PropertiesContextProvider(props) {
         for (let i = 0; i < content.length; i += 2) {
 
             if (content[i] == "") {
-                console.log("the if statement");
+                
                 i++;
 
             }
@@ -66,7 +66,7 @@ function PropertiesContextProvider(props) {
             }
 
         }
-        console.log(myarray);
+        
         setProperties(state => ({
             ...state,
             content: myarray

@@ -9,7 +9,7 @@ align-items: "center";
 justify-content: "center";
 font-size: ${props => `${props.cssSettings.fontSize}px`};
 
-min-height: ${props => {
+height: ${props => {
         return `${props.cssSettings.height}vh`
     }};
 
@@ -29,7 +29,8 @@ span{
     height: 100%;
     background:  ${props => props.img === "" ? "black" : ` url(${props.cssSettings.img})`};
     background-repeat: no-repeat !important;
-    background-size: cover !important;
+    background-size: crop;
+    background-size: 100% auto;
     filter:${props => {
         
         

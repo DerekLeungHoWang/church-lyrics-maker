@@ -12,7 +12,7 @@ if (localStorage.getItem('locale') == null)
   localStorage.setItem('locale', navigator.language)
 
 let locale = localStorage.getItem('locale')
-console.log('locale =', locale);
+
 let messages;
 if (locale.includes('zh')) {
   messages = zh;

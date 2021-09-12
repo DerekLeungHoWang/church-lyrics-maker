@@ -334,8 +334,8 @@ export default function LyricsTable({
                             <TableBody >
                                 {
                                     data.map((row, index) => {
-                                        console.log('map');
-                                        console.log(row);
+                                        
+                                        
                                         return (
                                             <TableRow
                                                 key={index}

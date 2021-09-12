@@ -60,7 +60,7 @@ export default function Home({ locale }) {
         confirm: <FormattedMessage id="lyricsMaker.deleteAlert.confirm" />,
         deleting: false,
     })
-    console.log(deleteDialog);
+    
     const { properties, setProperties, handleSetProperties, errors, setErrors, handleBlur, handleSmartSplit } = useContext(PropertiesContext)
 
 
@@ -87,12 +87,12 @@ export default function Home({ locale }) {
             return;
         }
         setSubmitting(true)
-        console.log(properties.content);
+        
         let newLyrics = properties.content
         if (!Array.isArray(properties.content)) {
             newLyrics = properties.content.trim().split("\n\n");
         }
-        console.log(newLyrics);
+        
         let lyricsObject = {
 
             title: properties.title,
@@ -111,11 +111,11 @@ export default function Home({ locale }) {
                 getSongList()
                     .then(songList => {
 
-                        console.log(cart);
+                        
                         let target = songList.data.filter(d => d.title.trim().toLowerCase() === lyricsObject.title.trim().toLowerCase())
                         let isExist = cart.length > 0 && cart.some(obj => {
-                            console.log(obj);
-                            console.log(target);
+                            
+                            
                             return obj.title.replace(/\s/g, '') === target[0].title.replace(/\s/g, '')
                         });
                         if (isExist) {
@@ -187,7 +187,7 @@ export default function Home({ locale }) {
         target._id = id
         let isExist = cart.some(obj => obj._id === target._id);
 
-        console.log(target);
+        
         if (!isExist) {
             setSnack(state => ({
                 ...state,
@@ -221,7 +221,7 @@ export default function Home({ locale }) {
         let id = e.currentTarget.name
         axios.get(`${API_BASE_URL}/lyrics/${id}`)
             .then((res) => {
-                console.log('res data ', res.data);
+                
                 setProperties(res.data)
                 setLoadingOne(false)
                 setErrors(state => ({ ...state, title: "", content: "" }))
@@ -240,10 +240,10 @@ export default function Home({ locale }) {
     useEffect(() => {
         let name = 'churchLyricsMaker'
         let version = '1.0.1'
-        console.log(`${name} v${version}`)
+        
         const last_version = localStorage.getItem(`${name}-Version`)
         if (last_version !== version) {
-            console.log('New Version Available ! 😝')
+            
             localStorage.setItem(`${name}-Version`, version)
            localStorage.removeItem("cart")
         }
@@ -269,16 +269,16 @@ export default function Home({ locale }) {
     };
     const onDragEnd = ({ destination, source, draggableId }) => {
 
-        console.log('on drag end : ', destination, source, draggableId);
+        
         if (!destination) {
-            console.log("no destination");
+            
             return;
         }
 
         if (destination.draggableId === source.draggableId &&
             destination.index === source.index
         ) {
-            console.log("equal return");
+            
             return;
         }
 
@@ -287,7 +287,7 @@ export default function Home({ locale }) {
             source.index,
             destination.index
         );
-        console.log("setting new cart");
+        
         setCart(newCart)
     }
 
