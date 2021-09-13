@@ -17,67 +17,79 @@ import axios from 'axios';
 
 export default function LyricsPlayList({ setPlayId, cart, handleDelete, properties }) {
 
-    const [isCreating, setIsCreating] = useState(false)
+    const [isGenerating, setIsGenerating] = useState(false)
     const ref = React.createRef();
-    let imgs = "https://firebasestorage.googleapis.com/v0/b/church-lyrics-maker.appspot.com/o/images%2F%E7%84%A1%E8%A8%80%E7%9A%84%E8%AE%9A%E9%A0%8C?alt=media&token=dbb7a979-b43c-4005-a077-10c4f3d05b9c"
-
-    const getImage = () => {
-        setIsCreating(true)
-        createPPT()
-    }
-
-
-    const createPPT = async (img) => {
-
+    const createPPT = async () => {
+        setIsGenerating(true)
+        let cart = JSON.parse(localStorage.getItem('cart')) || []
         let pres = new pptxgen();
-        await Promise.all(cart.map(async (d) => {
-           
-            let slide = pres.addSlide();
-            let result = await axios.get(d.img, {
-                responseType: 'arraybuffer'
+        let newCart = JSON.parse(JSON.stringify(cart))
+        const imgList = []
+        console.log("started adding");
+        await Promise.all(newCart.map(async (d) => {
+            if (d.img) {
+                // console.log("d = ",d);
+                let result = await axios.get(d.img, {
+                    responseType: 'arraybuffer'
+                })
+                let image = Buffer.from(result.data, 'binary').toString('base64')
+                image = `data:image/jpg;base64,${image}`
+                imgList.push({
+                    _id: d._id,
+                    image
+                })
+            }
+        }))
+        console.log("imgList ", imgList);
+        newCart.map((d, i) => {
+            return imgList.map(img => {
+                if (d.img && d._id == img._id) {
+                    return d.img = img
+                }
             })
-            console.log(result);
-            let image = Buffer.from(result.data, 'binary').toString('base64')
-            image = `data:image/jpg;base64,${image}`
-    
-            slide.addImage({ data: image, w: "100%", sizing: { type: "crop" } });
+
+        })
+        console.log("newCart = ", newCart);
+
+        newCart.map(d => {
+
+            let slide = pres.addSlide()
+            d.img.image && slide.addImage({ 
+                data: d.img.image,   
+                w:"100%",
+                h:"100%",
+                sizing: { 
+                    w:"100%",
+                    h:"20%",
+                    type: "crop" 
+            } });
             slide.addText(d.title, { x: '0', y: '0', w: '100%', h: '20%', align: 'center', valign: 'middle', color: "ffffff", });
             slide.background = { color: "#000000" };
-    
-    
-            d.content.forEach(lyrics => {
-                console.log(lyrics);
-                // slide = pres.addSlide();
-                slide.addImage({
-                    data: image,
-                    w: "100%",
-                    sizing: {
-                        type: "crop"
-                    }
-                });
-                slide.addText(lyrics, { x: '0', y: '0', w: '100%', h: '20%', align: 'center', valign: 'middle', color: "ffffff", })
-                slide.background = { color: "#000000" };
-    
+
+            d.content.map(text => {
+
+                let slide_2 = pres.addSlide();
+                d.img.image && slide_2.addImage({ 
+                    data: d.img.image,   
+                    w:"100%",
+                    h:"100%",
+                    sizing: { 
+                        w:"100%",
+                        h:"20%",
+                        type: "crop" 
+                } });
+                slide_2.addText(text, { x: '0', y: '0', w: '100%', h: '20%', align: 'center', valign: 'middle', color: "ffffff", })
+                slide_2.background = { color: "#000000" };
             })
-
-        }))
-
-
-        console.log("finished");
-
-
-
-        pres.writeFile({ fileName: "Sample Presentation.pptx" });
-
-        setIsCreating(false)
-
-
-
+        })
+        console.log("completed inserting");
+        console.log("started writing");
+        pres.writeFile({ fileName: "Sample Presentation.pptx" })
+            .then(() => {
+                console.log("completed writing");
+                setIsGenerating(false)
+            })
     }
- 
-
-
- 
 
     return (
         <Container maxWidth={false} style={{ padding: "0px" }}>
@@ -87,14 +99,7 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
                     <Box ml={4} pt={3}>
                         <Typography variant="h6" component="div" ><FormattedMessage id="lyricsPlaylist.heading" /></Typography>
                     </Box>
-                    <Box pt={3}>
-                        <Button variant="contained" color="secondary" onClick={getImage} >
-                            {isCreating && <CircularProgress
-                                size={18} style={{ marginRight: "10px" }} />}
 
-                            Generate PPT
-                        </Button>
-                    </Box>
                     <Box mr={4} pt={3}>
                         <Typography style={{ opacity: ".6", fontWeight: "600" }}   ><FormattedMessage id="lyricsPlaylist.dragInstruction" /></Typography>
                     </Box>
@@ -106,6 +111,7 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
                         return (
 
                             <List dense={false} ref={provided.innerRef}>
+
                                 {cart.length > 0 ? cart.map(({ title, composer, lyricist, content }, i) => {
                                     if (Array.isArray(content)) {
                                         content = content.join(",")
@@ -114,6 +120,7 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
 
                                     content = content ? content.substring(0, 30) : ""
                                     return (
+
                                         <Draggable key={i} draggableId={`${title}_${i}`} index={i}>
                                             {(provided, snapshot) => {
                                                 return (
@@ -172,7 +179,13 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
                                             }}
                                         </Draggable>
 
+
+
                                     )
+
+
+
+
                                 }) : <Grid
                                     container
                                     direction="column"
@@ -187,11 +200,29 @@ export default function LyricsPlayList({ setPlayId, cart, handleDelete, properti
                                     </p>
                                 </Grid>}
                                 {provided.placeholder}
+
+
+
+
+
+
                             </List>
 
                         )
                     }}
                 </Droppable>
+
+                {cart.length > 0 && <ListItem style={{ height: "50px" }}>
+                    <Button
+                        style={{ position: "absolute", right: "3%", bottom: "25%", background:"#D04423" }}
+                        variant="contained" color="secondary" onClick={createPPT} >
+                        {isGenerating && <CircularProgress
+                            size={18} style={{ marginRight: "10px" }} />}
+
+                        Generate PowerPoint
+                    </Button>
+                </ListItem>}
+
             </Paper>
 
 

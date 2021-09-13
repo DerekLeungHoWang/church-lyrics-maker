@@ -31,6 +31,7 @@ span{
     background-repeat: no-repeat !important;
     background-size: crop;
     background-size: 100% auto;
+    aspect-ratio: 16 / 9;
     filter:${props => {
         
         
@@ -67,6 +68,7 @@ export const BackgroundImage = styled.div`
     background:  ${props => props.img === "" ? "black" : ` url(${props.cssSettings.img})`};
     background-repeat: no-repeat !important;
     background-size: cover !important;
+    aspect-ratio: 16 / 9;
     filter:${props => `blur(${props.cssSettings.blurriness}px)`};
 }
                                         

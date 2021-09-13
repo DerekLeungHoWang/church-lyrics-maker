@@ -11,6 +11,7 @@ import AdvancedSettings from './AdvancedSettings/AdvancedSettings';
 import gsap from 'gsap'
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import { FormattedMessage } from 'react-intl';
+import ImageUploader from './Image/ImageUploader';
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -153,7 +154,7 @@ export default function MakerForm({
 
                         fullWidth
                         id="title"
-                        label={ <FormattedMessage id="lyricsMaker.songName.label" />}
+                        label={<FormattedMessage id="lyricsMaker.songName.label" />}
                         name="title"
                         autoComplete="title"
                         onChange={handleChange}
@@ -186,7 +187,7 @@ export default function MakerForm({
                                     variant="outlined"
                                     margin="normal"
                                     name="composer"
-                                    label={ <FormattedMessage id="lyricsMaker.composer.label" />}
+                                    label={<FormattedMessage id="lyricsMaker.composer.label" />}
                                     id="cardCvc"
                                     value={properties.composer}
                                     onChange={handleChange}
@@ -208,7 +209,7 @@ export default function MakerForm({
                                     variant="outlined"
                                     margin="normal"
                                     name="lyricist"
-                                    label={ <FormattedMessage id="lyricsMaker.lyricist.label" />}
+                                    label={<FormattedMessage id="lyricsMaker.lyricist.label" />}
                                     id="lyricist"
                                     value={properties.lyricist}
                                     onChange={handleChange}
@@ -228,7 +229,7 @@ export default function MakerForm({
                             fullWidth
                             variant="outlined"
                             id="standard-multiline-flexible"
-                            label={ <FormattedMessage id="lyricsMaker.content.label" />}
+                            label={<FormattedMessage id="lyricsMaker.content.label" />}
                             multiline
                             rows={18}
                             name="content"
@@ -246,9 +247,7 @@ export default function MakerForm({
                             </IconButton>
                         </Tooltip>
                     </div>
-
-                    {/* <FontSizeSlider properties={properties} setProperties={setProperties} /> */}
-                    <ImageArea
+                    {/* <ImageArea
                         classes={classes}
                         properties={properties}
                         setProperties={setProperties}
@@ -256,7 +255,11 @@ export default function MakerForm({
                         errors={errors}
                         loaded={loaded}
                         setLoaded={setLoaded}
-                    />
+                    /> */}
+
+                    <ImageUploader />
+
+
 
 
 
@@ -265,9 +268,8 @@ export default function MakerForm({
                         container
                         justifyContent="center"
                     >
-
                         <Button
-                        color="primary"
+                            color="primary"
                             disabled={submitting}
                             size="large"
                             type="submit" variant="outlined" style={{
@@ -276,10 +278,9 @@ export default function MakerForm({
                             }}>
                             {submitting && <CircularProgress
                                 size={18} style={{ marginRight: "10px" }} />}
-                         <FormattedMessage id="lyricsMaker.submit.label" />
+                            <FormattedMessage id="lyricsMaker.submit.label" />
                         </Button>
                     </Grid>
-
                 </form>}
 
 

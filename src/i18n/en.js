@@ -38,6 +38,7 @@ const en = {
     'lyricsMaker.deleteAlert.message': 'This action will delete the selected item permantenly, press Confirm if you wish to continue.',
     'lyricsMaker.deleteAlert.cancel': 'CANCEL',
     'lyricsMaker.deleteAlert.confirm': 'CONFIRM',
+    'lyricsMaker.imageURL.label':'IMAGE URL',
     'lyricsPlayer.composer': 'Composer',
     'lyricsPlayer.lyricist': 'Lyricist',
 

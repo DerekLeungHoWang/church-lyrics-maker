@@ -25,7 +25,7 @@ function Alert(props) {
 
 
 export default function Home({ locale }) {
-
+    
     const history = useHistory();
     const [loadingLyricsData, setLoadingLyricsData] = useState(false)
     const [snack, setSnack] = React.useState({
@@ -149,6 +149,7 @@ export default function Home({ locale }) {
 
     const handleSetId = e => {
         let id = +e.currentTarget.name
+        console.log(cart);
         cart.forEach(target => {
             target = stringToArray(cart, target)
             target.lastPlayed = false
@@ -229,7 +230,7 @@ export default function Home({ locale }) {
     }
 
     useEffect(() => {
-
+        console.log("updating cart in useEffect");
         localStorage.setItem('cart', JSON.stringify(cart))
     }, [cart])
 

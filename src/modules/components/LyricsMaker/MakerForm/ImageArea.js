@@ -26,13 +26,7 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
         setRawImg("")
     }
     return (
-        <Grid
-            style={{ margin: "25px 0px" }}
-            justifyContent="center"
-            alignItems="center"
-            container item>
-
-            <Container>
+            <Container    style={{ margin: "25px 0px" }}>
                 <Paper elevation={5}>
                     <Grid
                         direction="row"
@@ -55,7 +49,6 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
                                         src={rawImg} alt="ad" width="100%" height="100%" />}
 
                                     {!rawImg && !lyricsImg &&
-
                                         <Grid container justifyContent="center" >
                                             <span
                                                 style={{ color: "#9E9E9E", fontWeight: 600 }}
@@ -67,17 +60,12 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
                                                 <FormattedMessage id="lyricsMaker.capture.message_2" />
                                             </span>
                                         </Grid>
-
-
                                     }
 
                                 </ListItem>
                             </List>
                         </Grid>
-                        {/* {lastImg &&
-                            <Grid container item lg={4} direction="row" justifyContent="center" alignContent="center">
-                                <Button onClick={handleRemove}  >移取</Button>
-                            </Grid>} */}
+                    
 
                         {rawImg && !lyricsImg &&
                             <Grid container item lg={4} direction="row" justifyContent="center" alignContent="center">
@@ -110,6 +98,6 @@ export default function ImageArea({ classes, setProperties, properties, errors, 
 
 
 
-        </Grid>
+   
     )
 }
