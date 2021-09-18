@@ -7,7 +7,7 @@ import {
   Route,
   Link,
   Redirect
-} from "react-router-dom";
+} from "react-router-dom";  
 import LyricsPlayer from './modules/components/LyricsPlayer/LyricsPlayer';
 import { useState } from 'react';
 import "slick-carousel/slick/slick.css";

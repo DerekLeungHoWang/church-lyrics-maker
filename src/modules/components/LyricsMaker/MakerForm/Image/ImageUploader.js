@@ -7,8 +7,15 @@ import {
   makeStyles,
   Typography,
   Divider,
+  TextField,
+  Box,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useRef, useState } from "react";
+import { FormattedMessage } from "react-intl";
+import EasyCrop from "../EasyCrop/EasyCrop";
+import ImageSelector from "./ImageSelector";
+
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
@@ -21,21 +28,37 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
   },
 }));
- 
+
 export default function ImageUploader() {
+
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+ const [imageURL,setImageURL] = useState("")
 
-    console.log(selectedFile)
+  console.log(selectedFile);
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleChangeURL=(e)=>{
+      setImageURL(e.currentTarget.value)
+  }
+
+  const confirmImageURL= (e)=>{
+    console.log(imageURL)
+    setSelectedFile(imageURL)
+
+
+  }
+
+
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Button onClick={() => setOpen(!open)}>Upload an image</Button>
       <Modal
+      hideBackdrop
         style={{
           display: "flex",
           alignItems: "center",
@@ -48,21 +71,21 @@ export default function ImageUploader() {
       >
         <Paper
           style={{
-            height: "90%",
-            minWidth: "80%",
+            position: "relative",
+            height: "100%",
+            minWidth: "100%",
             padding: "15px",
           }}
         >
           <Typography variant="h6">Image Upload</Typography>
           <Divider style={{ width: "100%" }} />
+          <EasyCrop selectedFile={selectedFile}/>
+         {/* { !selectedFile &&  <ImageSelector 
+          handleChangeURL={handleChangeURL}
+          confirmImageURL={confirmImageURL}
+          />}
 
-          {selectedFile && <img alt="a" 
-          style={{height:"200px",width:"200px"}}
-          src={URL.createObjectURL(selectedFile)} />}
-          <Button variant="contained" component="label">
-            Upload File
-            <input type="file" hidden  onChange={(e) => setSelectedFile(e.target.files[0])} />
-          </Button>
+          {selectedFile && <EasyCrop selectedFile={selectedFile}/>} */}
         </Paper>
       </Modal>
     </Grid>
