@@ -4,53 +4,46 @@ import Cropper from "react-easy-crop";
 import styled from "styled-components";
 import getCroppedImg from "./cropImage";
 const minZoom = 0.4;
-export default function EasyCrop() {
-  const [state, setState] = useState({
-    imageSrc:
-      "https://ae01.alicdn.com/kf/HTB1AboSJFXXXXXZXpXXq6xXFXXX8/New-6-5x10ft-Studio-Photo-Backdrop-Screen-Hot-Selling-Green-Nature-Landscape-Photography-Wedding-Portrait-Background.jpg_640x640.jpg",
-    crop: { x: 0, y: 0 },
-    zoom: minZoom,
-    aspect: 4 / 3,
-    croppedAreaPixels: null,
-    croppedImage: null,
-  });
+export default function EasyCrop({ cropper, setCropper,handleCroppedImage}) {
+
+
   const onCropChange = (crop) => {
-    setState((state) => ({
+    setCropper((state) => ({
       ...state,
       crop,
     }));
   };
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     console.log(croppedArea, croppedAreaPixels);
-    setState((state) => ({
+    setCropper((state) => ({
       ...state,
       croppedAreaPixels,
     }));
   };
 
   const onZoomChange = (zoom) => {
-    setState((state) => ({
+    setCropper((state) => ({
       ...state,
       zoom,
     }));
   };
 
-  const showCroppedImage = async () => {
-    console.log("croppedAreaPixels = ", state);
-    const croppedImage = await getCroppedImg(
-      state.imageSrc,
-      state.croppedAreaPixels
-    );
-    console.log("cropped image = ", croppedImage);
+//   const handleCroppedImage = async () => {
+ 
+//     const croppedImage = await getCroppedImg(
+//       cropper.imageSrc,
+//       cropper.croppedAreaPixels
+//     );
+//     console.log("cropped image = ", croppedImage);
 
-    setState((state) => ({
-      ...state,
-      croppedImage,
-    }));
-  };
+//     setCropper((state) => ({
+//       ...state,
+//       croppedImage,
+//     }));
+//   };
 
   const handleCancelCrop = () => {
-    setState((state) => ({
+    setCropper((state) => ({
       ...state,
       croppedImage: null,
     }));
@@ -58,36 +51,14 @@ export default function EasyCrop() {
 
   return (
     <>
-      {state.croppedImage ? (
-        <>
-          <img
-            alt="a"
-            src={state.croppedImage}
-            style={{ maxHeight: "300px", maxWidth: "300px" }}
-          />
-          <Grid
-            container
-            direction="row"
-            style={{
-              width: "95%",
-
-              position: "absolute",
-              bottom: "1%",
-            }}
-          >
-            <Button onClick={handleCancelCrop}>Cancel</Button>
-            <Button>Upload</Button>
-          </Grid>
-        </>
-      ) : (
-        <>
+      
           <div style={{position:"relative",height:"100%",width:"auto"}}>
             <Cropper
               minZoom={minZoom}
-              image={state.imageSrc}
-              crop={state.crop}
-              zoom={state.zoom}
-              aspect={state.aspect}
+              image={cropper.imageSrc}
+              crop={cropper.crop}
+              zoom={cropper.zoom}
+              aspect={cropper.aspect}
               restrictPosition={false}
               onCropChange={onCropChange}
               onCropComplete={onCropComplete}
@@ -96,7 +67,7 @@ export default function EasyCrop() {
                 {
                     containerStyle:{
                         width: '100%',
-                        height: 500,
+                        height: "70%",
                         background: '#333',
                     },
                     cropAreaStyle:{
@@ -112,7 +83,7 @@ export default function EasyCrop() {
 
          position:"absolute",bottom:"1%"}} >
          <Slider
-        value={state.zoom}
+        value={cropper.zoom}
         min={minZoom}
         max={3}
         step={0.1}
@@ -121,10 +92,13 @@ export default function EasyCrop() {
            style={{width:"90%"}}
       />
 
-             <Button  onClick={showCroppedImage}>Show Image</Button>
+            
     </Grid>
-        </>
-      )}
+    <Grid>
+    <Button  >Back</Button>
+    <Button  onClick={handleCroppedImage}>Crop Image</Button>
+    </Grid>
+    
     </>
   );
 }

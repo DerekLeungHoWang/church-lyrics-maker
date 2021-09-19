@@ -21,9 +21,9 @@ export default function LyricsMaker({
 
 }) {
     return (
-        <Container>
+        <Container   maxWidth={false}>
 
-            <Paper elevation={3} style={{ borderRadius: "15px" }} >
+            <Paper elevation={3} style={{ borderRadius: "15px",width:"100%" }} >
                 <MakerForm
                     loaded={loaded}
                     setLoaded={setLoaded}

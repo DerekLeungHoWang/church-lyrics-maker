@@ -19,7 +19,7 @@ const en = {
     'lyricsMaker.capture.message_2': 'CTRL + V to paste',
     'lyricsMaker.clear.label': 'Clear',
     'lyricsMaker.flash.tooltip': 'Split every 2 lines automatically',
-    'lyricsMaker.advance.label': 'Advanced Settings',
+    'lyricsMaker.advance.label': 'Advanced',
     'lyricsMaker.advance.save': 'Save',
     'lyricsMaker.advance.textControl': 'Text Control',
     'lyricsMaker.advance.textControl.description': 'Text related properties',

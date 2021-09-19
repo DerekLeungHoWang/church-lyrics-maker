@@ -17,8 +17,8 @@ import { createTheme } from '@material-ui/core/styles';
 import PropertiesContextProvider from './modules/context/PropertiesContext';
 const theme = createTheme({
   palette: {
-    primary: {
-      main: "#BDBDBD",
+    primary: { //#BDBDBD
+      main: "#000",
       //  contrastText: "#fff" //button text white instead of black
     },
     secondary: {

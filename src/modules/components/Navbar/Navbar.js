@@ -13,13 +13,13 @@ export default function Navbar({ locale }) {
     }
 
     return (
-        <Container style={{ maxWidth: "1550px", padding: "0px" }} >
+        <Container style={{ maxWidth: "100%", padding: "0px" }} >
             <Box m={2}>
                 <Grid container justifyContent="space-between"  >
-                    <Box >
+                    <Box ml={1}>
                         <Typography variant="h5"><FormattedMessage id="app.title" /></Typography>
                     </Box>
-                    <Box mr={3}>
+                    <Box mr={0}>
                         <Button onClick={handleSwitchRoute} >{locale === "en" ? "中文" : "English"}</Button>
                     </Box>
 

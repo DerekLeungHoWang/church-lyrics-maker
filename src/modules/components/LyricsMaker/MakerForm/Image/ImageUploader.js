@@ -15,6 +15,7 @@ import React, { useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import EasyCrop from "../EasyCrop/EasyCrop";
 import ImageSelector from "./ImageSelector";
+import UploaderMain from "./UploaderMain";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -28,43 +29,58 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
   },
 }));
-
+const minZoom = 0.4;
 export default function ImageUploader() {
-
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
- const [imageURL,setImageURL] = useState("")
+  const [openImageModal, setOpenImageModal] = useState(false);
+  const [imageURL, setImageURL] = useState("");
+  const [cropper, setCropper] = useState({
+    imageSrc: "",
+    crop: { x: 0, y: 0 },
+    zoom: minZoom,
+    aspect: 4 / 3,
+    croppedAreaPixels: null,
+    croppedImage: null,
+  });
 
-  console.log(selectedFile);
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenImageModal(false);
   };
 
-  const handleChangeURL=(e)=>{
-      setImageURL(e.currentTarget.value)
-  }
+  const handleChangeURL = (e) => {
+    setCropper(state=>({
+        ...state,
+        imageSrc:e.currentTarget.value
+    }))
+  };
+ 
 
-  const confirmImageURL= (e)=>{
-    console.log(imageURL)
-    setSelectedFile(imageURL)
-
-
-  }
-
+  const selectFromUpload = (e) => {
+    setCropper(state=>({
+        ...state,
+        imageSrc:URL.createObjectURL(e.target.files[0])
+    }))
+  };
 
   return (
     <Grid container justifyContent="center" alignItems="center">
-      <Button onClick={() => setOpen(!open)}>Upload an image</Button>
+      <Button
+        color="primary"
+        style={{ marginTop: "10px" }}
+        variant="outlined"
+        onClick={() => setOpenImageModal(!openImageModal)}
+      >
+        Upload an image
+      </Button>
       <Modal
-      hideBackdrop
+        //hideBackdrop
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
-        open={open}
+        open={openImageModal}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
@@ -72,20 +88,18 @@ export default function ImageUploader() {
         <Paper
           style={{
             position: "relative",
-            height: "100%",
-            minWidth: "100%",
+            height: "90%",
+            minWidth: "90%",
             padding: "15px",
           }}
         >
-          <Typography variant="h6">Image Upload</Typography>
-          <Divider style={{ width: "100%" }} />
-          <EasyCrop selectedFile={selectedFile}/>
-         {/* { !selectedFile &&  <ImageSelector 
-          handleChangeURL={handleChangeURL}
-          confirmImageURL={confirmImageURL}
-          />}
-
-          {selectedFile && <EasyCrop selectedFile={selectedFile}/>} */}
+          <UploaderMain
+            selectFromUpload={selectFromUpload}
+            handleChangeURL={handleChangeURL}
+            cropper={cropper}
+            setCropper={setCropper}
+            setOpenImageModal={setOpenImageModal}
+          />
         </Paper>
       </Modal>
     </Grid>

@@ -19,7 +19,7 @@ const zh = {
     'lyricsMaker.capture.message_2': 'CTRL + V 貼上',
     'lyricsMaker.clear.label': '清空',
     'lyricsMaker.flash.tooltip': '每兩行自動分隔',
-    'lyricsMaker.advance.label': '進階設定',
+    'lyricsMaker.advance.label': '進階',
     'lyricsMaker.advance.save': '儲存',
     'lyricsMaker.advance.textControl': '文字管理',
     'lyricsMaker.advance.textControl.description': '文字相關的設定',
