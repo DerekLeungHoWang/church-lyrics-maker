@@ -8,6 +8,8 @@ import {
   Button,
   Typography,
   Grid,
+  CircularProgress,
+  Container
 } from "@material-ui/core";
 import ImageSelector from "./ImageSelector";
 import EasyCrop from "../EasyCrop/EasyCrop";
@@ -15,9 +17,12 @@ import Preview from "./Preview";
 import getCroppedImg from "../EasyCrop/ImgDialog";
 import { storage } from "../../../../firebase";
 import { PropertiesContext } from "../../../../context/PropertiesContext";
+import { FormattedMessage } from "react-intl";
 
-
-const steps = ["Select an image", "Crop the image", "Preview & Upload"];
+const steps = [
+ <FormattedMessage id="lyricsMaker.uploader.step1"/>
+,  <FormattedMessage id="lyricsMaker.uploader.step2"/>,
+<FormattedMessage id="lyricsMaker.uploader.step3"/>];
 
 export default function UploaderMain({
   handleChangeURL,
@@ -25,23 +30,28 @@ export default function UploaderMain({
   selectFromUpload,
   cropper,
   setCropper,
-  setOpenImageModal
- 
+  setOpenImageModal,
 }) {
-    
   const [activeStep, setActiveStep] = useState(0);
+  const [uploading, setUploading] = useState(false);
   const {
     properties,
     setProperties,
     // handleSetProperties,
-    // errors,
-    // setErrors,
+    errors,
+    setErrors,
     // handleBlur,
     // handleSmartSplit,
   } = useContext(PropertiesContext);
 
   const handleNext = async () => {
     if (activeStep == 0) {
+      if (!cropper.imageSrc) {
+          console.log(errors);
+          setErrors(state=>({...state,imageSrc:"Please provide an image."}))
+          return;
+      }
+
       setCropper((state) => ({
         ...state,
         imageSrc: cropper.imageSrc,
@@ -54,63 +64,50 @@ export default function UploaderMain({
     }
 
     if (activeStep == 2) {
-   
       handleUpload();
     }
   };
-//UPLOAD
-  const handleUpload=async()=>{
-    const response = await fetch(cropper.croppedImage)
+  //UPLOAD
+  const handleUpload = async () => {
+    setUploading(true);
+    const response = await fetch(cropper.croppedImage);
     const blob = await response.blob();
-    console.log("response => ",response)
-    console.log("blob => ", blob)
-   const uploadTask = storage.ref('images').child("testImage")
-    .put(blob)
 
-   
-    console.log("----> ",properties)
-    console.log("---=======->] ",cropper.croppedImage)
-
-
+    const uploadTask = storage.ref("images").child(properties.title).put(blob);
     uploadTask.on(
-        "state_changed",
-        snapshot => {
-            const progress = Math.round(
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
-           // setProgress(progress);
-        },
-        error => {
-            
-        },
-        () => {
-            storage
-                .ref("images")
-                .child("testImage")
-                .getDownloadURL()
-                .then(url => {
-                    // setIsLoading(false)
-                    //  setLoaded(false)
-                    console.log("res ====> " , url)
-                    setProperties(state => ({
-                        ...state,
-                        img: url
-                    }))
-                    setOpenImageModal(false)
-                 
-                });
-        }
-    );
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        // setProgress(progress);
+      },
+      (error) => {},
+      () => {
+        storage
+          .ref("images")
+          .child(properties.title)
+          .getDownloadURL()
+          .then((url) => {
+            // setIsLoading(false)
+            //  setLoaded(false)
 
-  }
+            setProperties((state) => ({
+              ...state,
+              img: url,
+            }));
+            setOpenImageModal(false);
+            setUploading(false);
+          });
+      }
+    );
+  };
 
   const handleCroppedImage = async () => {
-    console.log("cropping....");
     const croppedImage = await getCroppedImg(
       cropper.imageSrc,
       cropper.croppedAreaPixels
     );
-    console.log("cropped image = ", croppedImage);
 
     setCropper((state) => ({
       ...state,
@@ -126,7 +123,9 @@ export default function UploaderMain({
   };
 
   return (
-    <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
+    <Container maxWidth={false}
+     style={{position:"relative",height:"100%"}}
+     >
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -138,20 +137,21 @@ export default function UploaderMain({
           );
         })}
       </Stepper>
-      <>
+      <Container   style={{ height: "100%" }}>
         {activeStep == 0 && (
           <ImageSelector
-          setCropper={setCropper}
+            setCropper={setCropper}
             cropper={cropper}
             selectFromUpload={selectFromUpload}
             handleChangeURL={handleChangeURL}
             confirmImageURL={confirmImageURL}
+            errors={errors}
+            setErrors={setErrors}
           />
         )}
         {activeStep == 1 && (
           <EasyCrop
             handleCroppedImage={handleCroppedImage}
-            
             cropper={cropper}
             setCropper={setCropper}
           />
@@ -163,7 +163,7 @@ export default function UploaderMain({
           direction="row"
           justifyContent="flex-end"
           alignItem="center"
-          style={{ position: "absolute", bottom: "3%", right: "1%" }}
+           style={{ position: "absolute", bottom: "1%", right: "1%" }}
         >
           <Button
             color="inherit"
@@ -171,15 +171,17 @@ export default function UploaderMain({
             onClick={handleBack}
             sx={{ mr: 1 }}
           >
-            Back
+            <FormattedMessage id="lyricsMaker.uploader.back.label"/>
           </Button>
 
-          <Button onClick={handleNext}>
-            {activeStep === steps.length - 1 ? "Upload" : "Next"}
+          <Button disabled={uploading} onClick={handleNext}>
+            {uploading && (
+              <CircularProgress size={18} style={{ marginRight: "10px" }} />
+            )}
+            {activeStep === steps.length - 1 ? <FormattedMessage id="lyricsMaker.upload.label"/> : <FormattedMessage id="lyricsMaker.uploader.next.label"/>}
           </Button>
         </Grid>
-      </>
-            
-    </Box>
+      </Container>
+    </Container>
   );
 }

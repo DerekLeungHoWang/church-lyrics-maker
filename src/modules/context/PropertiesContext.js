@@ -5,7 +5,7 @@ export const PropertiesContext = createContext()
 
 function PropertiesContextProvider(props) {
     const initState = {
-        title: "",
+        title: "d",
         composer: "",
         lyricist: "",
         content: "",
@@ -41,7 +41,8 @@ function PropertiesContextProvider(props) {
     const [properties, setProperties] = useState(initState)
     const [errors, setErrors] = useState({
         title: "",
-        content: ""
+        content: "",
+        imgSrc:"",
     });
     const handleSmartSplit = () => {
         let content = properties.content

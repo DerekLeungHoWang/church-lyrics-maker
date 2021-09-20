@@ -25,6 +25,9 @@ import gsap from "gsap";
 import FlashOnIcon from "@material-ui/icons/FlashOn";
 import { FormattedMessage } from "react-intl";
 import ImageUploader from "./Image/ImageUploader";
+import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import FiberNewIcon from "@material-ui/icons/FiberNew";
 const useStyles = makeStyles(
   (theme) => ({
     paper: {
@@ -40,6 +43,7 @@ const useStyles = makeStyles(
     form: {
       width: "100%", // Fix IE 11 issue.
       marginTop: theme.spacing(1),
+      position: "relative",
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
@@ -131,27 +135,40 @@ export default function MakerForm({
         direction="row"
         style={{ padding: "20px 0px 0px 0px" }}
       >
-        <Typography component="h6" variant="h6">
-          <FormattedMessage id="lyricsMaker.heading" />
-        </Typography>
-        <AdvancedSettings />
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() =>
-            setProperties((state) => ({
-              ...state,
-              title: "",
-              content: "",
-              composer: "",
-              lyricist: "",
-              img: "",
-            }))
-          }
+        <Grid container item xs={3}>
+          <Typography component="h6" variant="h6">
+            <FormattedMessage id="lyricsMaker.heading" />
+          </Typography>
+        </Grid>
+
+        <Grid
+          container
+          item
+          direction="row"
+          xs={9}
+          justifyContent="flex-end"
+          alignItems="center"
         >
-          {" "}
-          <FormattedMessage id="lyricsMaker.clear.label" />
-        </Button>
+          <AdvancedSettings />
+          <Button
+            style={{ marginLeft: "10px" }}
+            startIcon={<DeleteSweepIcon />}
+            variant="outlined"
+            color="primary"
+            onClick={() =>
+              setProperties((state) => ({
+                ...state,
+                title: "",
+                content: "",
+                composer: "",
+                lyricist: "",
+                img: "",
+              }))
+            }
+          >
+            <FormattedMessage id="lyricsMaker.clear.label" />
+          </Button>
+        </Grid>
       </Grid>
 
       {loadingOne ? (
@@ -249,7 +266,7 @@ export default function MakerForm({
               id="standard-multiline-flexible"
               label={<FormattedMessage id="lyricsMaker.content.label" />}
               multiline
-              rows={18}
+              rows={16}
               name="content"
               value={contentValue}
               onChange={handleChange}
@@ -264,7 +281,7 @@ export default function MakerForm({
                 style={{
                   position: "absolute",
                   top: "10px",
-                  right: countOfRows > 18 ? "35px" : "10px",
+                  right: countOfRows > 16 ? "35px" : "10px",
                 }}
               >
                 <FlashOnIcon />
@@ -282,14 +299,6 @@ export default function MakerForm({
                     /> */}
 
           <ImageUploader />
-          {properties.img && (
-            <Paper elevation={3} style={{marginTop:"10px"}}>
-              <Grid container alignItems="center" justifyContent="center" style={{padding:"10px"}}>
-              <img src={properties.img} alt="img" style={{height:"50%",width:"100%"}} />
-              </Grid>
-            </Paper>
-          )}
-
           <Grid container justifyContent="center">
             <Button
               color="primary"
@@ -298,8 +307,10 @@ export default function MakerForm({
               type="submit"
               variant="outlined"
               style={{
-                margin: "10px 0px",
+                marginTop: "15px",
+                marginBottom: "15px",
               }}
+              startIcon={<FiberNewIcon />}
             >
               {submitting && (
                 <CircularProgress size={18} style={{ marginRight: "10px" }} />
@@ -307,6 +318,44 @@ export default function MakerForm({
               <FormattedMessage id="lyricsMaker.submit.label" />
             </Button>
           </Grid>
+          {properties.img && (
+            <Paper
+              elevation={3}
+              style={{
+                marginTop: "10px",
+                position: "relative",
+                padding: "20px",
+                 
+              }}
+            >
+              {!loaded && properties.img && (
+                <Grid container alignItems="center" justifyContent="center">
+                  <CircularProgress />
+                </Grid>
+              )}
+              <IconButton
+                onClick={() =>
+                  setProperties((state) => ({ ...state, img: "" }))
+                }
+                aria-label="delete"
+                style={{ position: "absolute", right: "-25px", top: "-25px" }}
+              >
+                <CancelIcon style={{ fill: "black", fontSize: "30px" }} />
+              </IconButton>
+              <Grid container alignItems="center" justifyContent="center">
+                <img
+                  src={properties.img}
+                  alt="img"
+                  style={{
+                    height: "50%",
+                    width: "100%",
+                    display: loaded ? "unset" : "none",
+                  }}
+                  onLoad={() => setLoaded(true)}
+                />
+              </Grid>
+            </Paper>
+          )}
         </form>
       )}
     </Container>

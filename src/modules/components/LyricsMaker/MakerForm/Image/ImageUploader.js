@@ -11,11 +11,14 @@ import {
   Box,
 } from "@material-ui/core";
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
+import { PropertiesContext } from "../../../../context/PropertiesContext";
 import EasyCrop from "../EasyCrop/EasyCrop";
 import ImageSelector from "./ImageSelector";
 import UploaderMain from "./UploaderMain";
+import ImageIcon from "@material-ui/icons/Image";
+
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -31,11 +34,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 const minZoom = 0.4;
 export default function ImageUploader() {
+  const {
+    properties,
+    setProperties,
+    handleSetProperties,
+    errors,
+    setErrors,
+    handleBlur,
+    handleSmartSplit,
+  } = useContext(PropertiesContext);
   const classes = useStyles();
   const [openImageModal, setOpenImageModal] = useState(false);
   const [imageURL, setImageURL] = useState("");
   const [cropper, setCropper] = useState({
-    imageSrc: "",
+    imageSrc: "https://images.unsplash.com/photo-1515261439133-0f6cfb098e04?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
     crop: { x: 0, y: 0 },
     zoom: minZoom,
     aspect: 4 / 3,
@@ -43,35 +55,45 @@ export default function ImageUploader() {
     croppedImage: null,
   });
 
-
   const handleClose = () => {
     setOpenImageModal(false);
   };
 
   const handleChangeURL = (e) => {
-    setCropper(state=>({
-        ...state,
-        imageSrc:e.currentTarget.value
-    }))
+    setCropper((state) => ({
+      ...state,
+      imageSrc: e.currentTarget.value,
+    }));
   };
- 
 
   const selectFromUpload = (e) => {
-    setCropper(state=>({
+    setCropper((state) => ({
+      ...state,
+      imageSrc: URL.createObjectURL(e.target.files[0]),
+    }));
+  };
+  const handleOpenUploadModal = () => {
+    if (!properties.title) {
+      setErrors((state) => ({
         ...state,
-        imageSrc:URL.createObjectURL(e.target.files[0])
-    }))
+        title: "Title is required before upload",
+      }));
+      return;
+    }
+
+    setOpenImageModal(!openImageModal);
   };
 
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Button
         color="primary"
-        style={{ marginTop: "10px" }}
+        style={{ marginTop: "15px" }}
         variant="outlined"
-        onClick={() => setOpenImageModal(!openImageModal)}
+        onClick={handleOpenUploadModal}
+        startIcon={<ImageIcon />}
       >
-        Upload an image
+       <FormattedMessage id="lyricsMaker.upload.label"/>
       </Button>
       <Modal
         //hideBackdrop
@@ -87,10 +109,11 @@ export default function ImageUploader() {
       >
         <Paper
           style={{
-            position: "relative",
+         
             height: "90%",
-            minWidth: "90%",
+            width: "90%",
             padding: "15px",
+            
           }}
         >
           <UploaderMain

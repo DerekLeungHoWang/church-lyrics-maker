@@ -103,7 +103,7 @@ export default function Home({ locale }) {
       image: properties.image,
       others: properties.others,
     };
-
+    console.log("submit = " ,properties);
     axios.post(`${API_BASE_URL}/lyrics/add`, lyricsObject).then((res) => {
       getSongList().then((songList) => {
         let target = songList.data.filter(
@@ -145,7 +145,7 @@ export default function Home({ locale }) {
 
   const handleSetId = (e) => {
     let id = +e.currentTarget.name;
-    console.log(cart);
+    
     cart.forEach((target) => {
       target = stringToArray(cart, target);
       target.lastPlayed = false;
@@ -204,6 +204,7 @@ export default function Home({ locale }) {
   };
 
   const handleFindOneFromTable = (e) => {
+    setLoaded(false)
     setLoadingOne(true);
     let id = e.currentTarget.name;
     axios.get(`${API_BASE_URL}/lyrics/${id}`).then((res) => {
@@ -214,7 +215,7 @@ export default function Home({ locale }) {
   };
 
   useEffect(() => {
-    console.log("updating cart in useEffect");
+    
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
