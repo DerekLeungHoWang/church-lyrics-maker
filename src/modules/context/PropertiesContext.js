@@ -19,7 +19,7 @@ function PropertiesContextProvider(props) {
             textColor: "#fff"
         },
         image: {
-            height: 100,
+            height: 30,
             opacity: 100,
             blurriness: 0
         },
