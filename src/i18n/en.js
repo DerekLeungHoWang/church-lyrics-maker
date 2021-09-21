@@ -50,7 +50,7 @@ const en = {
   "lyricsMaker.uploader.back.label": "Back",
   "lyricsMaker.uploader.zoom": "Zoom",
   "lyricsMaker.uploader.invalidURL": "The image you provided is invalid",
-  "lyricsPlaylist.createPPT": "Crete PPT",
+  "lyricsPlaylist.createPPT": "Create PPT",
   "lyricsPlaylist.config.height": "Height",
   "lyricsPlaylist.config.fontSize": "Font Size",
   "lyricsPlayer.composer": "Composer",
