@@ -5,7 +5,7 @@ export const PropertiesContext = createContext()
 
 function PropertiesContextProvider(props) {
     const initState = {
-        title: "d",
+        title: "",
         composer: "",
         lyricist: "",
         content: "",

@@ -30,6 +30,7 @@ import { FormattedMessage } from "react-intl";
 import pptxgen from "pptxgenjs";
 import axios from "axios";
 import { API_BASE_URL } from "../../constant";
+import PPTConfig from "./PPTConfig/PPTProperties";
 
 export default function LyricsPlayList({
   setPlayId,
@@ -37,94 +38,32 @@ export default function LyricsPlayList({
   handleDelete,
   properties,
 }) {
+  const [pptProperties, setPptProperties] = useState({
+    height: 30,
+    fontSize: 30,
+  });
   const [isGenerating, setIsGenerating] = useState(false);
   const ref = React.createRef();
   const createPPT = async () => {
     setIsGenerating(true);
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.map((d) => (d.pptProperties = pptProperties));
+
     axios({
       url: `${API_BASE_URL}/lyrics/ppt/create`, //your url
       method: "POST",
       responseType: "blob", // important,
-      data:{cart}
-    })
-      .then((res) => {
-        console.log("res = ,", res);
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "file.pptx"); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-        setIsGenerating(false);
-      });
-    // setIsGenerating(true)
-    // let cart = JSON.parse(localStorage.getItem('cart')) || []
-    // let pres = new pptxgen();
-    // let newCart = JSON.parse(JSON.stringify(cart))
-    // const imgList = []
-
-    // await Promise.all(newCart.map(async (d) => {
-    //     if (d.img) {
-    //         //
-    //         let result = await axios.get(d.img, {
-    //             responseType: 'arraybuffer'
-    //         })
-    //         let image = Buffer.from(result.data, 'binary').toString('base64')
-    //         image = `data:image/jpg;base64,${image}`
-    //         imgList.push({
-    //             _id: d._id,
-    //             image
-    //         })
-    //     }
-    // }))
-
-    // newCart.map((d, i) => {
-    //     return imgList.map(img => {
-    //         if (d.img && d._id == img._id) {
-    //             return d.img = img
-    //         }
-    //     })
-
-    // })
-
-    // newCart.map(d => {
-
-    //     let slide = pres.addSlide()
-    //     d.img.image && slide.addImage({
-    //         data: d.img.image,
-    //         w:"100%",
-    //         h:"100%",
-    //         sizing: {
-    //             w:"100%",
-    //             h:"20%",
-    //             type: "crop"
-    //     } });
-    //     slide.addText(d.title, { x: '0', y: '0', w: '100%', h: '20%', align: 'center', valign: 'middle', color: "ffffff", });
-    //     slide.background = { color: "#000000" };
-
-    //     d.content.map(text => {
-
-    //         let slide_2 = pres.addSlide();
-    //         d.img.image && slide_2.addImage({
-    //             data: d.img.image,
-    //             w:"100%",
-    //             h:"100%",
-    //             sizing: {
-    //                 w:"100%",
-    //                 h:"20%",
-    //                 type: "crop"
-    //         } });
-    //         slide_2.addText(text, { x: '0', y: '0', w: '100%', h: '20%', align: 'center', valign: 'middle', color: "ffffff", })
-    //         slide_2.background = { color: "#000000" };
-    //     })
-    // })
-
-    // pres.writeFile({ fileName: "Sample Presentation.pptx" })
-    //     .then(() => {
-
-    //         setIsGenerating(false)
-    //     })
+      data: { cart },
+    }).then((res) => {
+      console.log("res = ,", res);
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Lyrics.pptx"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+      setIsGenerating(false);
+    });
   };
 
   return (
@@ -252,23 +191,31 @@ export default function LyricsPlayList({
 
         {cart.length > 0 && (
           <ListItem style={{ height: "50px" }}>
-            <Button
-              style={{
-                position: "absolute",
-                right: "3%",
-                bottom: "25%",
-                background: "#D04423",
-              }}
-              variant="contained"
-              color="secondary"
-              onClick={createPPT}
-            >
-              {isGenerating && (
-                <CircularProgress size={18} style={{ marginRight: "10px",color:"white" }} />
-              )}
-              Generate PowerPoint
-            </Button>
-          </ListItem>
+            <Grid container justifyContent="flex-end" alignItems="center" style={{paddingRight:"6%",paddingBottom:"15px"}}  >
+              <PPTConfig
+                pptProperties={pptProperties}
+                setPptProperties={setPptProperties}
+              />
+              <Button
+                style={{
+                  background: "#D04423",
+                 
+                }}
+                variant="contained"
+                color="secondary"
+                onClick={createPPT}
+              >
+                {isGenerating && (
+                  <CircularProgress
+                    size={18}
+                    style={{ marginRight: "10px", color: "white" }}
+                  />
+                )}
+                <FormattedMessage id="lyricsPlaylist.createPPT" />
+              </Button>
+              </Grid>
+            </ListItem>
+         
         )}
       </Paper>
     </Container>

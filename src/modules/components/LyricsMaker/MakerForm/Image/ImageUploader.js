@@ -47,7 +47,7 @@ export default function ImageUploader() {
   const [openImageModal, setOpenImageModal] = useState(false);
   const [imageURL, setImageURL] = useState("");
   const [cropper, setCropper] = useState({
-    imageSrc: "https://images.unsplash.com/photo-1515261439133-0f6cfb098e04?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80",
+    imageSrc: "",
     crop: { x: 0, y: 0 },
     zoom: minZoom,
     aspect: 4 / 3,

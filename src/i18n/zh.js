@@ -49,8 +49,12 @@ const zh = {
     "lyricsMaker.uploader.back.label": "返回",
     "lyricsMaker.uploader.zoom": "縮放",
     "lyricsMaker.uploader.invalidURL": "圖片格式不正確，請重試",
+    "lyricsPlaylist.createPPT": "製作簡報",
+    "lyricsPlaylist.config.height": "圖片佔高",
+    "lyricsPlaylist.config.fontSize": "字體大小",
     'lyricsPlayer.composer': '作曲',
     'lyricsPlayer.lyricist': '作詞',
+
 
 };
 export default zh;

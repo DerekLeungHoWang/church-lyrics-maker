@@ -68,7 +68,6 @@ export default function TextControl() {
         let propName = e.currentTarget.name;
 
 
-
         setProperties(state => ({
             ...state,
             text: {
