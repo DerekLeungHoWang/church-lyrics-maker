@@ -223,7 +223,7 @@ export default function Home({ locale }) {
 
   useEffect(() => {
     let name = "churchLyricsMaker";
-    let version = "1.0.1";
+    let version = "4.0.0";
 
     const last_version = localStorage.getItem(`${name}-Version`);
     if (last_version !== version) {
