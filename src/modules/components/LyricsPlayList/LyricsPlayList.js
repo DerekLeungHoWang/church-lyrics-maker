@@ -204,6 +204,7 @@ export default function LyricsPlayList({
                 variant="contained"
                 color="secondary"
                 onClick={createPPT}
+                disabled={isGenerating}
               >
                 {isGenerating && (
                   <CircularProgress
