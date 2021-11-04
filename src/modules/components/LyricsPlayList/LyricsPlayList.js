@@ -38,9 +38,12 @@ export default function LyricsPlayList({
   handleDelete,
   properties,
 }) {
+
+  console.log(properties);
   const [pptProperties, setPptProperties] = useState({
     height: 30,
     fontSize: 30,
+    color:properties.text.textColor
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const ref = React.createRef();

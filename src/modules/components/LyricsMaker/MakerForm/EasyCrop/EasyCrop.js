@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Cropper from "react-easy-crop";
 import { FormattedMessage } from "react-intl";
 import styled from "styled-components";
-import getCroppedImg from "./cropImage";
+
 const minZoom = 0.4;
 export default function EasyCrop({ cropper, setCropper, handleCroppedImage }) {
   const onCropChange = (crop) => {
@@ -52,7 +52,6 @@ export default function EasyCrop({ cropper, setCropper, handleCroppedImage }) {
               height: "70%",
               background: "#333",
             },
-            cropAreaStyle: {},
           }}
         />
       </Grid>
